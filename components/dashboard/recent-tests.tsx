@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import type { TestRecord } from "@/lib/types"
+import { MNO_COLORS } from "@/lib/constants"
 import { Card } from "@/components/ui/card"
 
 export default function RecentTests({ records }: { records?: TestRecord[] }) {
@@ -30,36 +31,43 @@ export default function RecentTests({ records }: { records?: TestRecord[] }) {
 
   return (
     <Card className="bg-card border-border">
-      <div className="p-6">
-        <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Recent Tests</h2>
+      <div className="p-4">
+        <h2 className="text-sm font-bold tracking-tight text-foreground mb-4">Recent Tests</h2>
 
-        <div className="overflow-auto max-h-[480px] pr-2">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-xs text-muted-foreground border-b border-border">
-                <th className="text-left py-2 font-semibold">MNO</th>
-                <th className="text-left py-2 font-semibold">State</th>
-                <th className="text-left py-2 font-semibold">Type</th>
-                <th className="text-left py-2 font-semibold">Result</th>
-                <th className="text-left py-2 font-semibold">Metrics</th>
-                <th className="text-left py-2 font-semibold">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentTests.map((test: any, idx: number) => (
-                <tr key={test.id || idx} className="odd:bg-card even:bg-transparent hover:bg-muted/50 transition">
-                  <td className="py-3">{test.mno}</td>
-                  <td className="py-3">{test.state}</td>
-                  <td className="py-3">{test.type}</td>
-                  <td className={`py-3 ${test.result === 'Success' ? 'text-green-600' : 'text-red-600'} font-medium`}>{test.result}</td>
-                  <td className="py-3 text-xs text-muted-foreground">
-                    {test.metrics?.successRate}%{test.metrics?.speed ? ` • ${test.metrics.speed}` : ''}{test.metrics?.callSetupTime ? ` • ${test.metrics.callSetupTime}`: ''}
-                  </td>
-                  <td className="py-3 text-xs text-muted-foreground">{test.timestamp ? new Date(test.timestamp).toLocaleString() : ''}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="space-y-2 overflow-auto h-[400px] pr-1">
+          {recentTests.map((test: any, idx: number) => (
+            <div key={test.id || idx} className="bg-muted/20 border border-border/50 rounded-lg p-3 hover:bg-muted/40 hover:border-border transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: MNO_COLORS[test.mno] || MNO_COLORS.MTN }}
+                  />
+                  <span className="text-sm font-bold text-foreground">{test.mno}</span>
+                  <span className="text-xs text-muted-foreground">•</span>
+                  <span className="text-xs text-muted-foreground">{test.state}</span>
+                </div>
+                <span className={`text-xs font-bold ${
+                  test.result === 'Success' || test.status === 'Success'
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-red-600 dark:text-red-400'
+                }`}>
+                  {test.result || test.status}
+                </span>
+              </div>
+              
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <span>{test.type || test.service}</span>
+                  {test.duration && <span>• {test.duration}</span>}
+                  {test.callSetupTime && <span>• {test.callSetupTime}</span>}
+                </div>
+                <span className="text-muted-foreground">
+                  {test.timestamp ? new Date(test.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A'}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </Card>
