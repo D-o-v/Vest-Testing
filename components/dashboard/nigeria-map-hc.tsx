@@ -118,7 +118,13 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
       map: mapData as any,
       backgroundColor: undefined,
     },
-    title: { text: undefined },
+    title: { 
+      text: "Network Performance by State",
+      style: {
+        fontWeight: '500',
+        fontSize: '14px',
+      }
+    },
     mapNavigation: { enabled: true },
     colorAxis: {
       min: 0,

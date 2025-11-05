@@ -1,10 +1,27 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { MNO_COLORS, MNO_NAMES, type AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 
-export default function KPICards({ metrics }: { metrics: Record<string, AggregatedMetrics> }) {
-  const mnos = Object.values(metrics)
+export default function KPICards({ metrics }: { metrics?: Record<string, AggregatedMetrics> }) {
+  const [dashboardData, setDashboardData] = useState<any>(null)
+
+  useEffect(() => {
+    if (metrics && Object.keys(metrics).length > 0) {
+      return // Use provided metrics
+    }
+
+    // Fallback: fetch dummy data
+    fetch('/data/dashboard-metrics.json')
+      .then(r => r.json())
+      .then(data => {
+        setDashboardData(data)
+      })
+      .catch(console.error)
+  }, [metrics])
+
+  const mnos = metrics ? Object.values(metrics) : []
 
   return (
     <div className="space-y-3">

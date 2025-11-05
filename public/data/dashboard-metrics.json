@@ -1,0 +1,166 @@
+{
+  "kpis": {
+    "totalTests": {
+      "value": 125847,
+      "change": 12.5,
+      "trend": "up"
+    },
+    "avgSuccessRate": {
+      "value": 84.2,
+      "change": 3.8,
+      "trend": "up"
+    },
+    "avgDataSpeed": {
+      "value": "72.5 Mbps",
+      "change": -5.2,
+      "trend": "down"
+    },
+    "avgCallSetupTime": {
+      "value": "2.1s",
+      "change": -8.4,
+      "trend": "up"
+    }
+  },
+  "recentTests": [
+    {
+      "id": "TEST-001",
+      "mno": "MTN",
+      "state": "Lagos",
+      "type": "Voice",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:45:23Z",
+      "metrics": {
+        "successRate": 98,
+        "callSetupTime": "0.8s",
+        "qualityScore": 4.8
+      }
+    },
+    {
+      "id": "TEST-002",
+      "mno": "GLO",
+      "state": "Abuja",
+      "type": "Data",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:44:15Z",
+      "metrics": {
+        "successRate": 95,
+        "speed": "120Mbps",
+        "latency": "18ms"
+      }
+    },
+    {
+      "id": "TEST-003",
+      "mno": "AIRTEL",
+      "state": "Rivers",
+      "type": "SMS",
+      "result": "Failed",
+      "timestamp": "2025-11-05T09:43:02Z",
+      "metrics": {
+        "successRate": 0,
+        "deliveryTime": "N/A",
+        "errorCode": "NET_TIMEOUT"
+      }
+    },
+    {
+      "id": "TEST-004",
+      "mno": "T2",
+      "state": "Kano",
+      "type": "Voice",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:42:45Z",
+      "metrics": {
+        "successRate": 92,
+        "callSetupTime": "1.2s",
+        "qualityScore": 4.2
+      }
+    },
+    {
+      "id": "TEST-005",
+      "mno": "MTN",
+      "state": "Oyo",
+      "type": "Data",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:41:30Z",
+      "metrics": {
+        "successRate": 96,
+        "speed": "85Mbps",
+        "latency": "22ms"
+      }
+    },
+    {
+      "id": "TEST-006",
+      "mno": "GLO",
+      "state": "Enugu",
+      "type": "SMS",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:40:18Z",
+      "metrics": {
+        "successRate": 100,
+        "deliveryTime": "1.5s",
+        "status": "DELIVERED"
+      }
+    },
+    {
+      "id": "TEST-007",
+      "mno": "AIRTEL",
+      "state": "Delta",
+      "type": "Voice",
+      "result": "Failed",
+      "timestamp": "2025-11-05T09:39:55Z",
+      "metrics": {
+        "successRate": 0,
+        "callSetupTime": "N/A",
+        "errorCode": "NO_SIGNAL"
+      }
+    },
+    {
+      "id": "TEST-008",
+      "mno": "T2",
+      "state": "Kaduna",
+      "type": "Data",
+      "result": "Success",
+      "timestamp": "2025-11-05T09:38:40Z",
+      "metrics": {
+        "successRate": 94,
+        "speed": "42Mbps",
+        "latency": "35ms"
+      }
+    }
+  ],
+  "trendData": {
+    "hourly": [
+      { "hour": "00:00", "successRate": 82, "tests": 1245 },
+      { "hour": "01:00", "successRate": 85, "tests": 1122 },
+      { "hour": "02:00", "successRate": 88, "tests": 984 },
+      { "hour": "03:00", "successRate": 90, "tests": 876 },
+      { "hour": "04:00", "successRate": 91, "tests": 765 },
+      { "hour": "05:00", "successRate": 89, "tests": 888 },
+      { "hour": "06:00", "successRate": 86, "tests": 1342 },
+      { "hour": "07:00", "successRate": 82, "tests": 2453 },
+      { "hour": "08:00", "successRate": 78, "tests": 3564 },
+      { "hour": "09:00", "successRate": 75, "tests": 4321 },
+      { "hour": "10:00", "successRate": 79, "tests": 4567 },
+      { "hour": "11:00", "successRate": 83, "tests": 4234 },
+      { "hour": "12:00", "successRate": 85, "tests": 4123 },
+      { "hour": "13:00", "successRate": 84, "tests": 3987 },
+      { "hour": "14:00", "successRate": 86, "tests": 3654 },
+      { "hour": "15:00", "successRate": 88, "tests": 3432 },
+      { "hour": "16:00", "successRate": 87, "tests": 3567 },
+      { "hour": "17:00", "successRate": 85, "tests": 3789 },
+      { "hour": "18:00", "successRate": 83, "tests": 3654 },
+      { "hour": "19:00", "successRate": 84, "tests": 3321 },
+      { "hour": "20:00", "successRate": 86, "tests": 2987 },
+      { "hour": "21:00", "successRate": 88, "tests": 2543 },
+      { "hour": "22:00", "successRate": 87, "tests": 2234 },
+      { "hour": "23:00", "successRate": 85, "tests": 1876 }
+    ],
+    "failureTypes": [
+      { "type": "Network Timeout", "count": 1245, "percentage": 32 },
+      { "type": "No Signal", "count": 876, "percentage": 23 },
+      { "type": "Call Drop", "count": 654, "percentage": 17 },
+      { "type": "Poor Quality", "count": 543, "percentage": 14 },
+      { "type": "Connection Error", "count": 432, "percentage": 11 },
+      { "type": "Other", "count": 123, "percentage": 3 }
+    ]
+  }
+}
