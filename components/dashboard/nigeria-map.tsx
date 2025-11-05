@@ -27,8 +27,9 @@ const getStateName = (properties: GeoFeature["properties"]): string => {
   return properties.name || properties.NAME_1 || properties.admin1Name || "Unknown State"
 }
 
+// Use Highcharts' Nigeria states GeoJSON which is reliable and CORS-enabled
 const GEO_URL =
-  "https://raw.githubusercontent.com/codeforafrica/geo/master/ng/state/ng-states.geojson"
+  "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
 
 export default function NigeriaMap({ records }: { records: TestRecord[] }) {
   const [hoveredState, setHoveredState] = useState<string | null>(null)

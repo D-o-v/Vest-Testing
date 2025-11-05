@@ -6,7 +6,7 @@ import KPICards from "./dashboard/kpi-cards"
 import TrendChart from "./dashboard/trend-chart"
 import FailureRates from "./dashboard/failure-rates"
 import RecentTests from "./dashboard/recent-tests"
-import NigeriaMap from "./dashboard/nigeria-map"
+import NigeriaMap from "./dashboard/nigeria-map-hc"
 
 export default function Dashboard({ csvData }: { csvData: string }) {
   const parsedData = useMemo(() => {
