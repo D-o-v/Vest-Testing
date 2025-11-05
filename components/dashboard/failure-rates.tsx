@@ -10,6 +10,17 @@ export default function FailureRates({
 }: { records: TestRecord[]; metrics: Record<string, AggregatedMetrics> }) {
   const failureData = useMemo(() => {
     const mmos = ["MTN", "GLO", "AIRTEL", "T2"] as const
+    
+    // Use sample data if no records
+    if (!records || records.length === 0) {
+      return [
+        { mno: "MTN", failureRate: 12, totalTests: 1250 },
+        { mno: "GLO", failureRate: 18, totalTests: 1000 },
+        { mno: "AIRTEL", failureRate: 21, totalTests: 875 },
+        { mno: "T2", failureRate: 15, totalTests: 750 }
+      ]
+    }
+    
     return mmos.map((mno) => {
       const mnoRecords = records.filter((r) => r.originatorNetwork === mno)
       const failures = mnoRecords.filter((r) => r.status === "Failed").length
@@ -23,18 +34,26 @@ export default function FailureRates({
   }, [records])
 
   const colorMap: Record<string, string> = {
-    MTN: "#fcd116", // MTN Yellow
-    GLO: "#50b848", // Glo Green
-    AIRTEL: "#ff0000", // Airtel Red
-    T2: "#ff6b01", // 9mobile/T2 Orange
+    MTN: "#fbbf24", // MTN Yellow
+    GLO: "#22c55e", // Glo Green
+    AIRTEL: "#ef4444", // Airtel Red
+    T2: "#f97316", // 9mobile/T2 Orange
   }
 
-  // Positions for overlapping circles (v3 style)
-  const positions: Record<string, { x: string; y: string; size: number }> = {
-    MTN: { x: "35%", y: "45%", size: 120 },
-    GLO: { x: "65%", y: "25%", size: 140 },
-    AIRTEL: { x: "65%", y: "65%", size: 100 },
-    T2: { x: "35%", y: "75%", size: 110 },
+  // Calculate circle sizes based on failure rates
+  const maxFailureRate = Math.max(...failureData.map(d => d.failureRate))
+  const minSize = 80
+  const maxSize = 160
+  
+  const positions: Record<string, { x: string; y: string }> = {
+    MTN: { x: "35%", y: "45%" },
+    GLO: { x: "65%", y: "25%" },
+    AIRTEL: { x: "65%", y: "65%" },
+    T2: { x: "35%", y: "75%" },
+  }
+  
+  const getCircleSize = (failureRate: number) => {
+    return minSize + ((failureRate / maxFailureRate) * (maxSize - minSize))
   }
 
   return (
@@ -53,8 +72,8 @@ export default function FailureRates({
                 style={{
                   left: pos.x,
                   top: pos.y,
-                  width: `${pos.size}px`,
-                  height: `${pos.size}px`,
+                  width: `${getCircleSize(data.failureRate)}px`,
+                  height: `${getCircleSize(data.failureRate)}px`,
                   backgroundColor: colorMap[data.mno],
                   border: "3px solid rgba(255, 255, 255, 0.3)",
                   transform: "translate(-50%, -50%)",
