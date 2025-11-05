@@ -11,5 +11,5 @@ export const MNO_COLORS: Record<MNO, string> = {
   MTN: "#fbbf24",
   GLO: "#22c55e",
   AIRTEL: "#ef4444",
-  T2: "#0ea5e9"
+  T2: "#f97316"
 }

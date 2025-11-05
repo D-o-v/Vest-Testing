@@ -8,7 +8,10 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
   const { chartData, options } = useMemo(() => {
     const dataByDate = new Map<string, any>()
 
-    records.forEach((record) => {
+    // Use fallback data if no records
+    const recordsToUse = records?.length > 0 ? records : generateFallbackData()
+
+    recordsToUse.forEach((record) => {
       if (!record.timestamp) return
 
       const date = new Date(record.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" })
@@ -70,7 +73,7 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
         sparkline: { enabled: false },
         animations: { enabled: true, speed: 800, animateGradually: { enabled: true, delay: 150 } },
       },
-      colors: ["#ffd700", "#ff6b00", "#e20000", "#00d4ff"],
+      colors: ["#fbbf24", "#22c55e", "#ef4444", "#f97316"],
       stroke: {
         curve: "smooth" as const,
         width: 2,
@@ -111,6 +114,27 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
 
     return { chartData: series, options }
   }, [records])
+
+  // Generate fallback data for demonstration
+  function generateFallbackData() {
+    const dates = ['Dec 15', 'Dec 16', 'Dec 17', 'Dec 18', 'Dec 19', 'Dec 20', 'Dec 21']
+    const fallbackRecords: TestRecord[] = []
+    
+    dates.forEach((date, i) => {
+      const mnos = ['MTN', 'GLO', 'AIRTEL', 'T2'] as const
+      mnos.forEach(mno => {
+        for (let j = 0; j < 20; j++) {
+          fallbackRecords.push({
+            timestamp: new Date(2024, 11, 15 + i).toISOString(),
+            originatorNetwork: mno,
+            status: Math.random() > 0.2 ? 'Success' : 'Failed'
+          } as TestRecord)
+        }
+      })
+    })
+    
+    return fallbackRecords
+  }
 
   return (
     <Card className="bg-card border-border h-full">

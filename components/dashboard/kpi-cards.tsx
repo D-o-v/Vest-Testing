@@ -48,27 +48,27 @@ export default function KPICards({ metrics }: { metrics?: Record<string, Aggrega
   const mnos: AggregatedMetrics[] = metrics ? Object.values(metrics) : ([
     {
       mno: "MTN",
-      successRate: kpiData.avgSuccessRate.value,
-      totalAttempts: kpiData.totalTests.value,
-      totalSuccesses: Math.round(kpiData.totalTests.value * (kpiData.avgSuccessRate.value / 100))
+      successRate: kpiData?.avgSuccessRate?.value || 87.5,
+      totalAttempts: kpiData?.totalTests?.value || 1250,
+      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * ((kpiData?.avgSuccessRate?.value || 87.5) / 100))
     },
     {
       mno: "GLO",
-      successRate: kpiData.avgSuccessRate.value - 5,
-      totalAttempts: Math.round(kpiData.totalTests.value * 0.8),
-      totalSuccesses: Math.round(kpiData.totalTests.value * 0.8 * ((kpiData.avgSuccessRate.value - 5) / 100))
+      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 5,
+      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.8),
+      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.8 * (((kpiData?.avgSuccessRate?.value || 87.5) - 5) / 100))
     },
     {
       mno: "AIRTEL",
-      successRate: kpiData.avgSuccessRate.value - 8,
-      totalAttempts: Math.round(kpiData.totalTests.value * 0.7),
-      totalSuccesses: Math.round(kpiData.totalTests.value * 0.7 * ((kpiData.avgSuccessRate.value - 8) / 100))
+      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 8,
+      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.7),
+      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.7 * (((kpiData?.avgSuccessRate?.value || 87.5) - 8) / 100))
     },
     {
       mno: "T2",
-      successRate: kpiData.avgSuccessRate.value - 3,
-      totalAttempts: Math.round(kpiData.totalTests.value * 0.6),
-      totalSuccesses: Math.round(kpiData.totalTests.value * 0.6 * ((kpiData.avgSuccessRate.value - 3) / 100))
+      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 3,
+      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.6),
+      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.6 * (((kpiData?.avgSuccessRate?.value || 87.5) - 3) / 100))
     }
   ] as AggregatedMetrics[])
 
@@ -80,7 +80,7 @@ export default function KPICards({ metrics }: { metrics?: Record<string, Aggrega
             key={metric.mno}
             className="bg-linear-to-br border-border overflow-hidden hover:border-primary/50 transition-all hover:shadow-md"
             style={{
-              backgroundImage: `linear-gradient(135deg, ${MNO_COLORS[metric.mno]}15 0%, transparent 100%)`,
+              backgroundImage: `linear-gradient(135deg, ${MNO_COLORS[metric.mno]}25 0%, transparent 100%)`,
             }}
           >
             <div className="p-4">
