@@ -1,7 +1,7 @@
 [
-  { "state": "Abia", "mno": "MTN", "successRate": 92, "avgDataSpeed": "45Mbps", "avgCSTime": "1.2s" },
-  { "state": "Abia", "mno": "GLO", "successRate": 86, "avgDataSpeed": "32Mbps", "avgCSTime": "1.8s" },
-  { "state": "Abia", "mno": "AIRTEL", "successRate": 79, "avgDataSpeed": "24Mbps", "avgCSTime": "2.1s" },
+  { "state": "Abia", "mno": "MTN", "successRate": 9, "avgDataSpeed": "45Mbps", "avgCSTime": "1.2s" },
+  { "state": "Abia", "mno": "GLO", "successRate": 8, "avgDataSpeed": "32Mbps", "avgCSTime": "1.8s" },
+  { "state": "Abia", "mno": "AIRTEL", "successRate": 9, "avgDataSpeed": "24Mbps", "avgCSTime": "2.1s" },
   { "state": "Abia", "mno": "T2", "successRate": 88, "avgDataSpeed": "38Mbps", "avgCSTime": "1.5s" },
   { "state": "Adamawa", "mno": "MTN", "successRate": 85, "avgDataSpeed": "22Mbps", "avgCSTime": "2.0s" },
   { "state": "Adamawa", "mno": "GLO", "successRate": 78, "avgDataSpeed": "18Mbps", "avgCSTime": "2.5s" },
