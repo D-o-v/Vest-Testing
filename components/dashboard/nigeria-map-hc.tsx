@@ -52,12 +52,46 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
     }
   }, [])
 
-  const stateMetrics = (() => {
+  const [stateMetrics, setStateMetrics] = useState<Map<string, number>>(() => new Map())
+
+  useEffect(() => {
+    // First try to use aggregated records passed in
     const metrics = aggregateMetricsByState(records)
-    const map = new Map<string, number>()
-    for (const m of metrics) map.set(m.state, Math.round(m.successRate))
-    return map
-  })()
+    if (metrics && metrics.length > 0) {
+      const map = new Map<string, number>()
+      for (const m of metrics) map.set(m.state, Math.round(m.successRate))
+      setStateMetrics(map)
+      return
+    }
+
+    // Fallback: fetch the local dummy data file if present
+    let mounted = true
+    fetch('/data/state-metrics.json')
+      .then((r) => r.json())
+      .then((arr: any[]) => {
+        if (!mounted || !Array.isArray(arr)) return
+        const grouped = new Map<string, number[]>()
+        for (const item of arr) {
+          const s = item.state
+          const v = typeof item.successRate === 'number' ? item.successRate : Number(item.successRate)
+          if (!grouped.has(s)) grouped.set(s, [])
+          grouped.get(s)!.push(v)
+        }
+        const map = new Map<string, number>()
+        for (const [state, vals] of grouped.entries()) {
+          const avg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)
+          map.set(state, avg)
+        }
+        setStateMetrics(map)
+      })
+      .catch(() => {
+        // ignore - we'll just show empty values
+      })
+
+    return () => {
+      mounted = false
+    }
+  }, [records])
 
   if (!mapData) {
     return (
