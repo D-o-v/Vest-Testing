@@ -31,33 +31,35 @@ export default function RecentTests({ records }: { records?: TestRecord[] }) {
   return (
     <Card className="bg-card border-border">
       <div className="p-6">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Recent Tests</h2>
+        <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Recent Tests</h2>
 
-        <div className="space-y-3 max-h-80 overflow-y-auto">
-          {recentTests.map((test: any, idx: number) => (
-            <div key={test.id || idx} className="p-3 bg-muted rounded-lg hover:bg-muted/80 transition">
-              <div className="flex items-start justify-between mb-1">
-                <span className="text-sm font-semibold text-foreground">{test.mno}</span>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    test.result === "Success"
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                  }`}
-                >
-                  {test.result}
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground mb-2">
-                {test.state} • {test.type}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {test.metrics.successRate}% Success
-                {test.metrics.speed ? ` • ${test.metrics.speed}` : ''}
-                {test.metrics.callSetupTime ? ` • ${test.metrics.callSetupTime}` : ''}
-              </p>
-            </div>
-          ))}
+        <div className="overflow-auto max-h-[480px] pr-2">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-xs text-muted-foreground border-b border-border">
+                <th className="text-left py-2 font-semibold">MNO</th>
+                <th className="text-left py-2 font-semibold">State</th>
+                <th className="text-left py-2 font-semibold">Type</th>
+                <th className="text-left py-2 font-semibold">Result</th>
+                <th className="text-left py-2 font-semibold">Metrics</th>
+                <th className="text-left py-2 font-semibold">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentTests.map((test: any, idx: number) => (
+                <tr key={test.id || idx} className="odd:bg-card even:bg-transparent hover:bg-muted/50 transition">
+                  <td className="py-3">{test.mno}</td>
+                  <td className="py-3">{test.state}</td>
+                  <td className="py-3">{test.type}</td>
+                  <td className={`py-3 ${test.result === 'Success' ? 'text-green-600' : 'text-red-600'} font-medium`}>{test.result}</td>
+                  <td className="py-3 text-xs text-muted-foreground">
+                    {test.metrics?.successRate}%{test.metrics?.speed ? ` • ${test.metrics.speed}` : ''}{test.metrics?.callSetupTime ? ` • ${test.metrics.callSetupTime}`: ''}
+                  </td>
+                  <td className="py-3 text-xs text-muted-foreground">{test.timestamp ? new Date(test.timestamp).toLocaleString() : ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </Card>

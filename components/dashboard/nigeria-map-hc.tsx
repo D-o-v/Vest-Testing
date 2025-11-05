@@ -120,9 +120,12 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
     },
     title: { 
       text: "Network Performance by State",
+      align: 'left',
+      margin: 24,
       style: {
-        fontWeight: '500',
-        fontSize: '14px',
+        fontWeight: '600',
+        fontSize: '16px',
+        color: '#111827'
       }
     },
     mapNavigation: { enabled: true },

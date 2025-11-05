@@ -40,7 +40,7 @@ export default function FailureRates({
   return (
     <Card className="bg-card border-border">
       <div className="p-6">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Failure Rates by Network</h2>
+        <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Failure Rates by Network</h2>
 
         {/* Overlapping bubbles visualization - v3 style */}
         <div className="relative w-full" style={{ height: "300px" }}>

@@ -115,7 +115,7 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
   return (
     <Card className="bg-card border-border h-full">
       <div className="p-6">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Success Rate Trend</h2>
+        <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Success Rate Trend</h2>
         <Suspense fallback={<div>Loading chart...</div>}>
           {/* @ts-ignore - react-apexcharts dynamic import */}
           <Chart type="area" series={chartData} options={options} height={280} />
