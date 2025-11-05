@@ -4,10 +4,31 @@ import { useState, useMemo, useEffect } from "react"
 import type { TestRecord } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { aggregateMetricsByState } from "@/lib/csv-parser"
-import { ComposableMap, Geographies, Geography } from "react-simple-maps"
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import type { Feature, Geometry } from "geojson"
+
+interface GeoFeature extends Feature<Geometry> {
+  properties: {
+    name?: string;
+    NAME_1?: string;
+    admin1Name?: string;
+    [key: string]: any; // For any other properties
+  };
+  rsmKey: string;
+}
+
+const getStateName = (properties: GeoFeature["properties"]): string => {
+  return properties.name || properties.NAME_1 || properties.admin1Name || "Unknown State"
+}
 
 const GEO_URL =
-  "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/nigeria/nigeria-states.json"
+  "https://raw.githubusercontent.com/codeforafrica/geo/master/ng/state/ng-states.geojson"
 
 export default function NigeriaMap({ records }: { records: TestRecord[] }) {
   const [hoveredState, setHoveredState] = useState<string | null>(null)
@@ -67,51 +88,75 @@ export default function NigeriaMap({ records }: { records: TestRecord[] }) {
 
         <div className="flex-1 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-lg p-4 overflow-hidden">
           {geoData ? (
-            <ComposableMap projection="geoMercator" projectionConfig={{ scale: 1000, center: [8, 9] }} width={800} height={600}>
-              <Geographies geography={geoData as any}>
-                {(geoProps: any) => {
-                  const geographies: any[] = geoProps.geographies || []
-                  return (
-                    <>
-                      {geographies.map((geo: any) => {
-                        const name = readGeoName(geo.properties)
+            <ComposableMap 
+              projection="geoMercator" 
+              projectionConfig={{ 
+                scale: 3500,
+                center: [8.6753, 9.0820] // Nigeria's center coordinates
+              }}
+              width={800} 
+              height={800}
+              style={{
+                width: "100%",
+                height: "auto"
+              }}
+            >
+              <ZoomableGroup center={[8.6753, 9.0820]} zoom={1}>
+                <Geographies geography={geoData}>
+                  {({ geographies }: { geographies: GeoFeature[] }) => (
+                    <TooltipProvider>
+                      {geographies.map((geo: GeoFeature) => {
+                        const name = getStateName(geo.properties)
                         const color = getStateColor(name)
                         const isHovered = hoveredState === name
                         const isSelected = selectedState === name
+                        const successRate = Math.round(stateMetrics.get(name) || 0)
 
                         return (
-                          <Geography
-                            key={geo.rsmKey}
-                            geography={geo}
-                            onMouseEnter={() => setHoveredState(name)}
-                            onMouseLeave={() => setHoveredState(null)}
-                            onClick={() => setSelectedState(isSelected ? null : name)}
-                            style={{
-                              default: {
-                                fill: color,
-                                stroke: "#ffffff",
-                                strokeWidth: 0.5,
-                                outline: "none",
-                                transition: "all 150ms",
-                              },
-                              hover: {
-                                fill: color,
-                                stroke: "#111827",
-                                strokeWidth: 0.8,
-                                cursor: "pointer",
-                              },
-                              pressed: {
-                                fill: color,
-                                stroke: "#111827",
-                              },
-                            }}
-                          />
+                          <Tooltip key={geo.rsmKey}>
+                            <TooltipTrigger asChild>
+                              <g>
+                                <Geography
+                                  geography={geo}
+                                  onMouseEnter={() => setHoveredState(name)}
+                                  onMouseLeave={() => setHoveredState(null)}
+                                  onClick={() => setSelectedState(isSelected ? null : name)}
+                                  style={{
+                                    default: {
+                                      fill: color,
+                                      stroke: "#ffffff",
+                                      strokeWidth: 0.75,
+                                      outline: "none",
+                                      transition: "all 250ms",
+                                    },
+                                    hover: {
+                                      fill: color,
+                                      stroke: "#000000",
+                                      strokeWidth: 1,
+                                      filter: "brightness(95%)",
+                                      cursor: "pointer",
+                                    },
+                                    pressed: {
+                                      fill: color,
+                                      stroke: "#000000",
+                                      strokeWidth: 1,
+                                      filter: "brightness(90%)",
+                                    },
+                                  }}
+                                />
+                              </g>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm font-medium">{name}</p>
+                              <p className="text-xs text-muted-foreground">Success Rate: {successRate}%</p>
+                            </TooltipContent>
+                          </Tooltip>
                         )
                       })}
-                    </>
-                  )
-                }}
-              </Geographies>
+                    </TooltipProvider>
+                  )}
+                </Geographies>
+              </ZoomableGroup>
             </ComposableMap>
           ) : (
             // Fallback: simplified SVG point renderer (keeps existing visual if offline)

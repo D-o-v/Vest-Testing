@@ -8,12 +8,11 @@ export default function KPICards({ metrics }: { metrics: Record<string, Aggregat
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Network KPIs</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {mnos.map((metric) => (
           <Card
             key={metric.mno}
-            className="bg-gradient-to-br border-border overflow-hidden hover:border-primary/50 transition-all hover:shadow-md"
+            className="bg-linear-to-br border-border overflow-hidden hover:border-primary/50 transition-all hover:shadow-md"
             style={{
               backgroundImage: `linear-gradient(135deg, ${MNO_COLORS[metric.mno]}15 0%, transparent 100%)`,
             }}
@@ -21,7 +20,7 @@ export default function KPICards({ metrics }: { metrics: Record<string, Aggregat
             <div className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div
-                  className="w-3 h-3 rounded-full flex-shrink-0"
+                  className="w-3 h-3 rounded-full shrink-0"
                   style={{ backgroundColor: MNO_COLORS[metric.mno] }}
                 />
                 <p className="text-xs font-semibold text-muted-foreground">{MNO_NAMES[metric.mno]}</p>
