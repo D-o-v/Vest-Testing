@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
+/* Light mode theme variables */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -74,9 +74,12 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-@theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
+/* Theme configuration */
+:root {
+  --font-sans: 'Lato', 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  
+  /* Base colors mapped to semantic variables */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -96,15 +99,21 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  
+  /* Chart colors */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  
+  /* Radii */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Sidebar theme */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -113,13 +122,103 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  
+  /* Font weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Base styles */
+* {
+  border-color: var(--color-border);
+  outline-color: color-mix(in srgb, var(--color-ring) 50%, transparent);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+}
+
+/* Layout utilities */
+
+/* Subtle dashboard grid to help alignment and spacing */
+.dashboard-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: var(--space-8) var(--space-8);
+  background-position: 0 0;
+}
+
+.dark .dashboard-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+}
+
+/* Card and surface styles */
+.surface-smooth {
+  background-color: color-mix(in oklab, var(--color-card) 88%, white 12%);
+  box-shadow: 
+    0 1px 2px rgba(16,24,40,0.06),
+    0 1px 3px rgba(16,24,40,0.1);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  transition: 
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.surface-smooth:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 2px 4px rgba(16,24,40,0.08),
+    0 4px 6px rgba(16,24,40,0.12);
+}
+
+/* Spacing utilities */
+.content-spacing {
+  padding: var(--space-4) var(--space-6);
+}
+
+.stack-vertical > * + * {
+  margin-top: var(--space-4);
+}
+
+.stack-horizontal > * + * {
+  margin-left: var(--space-4);
+}
+
+/* Typography utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.font-lato {
+  font-family: var(--font-sans);
 }

@@ -49,10 +49,10 @@ export interface DashboardData {
 }
 
 export const MNO_COLORS: Record<MNO, string> = {
-  MTN: "#ffd700",
-  GLO: "#ff6b00",
-  AIRTEL: "#e20000",
-  T2: "#00d4ff",
+  MTN: "#fcd116", // MTN Yellow
+  GLO: "#50b848", // Glo Green
+  AIRTEL: "#ff0000", // Airtel Red
+  T2: "#ff6b01", // 9mobile/T2 Orange
 }
 
 export const MNO_NAMES: Record<MNO, string> = {

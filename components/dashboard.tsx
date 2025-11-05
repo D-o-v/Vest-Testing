@@ -24,14 +24,14 @@ export default function Dashboard({ csvData }: { csvData: string }) {
   }, [parsedData])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 dashboard-grid">
       <div>
-        <h1 className="text-4xl font-bold text-foreground mb-2">MNO Performance Dashboard</h1>
-        <p className="text-base text-muted-foreground">Real-time network performance metrics across Nigeria</p>
+        <h1 className="text-2xl font-bold text-foreground leading-none">Network Performance</h1>
+        <p className="text-sm text-muted-foreground mt-1">Real-time VeSS Testing metrics across Nigeria</p>
       </div>
 
       {/* First Row: KPI Cards + Trend Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
         <div className="lg:col-span-2">
           <KPICards metrics={metrics} />
         </div>
@@ -41,7 +41,7 @@ export default function Dashboard({ csvData }: { csvData: string }) {
       </div>
 
       {/* Second Row: Failure Rates + Recent Tests + Nigeria Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <FailureRates records={parsedData} metrics={metrics} />
         <RecentTests records={parsedData} />
         <NigeriaMap records={parsedData} />

@@ -84,56 +84,61 @@ export default function App() {
     <div className={`font-sans antialiased`}>
       <div className="flex h-screen bg-background">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-card border-r border-border transition-all duration-300 flex flex-col shadow-sm`}>
-          <div className="p-4 border-b border-border">
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-6 h-6 text-primary-foreground" />
+        <aside className={`${sidebarOpen ? 'w-56' : 'w-16'} bg-card border-r border-border transition-all duration-300 flex flex-col shadow-sm`}>
+          <div className="p-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-primary-foreground" />
               </div>
-              {sidebarOpen && <span className="font-bold text-foreground text-lg">MNO Dashboard</span>}
+              {sidebarOpen && (
+                <div className="flex flex-col justify-center">
+                  <span className="font-bold text-foreground text-sm">VeSS Testing</span>
+                  <span className="text-xs text-muted-foreground">Analytics Dashboard</span>
+                </div>
+              )}
             </div>
           </div>
 
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 py-2 px-2">
             <button
               onClick={() => setCurrentPage('dashboard')}
-              className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition ${
+              className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-md transition text-sm ${
                 currentPage === 'dashboard'
-                  ? 'bg-primary text-primary-foreground shadow-md'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'text-foreground hover:bg-muted'
               }`}
             >
-              <LayoutDashboard className="w-5 h-5" />
+              <LayoutDashboard className="w-4 h-4" />
               {sidebarOpen && <span>Dashboard</span>}
             </button>
 
             <button
               onClick={() => setCurrentPage('reports')}
-              className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition ${
+              className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-md transition text-sm mt-1 ${
                 currentPage === 'reports'
-                  ? 'bg-primary text-primary-foreground shadow-md'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'text-foreground hover:bg-muted'
               }`}
             >
-              <BarChart3 className="w-5 h-5" />
+              <BarChart3 className="w-4 h-4" />
               {sidebarOpen && <span>Reports</span>}
             </button>
           </nav>
 
-          <div className="border-t border-border p-4 space-y-2">
+          <div className="border-t border-border p-2">
             {sidebarOpen && mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-foreground hover:bg-muted transition"
+                className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-foreground hover:bg-muted transition"
               >
                 {theme === 'dark' ? (
                   <>
-                    <Sun className="w-5 h-5" />
+                    <Sun className="w-4 h-4" />
                     <span>Light Mode</span>
                   </>
                 ) : (
                   <>
-                    <Moon className="w-5 h-5" />
+                    <Moon className="w-4 h-4" />
                     <span>Dark Mode</span>
                   </>
                 )}
@@ -142,26 +147,26 @@ export default function App() {
 
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="w-full flex items-center justify-center px-4 py-2 hover:bg-muted rounded-lg transition"
+              className="w-full flex items-center justify-center px-3 py-1.5 hover:bg-muted rounded-md transition mt-1"
             >
-              <Menu className="w-5 h-5 text-foreground" />
+              <Menu className="w-4 h-4 text-foreground" />
             </button>
           </div>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 overflow-auto">
-          <div className="p-8 max-w-7xl mx-auto w-full">
+          <div className="p-4 max-w-7xl mx-auto w-full dashboard-grid">
             {currentPage === 'dashboard' && csvData && <Dashboard csvData={csvData} />}
             {currentPage === 'reports' && csvData && <Reports csvData={csvData} />}
             {!csvData && (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="mb-4 inline-block p-4 bg-primary/10 rounded-lg">
-                    <BarChart3 className="w-12 h-12 text-primary mx-auto" />
+                  <div className="mb-3 inline-block p-3 bg-primary/10 rounded-lg surface-smooth">
+                    <BarChart3 className="w-10 h-10 text-primary mx-auto" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground mb-2">Loading dashboard...</h2>
-                  <p className="text-muted-foreground">Initializing with sample data</p>
+                  <h2 className="text-xl font-bold text-foreground mb-1">Loading dashboard...</h2>
+                  <p className="text-sm text-muted-foreground">Initializing with sample data</p>
                 </div>
               </div>
             )}
