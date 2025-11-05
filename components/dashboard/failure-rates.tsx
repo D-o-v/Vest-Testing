@@ -75,29 +75,47 @@ export default function FailureRates({
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                {/* Outer ring */}
+                {/* Progress ring */}
+                <svg
+                  width={getCircleSize(data.failureRate) + 16}
+                  height={getCircleSize(data.failureRate) + 16}
+                  className="absolute"
+                  style={{ transform: 'rotate(-90deg)' }}
+                >
+                  <circle
+                    cx={(getCircleSize(data.failureRate) + 16) / 2}
+                    cy={(getCircleSize(data.failureRate) + 16) / 2}
+                    r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="4"
+                  />
+                  <circle
+                    cx={(getCircleSize(data.failureRate) + 16) / 2}
+                    cy={(getCircleSize(data.failureRate) + 16) / 2}
+                    r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
+                    fill="none"
+                    stroke={colorMap[data.mno]}
+                    strokeWidth="4"
+                    strokeDasharray={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4)}`}
+                    strokeDashoffset={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4) * (1 - data.failureRate / 100)}`}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                
+                {/* Inner circle */}
                 <div
-                  className="rounded-full flex items-center justify-center"
+                  className="rounded-full flex flex-col items-center justify-center shadow-lg"
                   style={{
-                    width: `${getCircleSize(data.failureRate) + 16}px`,
-                    height: `${getCircleSize(data.failureRate) + 16}px`,
-                    border: `4px solid ${colorMap[data.mno]}`,
-                    backgroundColor: 'transparent',
+                    width: `${getCircleSize(data.failureRate)}px`,
+                    height: `${getCircleSize(data.failureRate)}px`,
+                    backgroundColor: colorMap[data.mno],
+                    margin: '8px',
                   }}
                 >
-                  {/* Inner circle */}
-                  <div
-                    className="rounded-full flex flex-col items-center justify-center shadow-lg"
-                    style={{
-                      width: `${getCircleSize(data.failureRate)}px`,
-                      height: `${getCircleSize(data.failureRate)}px`,
-                      backgroundColor: colorMap[data.mno],
-                    }}
-                  >
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
-                      <div className="text-xs text-white/80 font-medium">{data.mno}</div>
-                    </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
+                    <div className="text-xs text-white/80 font-medium">{data.mno}</div>
                   </div>
                 </div>
               </div>
