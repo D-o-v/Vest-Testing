@@ -46,10 +46,10 @@ export default function FailureRates({
   const maxSize = 160
   
   const positions: Record<string, { x: string; y: string }> = {
-    MTN: { x: "35%", y: "45%" },
-    GLO: { x: "65%", y: "25%" },
-    AIRTEL: { x: "65%", y: "65%" },
-    T2: { x: "35%", y: "75%" },
+    MTN: { x: "32%", y: "42%" },
+    GLO: { x: "68%", y: "28%" },
+    AIRTEL: { x: "68%", y: "68%" },
+    T2: { x: "32%", y: "72%" },
   }
   
   const getCircleSize = (failureRate: number) => {
