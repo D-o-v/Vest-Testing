@@ -68,20 +68,37 @@ export default function FailureRates({
             return (
               <div
                 key={data.mno}
-                className="absolute flex flex-col items-center justify-center rounded-full shadow-lg transition-all hover:shadow-xl hover:scale-105 hover:z-50"
+                className="absolute transition-all hover:scale-105 hover:z-50"
                 style={{
                   left: pos.x,
                   top: pos.y,
-                  width: `${getCircleSize(data.failureRate)}px`,
-                  height: `${getCircleSize(data.failureRate)}px`,
-                  backgroundColor: colorMap[data.mno],
-                  border: "3px solid rgba(255, 255, 255, 0.3)",
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
-                  <div className="text-xs text-white/80 font-medium">{data.mno}</div>
+                {/* Outer ring */}
+                <div
+                  className="rounded-full flex items-center justify-center"
+                  style={{
+                    width: `${getCircleSize(data.failureRate) + 16}px`,
+                    height: `${getCircleSize(data.failureRate) + 16}px`,
+                    border: `4px solid ${colorMap[data.mno]}`,
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  {/* Inner circle */}
+                  <div
+                    className="rounded-full flex flex-col items-center justify-center shadow-lg"
+                    style={{
+                      width: `${getCircleSize(data.failureRate)}px`,
+                      height: `${getCircleSize(data.failureRate)}px`,
+                      backgroundColor: colorMap[data.mno],
+                    }}
+                  >
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
+                      <div className="text-xs text-white/80 font-medium">{data.mno}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )
