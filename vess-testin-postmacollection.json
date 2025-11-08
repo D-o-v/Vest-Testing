@@ -1,0 +1,5776 @@
+{
+	"info": {
+		"_postman_id": "22a32a32-9535-4199-9150-1987c305cdfb",
+		"name": "VeSS Admin Console API",
+		"description": "Complete API for VeSS Admin Console with authentication, user management, calls, messages, and more\n\nContact Support:\n Email: admin@vess.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34761431"
+	},
+	"item": [
+		{
+			"name": "analytics",
+			"item": [
+				{
+					"name": "dashboard",
+					"item": [
+						{
+							"name": "analytics dashboard list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/analytics/dashboard/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"analytics",
+										"dashboard",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/analytics/dashboard/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"analytics",
+												"dashboard",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "reports",
+					"item": [
+						{
+							"name": "{report_id}",
+							"item": [
+								{
+									"name": "analytics reports read",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/analytics/reports/:report_id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"analytics",
+												"reports",
+												":report_id",
+												""
+											],
+											"variable": [
+												{
+													"key": "report_id",
+													"value": "string"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/analytics/reports/:report_id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"analytics",
+														"reports",
+														":report_id",
+														""
+													],
+													"variable": [
+														{
+															"key": "report_id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "analytics reports list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/analytics/reports/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"analytics",
+										"reports",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/analytics/reports/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"analytics",
+												"reports",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "analytics reports create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/analytics/reports/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"analytics",
+										"reports",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/analytics/reports/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"analytics",
+												"reports",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "forgot-password",
+					"item": [
+						{
+							"name": "auth forgot-password create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/forgot-password/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"forgot-password",
+										""
+									]
+								},
+								"description": "Request password reset email"
+							},
+							"response": [
+								{
+									"name": "Password reset email sent",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/forgot-password/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"forgot-password",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Failed to send email",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/forgot-password/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"forgot-password",
+												""
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "login",
+					"item": [
+						{
+							"name": "auth login create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"userType\": \"admin\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login",
+										""
+									]
+								},
+								"description": "User authentication for all user types"
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"userType\": \"admin\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/login/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"login",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"success\": true,\n  \"data\": {\n    \"user\": {\n      \"id\": \"user_123\",\n      \"email\": \"admin@vess.com\"\n    },\n    \"tokens\": {\n      \"accessToken\": \"jwt_token\",\n      \"refreshToken\": \"refresh_token\"\n    }\n  }\n}"
+								},
+								{
+									"name": "Invalid credentials",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"userType\": \"admin\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/login/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"login",
+												""
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"item": [
+						{
+							"name": "auth logout create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/logout/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"logout",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/auth/logout/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"logout",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "refresh",
+					"item": [
+						{
+							"name": "auth refresh create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/refresh/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"refresh",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/auth/refresh/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"refresh",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "reset-password",
+					"item": [
+						{
+							"name": "auth reset-password create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/reset-password/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"reset-password",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/auth/reset-password/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"reset-password",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "calls",
+			"item": [
+				{
+					"name": "live",
+					"item": [
+						{
+							"name": "calls live list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/calls/live/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"calls",
+										"live",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/calls/live/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												"live",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{call_id}",
+					"item": [
+						{
+							"name": "actions",
+							"item": [
+								{
+									"name": "calls actions create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls/:call_id/actions/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												":call_id",
+												"actions",
+												""
+											],
+											"variable": [
+												{
+													"key": "call_id",
+													"value": "string"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/calls/:call_id/actions/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"calls",
+														":call_id",
+														"actions",
+														""
+													],
+													"variable": [
+														{
+															"key": "call_id"
+														}
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "calls read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/calls/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"calls",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this call."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/calls/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"organization\": \"3064a6db-80ea-627e-a0be-26f65c280c97\",\n  \"direction\": \"inbound\",\n  \"from_number\": \"string\",\n  \"to_number\": \"string\",\n  \"status\": \"completed\",\n  \"id\": \"dd466775-3d24-574d-3b5f-35124487a6c3\",\n  \"duration\": 316020585,\n  \"quality\": \"excellent\",\n  \"protocol\": \"string\",\n  \"location_data\": {},\n  \"metadata\": {},\n  \"start_time\": \"2016-06-29T00:14:02.371Z\",\n  \"end_time\": \"2018-02-17T16:01:24.549Z\",\n  \"recording_url\": \"http://r.hewoIDr,teKuKvEAKGxjdrhSpfLKgQoe8hBqq8LzM,\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "calls list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/calls/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"calls",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/calls/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"calls",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 2727,\n  \"results\": [\n    {\n      \"organization\": \"c57fa323-f180-a738-a401-9d45b4c73057\",\n      \"direction\": \"inbound\",\n      \"from_number\": \"string\",\n      \"to_number\": \"string\",\n      \"status\": \"completed\",\n      \"id\": \"4c4d0181-8eb7-9a3b-10ad-73c6473a284c\",\n      \"duration\": -768824165,\n      \"quality\": \"poor\",\n      \"protocol\": \"string\",\n      \"location_data\": {},\n      \"metadata\": {},\n      \"start_time\": \"1954-05-24T19:47:06.397Z\",\n      \"end_time\": \"1949-10-29T09:46:47.004Z\",\n      \"recording_url\": \"http://pMXHdaDcMMWRtKGUPUHsZtR.eloWk6zyKov-rgXvMa.gzkRWnkCv1Asj4JUX3rTJy9I5Wl\"\n    },\n    {\n      \"organization\": \"2c80d106-2a94-cbef-ff9d-8c208cf94ed4\",\n      \"direction\": \"inbound\",\n      \"from_number\": \"strin\",\n      \"to_number\": \"string\",\n      \"status\": \"failed\",\n      \"id\": \"f48a6aab-0001-8170-eb2d-c3dd39e741e8\",\n      \"duration\": -150658665,\n      \"quality\": \"good\",\n      \"protocol\": \"str\",\n      \"location_data\": {},\n      \"metadata\": {},\n      \"start_time\": \"1988-11-17T01:12:30.323Z\",\n      \"end_time\": \"2005-03-18T10:14:13.344Z\",\n      \"recording_url\": \"http://CETKUa.yxdFI-WWSyC1GjskkrfBqlzyBoqW7ZewY97AEGefF2OWp+jVA6I3vfidQEclRWCbLJ.sv\"\n    }\n  ],\n  \"next\": \"http://xKkIXFJNqdYblyUG.iufL1ccrPbfR2g8yItVMBo6R38C3sxatdDMCZ2kAC7PIB1xug\",\n  \"previous\": \"https://GvTltxLxZSRmkoONlxcEiEwhoxky.yssO,K,MdyjNqjLTAeQf08ogpGkT0OxWqUtPLKueFi+LtUi\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "docs",
+			"item": [
+				{
+					"name": "docs list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/docs/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"docs",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/docs/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"docs",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "filters",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "filters read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/filters/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this word filter."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/filters/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"filters",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"organization\": \"cff59811-1bee-8613-44f0-ea96c1ed26dc\",\n  \"category\": \"string\",\n  \"action\": \"hold\",\n  \"severity\": \"high\",\n  \"id\": \"83511848-3b0d-f6e1-81a1-375dd35b3c31\",\n  \"words\": {},\n  \"enabled\": true,\n  \"created_at\": \"2007-08-03T22:27:10.361Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "filters update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/filters/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this word filter."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/filters/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"filters",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"organization\": \"cff59811-1bee-8613-44f0-ea96c1ed26dc\",\n  \"category\": \"string\",\n  \"action\": \"hold\",\n  \"severity\": \"high\",\n  \"id\": \"83511848-3b0d-f6e1-81a1-375dd35b3c31\",\n  \"words\": {},\n  \"enabled\": true,\n  \"created_at\": \"2007-08-03T22:27:10.361Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "filters partial update",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/filters/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this word filter."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/filters/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"filters",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"organization\": \"cff59811-1bee-8613-44f0-ea96c1ed26dc\",\n  \"category\": \"string\",\n  \"action\": \"hold\",\n  \"severity\": \"high\",\n  \"id\": \"83511848-3b0d-f6e1-81a1-375dd35b3c31\",\n  \"words\": {},\n  \"enabled\": true,\n  \"created_at\": \"2007-08-03T22:27:10.361Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "filters delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/filters/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this word filter."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/filters/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"filters",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "filters list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/filters/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filters",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/filters/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 7173,\n  \"results\": [\n    {\n      \"organization\": \"8cec3dd9-a0cf-2aad-3a58-4c79b639a9a2\",\n      \"category\": \"string\",\n      \"action\": \"block\",\n      \"severity\": \"high\",\n      \"id\": \"0c46b3df-9d8e-bd62-7412-80bff2c9cfc0\",\n      \"words\": {},\n      \"enabled\": true,\n      \"created_at\": \"1948-09-19T19:52:37.913Z\"\n    },\n    {\n      \"organization\": \"e18150b4-6ab9-3bf4-a5c0-43dae418ecb2\",\n      \"category\": \"string\",\n      \"action\": \"hold\",\n      \"severity\": \"medium\",\n      \"id\": \"a27e01fa-498d-6723-e138-e92346415719\",\n      \"words\": {},\n      \"enabled\": false,\n      \"created_at\": \"1971-09-09T21:41:43.773Z\"\n    }\n  ],\n  \"next\": \"https://NtxVMMsyyQEGwVUMXmWLiowcWGVDeE.jesyYfO26M6RXxmgIAq9MOlkjYzCtN,h1Ji+9Ge\",\n  \"previous\": \"https://dUUkyIdiAuXefpO.kucwOvR9iQAeXBFPRLlnPyPsP3zF-PsJu7PWdpgF.SVHOtRzp.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "filters create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/filters/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filters",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"organization\": \"2fdc7c28-dedd-c479-cdcd-9d1f8070f05e\",\n  \"category\": \"string\",\n  \"action\": \"flag\",\n  \"severity\": \"low\",\n  \"words\": {},\n  \"enabled\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/filters/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"filters",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"organization\": \"cff59811-1bee-8613-44f0-ea96c1ed26dc\",\n  \"category\": \"string\",\n  \"action\": \"hold\",\n  \"severity\": \"high\",\n  \"id\": \"83511848-3b0d-f6e1-81a1-375dd35b3c31\",\n  \"words\": {},\n  \"enabled\": true,\n  \"created_at\": \"2007-08-03T22:27:10.361Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "messages",
+			"item": [
+				{
+					"name": "held",
+					"item": [
+						{
+							"name": "messages held list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/messages/held/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"messages",
+										"held",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/messages/held/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"messages",
+												"held",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "messages read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/messages/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"messages",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this message."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/messages/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"messages",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"organization\": \"1f21f887-03b8-8e96-a65e-35ffb9095cc9\",\n  \"direction\": \"inbound\",\n  \"from_number\": \"string\",\n  \"to_number\": \"string\",\n  \"content\": \"string\",\n  \"status\": \"blocked\",\n  \"id\": \"29cb7b93-438f-2d8c-035e-6c59b059007a\",\n  \"message_type\": \"MMS\",\n  \"protocol\": \"string\",\n  \"size\": 230524814,\n  \"filtered_words\": {},\n  \"flagged\": false,\n  \"timestamp\": \"2010-10-07T04:00:21.001Z\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{message_id}",
+					"item": [
+						{
+							"name": "actions",
+							"item": [
+								{
+									"name": "messages actions create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/messages/:message_id/actions/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"messages",
+												":message_id",
+												"actions",
+												""
+											],
+											"variable": [
+												{
+													"key": "message_id",
+													"value": "string"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/messages/:message_id/actions/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"messages",
+														":message_id",
+														"actions",
+														""
+													],
+													"variable": [
+														{
+															"key": "message_id"
+														}
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "messages list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/messages/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"messages",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/messages/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"messages",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 2857,\n  \"results\": [\n    {\n      \"organization\": \"d7cbdc84-5e8a-1947-6f09-b221712a2900\",\n      \"direction\": \"inbound\",\n      \"from_number\": \"string\",\n      \"to_number\": \"string\",\n      \"content\": \"string\",\n      \"status\": \"blocked\",\n      \"id\": \"3ad201c7-0451-b404-320e-99b262df25e6\",\n      \"message_type\": \"MMS\",\n      \"protocol\": \"stri\",\n      \"size\": 54508798,\n      \"filtered_words\": {},\n      \"flagged\": true,\n      \"timestamp\": \"1954-07-10T22:02:50.534Z\"\n    },\n    {\n      \"organization\": \"24cfb1ad-e02c-a1e5-5298-6ba4299a0f87\",\n      \"direction\": \"inbound\",\n      \"from_number\": \"string\",\n      \"to_number\": \"st\",\n      \"content\": \"string\",\n      \"status\": \"delivered\",\n      \"id\": \"7608df99-2a03-8688-2714-60515d36955a\",\n      \"message_type\": \"MMS\",\n      \"protocol\": \"string\",\n      \"size\": 186981703,\n      \"filtered_words\": {},\n      \"flagged\": true,\n      \"timestamp\": \"1982-03-07T21:06:57.399Z\"\n    }\n  ],\n  \"next\": \"https://MqSCNDhnSBDPNzQChcey.qnjnYsW.48NdacxG+.c-2ETBGOUPdmEFpqCvyDyZFReojUI6v+f7iseizHgKx1\",\n  \"previous\": \"http://yVoSqoJdYDr.vdozGELhCpNwGPzoN9fzbSf89t9ryXhZyGhqGTk\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "numbers",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "numbers read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/numbers/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this phone number."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/numbers/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"numbers",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"number\": \"string\",\n  \"organization\": \"af8588a3-0723-50e3-61d1-f080b3e23a4f\",\n  \"carrier\": \"string\",\n  \"number_type\": \"outbound\",\n  \"id\": \"308c90ee-5499-582d-3ab2-b73c7f81d980\",\n  \"status\": \"pending\",\n  \"usage\": \"string\",\n  \"location_data\": {},\n  \"assigned_at\": \"1965-12-14T14:54:26.624Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "numbers update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/numbers/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this phone number."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/numbers/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"numbers",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"number\": \"string\",\n  \"organization\": \"af8588a3-0723-50e3-61d1-f080b3e23a4f\",\n  \"carrier\": \"string\",\n  \"number_type\": \"outbound\",\n  \"id\": \"308c90ee-5499-582d-3ab2-b73c7f81d980\",\n  \"status\": \"pending\",\n  \"usage\": \"string\",\n  \"location_data\": {},\n  \"assigned_at\": \"1965-12-14T14:54:26.624Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "numbers partial update",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/numbers/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this phone number."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/numbers/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"numbers",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"number\": \"string\",\n  \"organization\": \"af8588a3-0723-50e3-61d1-f080b3e23a4f\",\n  \"carrier\": \"string\",\n  \"number_type\": \"outbound\",\n  \"id\": \"308c90ee-5499-582d-3ab2-b73c7f81d980\",\n  \"status\": \"pending\",\n  \"usage\": \"string\",\n  \"location_data\": {},\n  \"assigned_at\": \"1965-12-14T14:54:26.624Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "numbers delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/numbers/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this phone number."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/numbers/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"numbers",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "numbers list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/numbers/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"numbers",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/numbers/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 4422,\n  \"results\": [\n    {\n      \"number\": \"string\",\n      \"organization\": \"29963945-75eb-fd24-1ebe-d4bbd635f120\",\n      \"carrier\": \"string\",\n      \"number_type\": \"bidirectional\",\n      \"id\": \"45973b89-8b31-5ce6-53e7-7f89ab8ba3d0\",\n      \"status\": \"active\",\n      \"usage\": \"string\",\n      \"location_data\": {},\n      \"assigned_at\": \"1999-06-08T21:14:32.386Z\"\n    },\n    {\n      \"number\": \"stri\",\n      \"organization\": \"874a6520-6728-4e1c-858f-f2c9e7f2c9c7\",\n      \"carrier\": \"string\",\n      \"number_type\": \"outbound\",\n      \"id\": \"bf95dd23-0086-04d4-5f77-d36c3346a3b7\",\n      \"status\": \"suspended\",\n      \"usage\": \"string\",\n      \"location_data\": {},\n      \"assigned_at\": \"1969-02-03T15:05:15.545Z\"\n    }\n  ],\n  \"next\": \"https://pXoWRdyyEnWRjnW.sdAyBh2oLBxQ6.7LTEd01+2b4WyjyDXQMojqbQ.Vsq4QVX\",\n  \"previous\": \"http://EsoezrDpHVnqaTGetgsjMVjO.enscWteMq,rrd11X1gKjStKbPtimPrn4xL0Yg5DEBFPk.2Ryju+,T0Y09w\"\n}"
+						}
+					]
+				},
+				{
+					"name": "numbers create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/numbers/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"numbers",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"number\": \"string\",\n  \"organization\": \"7ebb1cbe-1f8d-2636-055a-aa1948df7d0e\",\n  \"carrier\": \"string\",\n  \"number_type\": \"inbound\",\n  \"status\": \"suspended\",\n  \"location_data\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/numbers/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"numbers",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"number\": \"string\",\n  \"organization\": \"af8588a3-0723-50e3-61d1-f080b3e23a4f\",\n  \"carrier\": \"string\",\n  \"number_type\": \"outbound\",\n  \"id\": \"308c90ee-5499-582d-3ab2-b73c7f81d980\",\n  \"status\": \"pending\",\n  \"usage\": \"string\",\n  \"location_data\": {},\n  \"assigned_at\": \"1965-12-14T14:54:26.624Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "organizations",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "organizations read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/organizations/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this organization."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/organizations/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"organizations",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"name\": \"string\",\n  \"plan\": \"professional\",\n  \"contact_email\": \"IH-8ZkDiV2KSGA@HrpebrdmVnCYymOOZDI.du\",\n  \"contact_phone\": \"s\",\n  \"id\": \"ee9d3a2f-2680-09b5-cceb-90e346fee508\",\n  \"status\": \"warning\",\n  \"phoneNumbers\": \"string\",\n  \"activeUsers\": \"string\",\n  \"callVolume\": \"string\",\n  \"messageVolume\": \"string\",\n  \"settings\": {},\n  \"created_at\": \"1969-11-08T12:52:40.540Z\",\n  \"last_activity\": \"1960-06-08T00:49:35.054Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "organizations update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/organizations/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this organization."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/organizations/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"organizations",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"name\": \"string\",\n  \"plan\": \"professional\",\n  \"contact_email\": \"IH-8ZkDiV2KSGA@HrpebrdmVnCYymOOZDI.du\",\n  \"contact_phone\": \"s\",\n  \"id\": \"ee9d3a2f-2680-09b5-cceb-90e346fee508\",\n  \"status\": \"warning\",\n  \"phoneNumbers\": \"string\",\n  \"activeUsers\": \"string\",\n  \"callVolume\": \"string\",\n  \"messageVolume\": \"string\",\n  \"settings\": {},\n  \"created_at\": \"1969-11-08T12:52:40.540Z\",\n  \"last_activity\": \"1960-06-08T00:49:35.054Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "organizations partial update",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/organizations/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this organization."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/organizations/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"organizations",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"name\": \"string\",\n  \"plan\": \"professional\",\n  \"contact_email\": \"IH-8ZkDiV2KSGA@HrpebrdmVnCYymOOZDI.du\",\n  \"contact_phone\": \"s\",\n  \"id\": \"ee9d3a2f-2680-09b5-cceb-90e346fee508\",\n  \"status\": \"warning\",\n  \"phoneNumbers\": \"string\",\n  \"activeUsers\": \"string\",\n  \"callVolume\": \"string\",\n  \"messageVolume\": \"string\",\n  \"settings\": {},\n  \"created_at\": \"1969-11-08T12:52:40.540Z\",\n  \"last_activity\": \"1960-06-08T00:49:35.054Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "organizations delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/organizations/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this organization."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/organizations/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"organizations",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "organizations list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/organizations/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"organizations",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/organizations/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 611,\n  \"results\": [\n    {\n      \"name\": \"string\",\n      \"plan\": \"professional\",\n      \"contact_email\": \"ERDxrYotT4@GrbbuDUzdNWIKG.os\",\n      \"contact_phone\": \"string\",\n      \"id\": \"ff75d184-bdc5-7ab8-b5f7-c04084df61dc\",\n      \"status\": \"active\",\n      \"phoneNumbers\": \"string\",\n      \"activeUsers\": \"string\",\n      \"callVolume\": \"string\",\n      \"messageVolume\": \"string\",\n      \"settings\": {},\n      \"created_at\": \"1960-06-01T22:04:04.924Z\",\n      \"last_activity\": \"1995-02-15T11:09:48.639Z\"\n    },\n    {\n      \"name\": \"string\",\n      \"plan\": \"enterprise\",\n      \"contact_email\": \"i-aAyS@LE.oax\",\n      \"contact_phone\": \"string\",\n      \"id\": \"95eaa6a0-3ac2-97f6-b6f7-8b9663962b79\",\n      \"status\": \"warning\",\n      \"phoneNumbers\": \"string\",\n      \"activeUsers\": \"string\",\n      \"callVolume\": \"string\",\n      \"messageVolume\": \"string\",\n      \"settings\": {},\n      \"created_at\": \"1974-07-08T12:21:06.043Z\",\n      \"last_activity\": \"1950-10-03T03:21:20.116Z\"\n    }\n  ],\n  \"next\": \"https://PRyoevUdtfdZuxeDscAYsdukpjYOaqXd.zdlM9ccVDaR4AastEjLb0G.Lp,zXRf5Ez\",\n  \"previous\": \"https://reAjuQxRbegzU.jdciq6rY2x8qvWXYbhXzYBc15zd36Eo\"\n}"
+						}
+					]
+				},
+				{
+					"name": "organizations create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/organizations/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"organizations",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"plan\": \"basic\",\n  \"contact_email\": \"QMfFn@XNVjRNVpwWXeIfBtuiPQOoVbXS.fbsa\",\n  \"contact_phone\": \"string\",\n  \"status\": \"inactive\",\n  \"settings\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/organizations/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"organizations",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"string\",\n  \"plan\": \"professional\",\n  \"contact_email\": \"IH-8ZkDiV2KSGA@HrpebrdmVnCYymOOZDI.du\",\n  \"contact_phone\": \"s\",\n  \"id\": \"ee9d3a2f-2680-09b5-cceb-90e346fee508\",\n  \"status\": \"warning\",\n  \"phoneNumbers\": \"string\",\n  \"activeUsers\": \"string\",\n  \"callVolume\": \"string\",\n  \"messageVolume\": \"string\",\n  \"settings\": {},\n  \"created_at\": \"1969-11-08T12:52:40.540Z\",\n  \"last_activity\": \"1960-06-08T00:49:35.054Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "protocols",
+			"item": [
+				{
+					"name": "status",
+					"item": [
+						{
+							"name": "protocols status list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/protocols/status/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"protocols",
+										"status",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/protocols/status/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"protocols",
+												"status",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{protocol}",
+					"item": [
+						{
+							"name": "metrics",
+							"item": [
+								{
+									"name": "protocols metrics list",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/protocols/:protocol/metrics/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"protocols",
+												":protocol",
+												"metrics",
+												""
+											],
+											"variable": [
+												{
+													"key": "protocol",
+													"value": "string"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/protocols/:protocol/metrics/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"protocols",
+														":protocol",
+														"metrics",
+														""
+													],
+													"variable": [
+														{
+															"key": "protocol"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "system",
+			"item": [
+				{
+					"name": "health",
+					"item": [
+						{
+							"name": "system health list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/system/health/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"system",
+										"health",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/system/health/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"system",
+												"health",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "logs",
+					"item": [
+						{
+							"name": "system logs list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/system/logs/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"system",
+										"logs",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/system/logs/?page=907",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"system",
+												"logs",
+												""
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "907",
+													"description": "A page number within the paginated result set."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"count\": 1635,\n  \"results\": [\n    {\n      \"level\": \"warning\",\n      \"service\": \"string\",\n      \"message\": \"string\",\n      \"id\": \"dc2f578a-e094-ba13-d95c-e24ec2266fd4\",\n      \"timestamp\": \"1989-08-26T03:28:52.684Z\",\n      \"metadata\": {}\n    },\n    {\n      \"level\": \"warning\",\n      \"service\": \"string\",\n      \"message\": \"string\",\n      \"id\": \"dec9e8ed-ce59-eadd-8d1f-1b2ae282e8a0\",\n      \"timestamp\": \"1952-11-04T23:46:30.511Z\",\n      \"metadata\": {}\n    }\n  ],\n  \"next\": \"http://KKmmITJJuMND.xvyBtyiTgHDDCHfjSh+Ltn3pTKXlkKM.vu7i7YS,YrRR3AbCSb2.4\",\n  \"previous\": \"https://qatchAHdttJyYxZhcpnqjvOvuaWEZUVF.jeG4kHOIMe3ZRJWMaQzzCXjJgFrOcKUWIxniV-TtkufXTBSk2KlbsIKfrYO.nQE\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "testing",
+			"item": [
+				{
+					"name": "destinations",
+					"item": [
+						{
+							"name": "testing destinations list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/destinations/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"destinations",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/destinations/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"destinations",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "hits-per-state",
+					"item": [
+						{
+							"name": "testing hits-per-state list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/hits-per-state/?filter=today",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"hits-per-state",
+										""
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "today",
+											"description": "Time filter"
+										}
+									]
+								},
+								"description": "Get hits per state for a given time period"
+							},
+							"response": [
+								{
+									"name": "Hits per state data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/hits-per-state/?filter=today",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"hits-per-state",
+												""
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "today",
+													"description": "Time filter"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "locations",
+					"item": [
+						{
+							"name": "testing locations list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/testing/locations/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"locations",
+										""
+									]
+								},
+								"description": "Manage locations"
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/locations/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"locations",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"name\": \"string\",\n    \"state\": \"katsina\",\n    \"id\": \"9c7cd9ea-0bec-1d6c-666f-22f540c25908\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1977-03-22T06:30:06.539Z\"\n  },\n  {\n    \"name\": \"string\",\n    \"state\": \"adamawa\",\n    \"id\": \"ec698d8b-83aa-d8fb-e0bb-5606c2e62304\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1983-07-16T07:33:18.424Z\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "testing locations create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"state\": \"fct\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/testing/locations/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"locations",
+										""
+									]
+								},
+								"description": "Manage locations"
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"state\": \"fct\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/locations/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"locations",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"name\": \"string\",\n  \"state\": \"lagos\",\n  \"id\": \"75adc769-6ae9-cc42-1e62-1a2867356da0\",\n  \"state_display\": \"string\",\n  \"created_at\": \"1962-03-04T14:21:32.807Z\"\n}"
+								},
+								{
+									"name": "Validation errors",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"state\": \"fct\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/locations/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"locations",
+												""
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "network-records",
+					"item": [
+						{
+							"name": "testing network-records list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/network-records/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"network-records",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/network-records/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"network-records",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "network-success-rate",
+					"item": [
+						{
+							"name": "testing network-success-rate list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/network-success-rate/?start_date=2024-12-19&end_date=2024-12-19",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"network-success-rate",
+										""
+									],
+									"query": [
+										{
+											"key": "start_date",
+											"value": "2024-12-19",
+											"description": "Start date (YYYY-MM-DD)"
+										},
+										{
+											"key": "end_date",
+											"value": "2024-12-19",
+											"description": "End date (YYYY-MM-DD)"
+										}
+									]
+								},
+								"description": "Get success rate for each network per day"
+							},
+							"response": [
+								{
+									"name": "Success rate data by network",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/network-success-rate/?start_date=2024-12-19&end_date=2024-12-19",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"network-success-rate",
+												""
+											],
+											"query": [
+												{
+													"key": "start_date",
+													"value": "2024-12-19",
+													"description": "Start date (YYYY-MM-DD)"
+												},
+												{
+													"key": "end_date",
+													"value": "2024-12-19",
+													"description": "End date (YYYY-MM-DD)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "originator-networks",
+					"item": [
+						{
+							"name": "testing originator-networks list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/originator-networks/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"originator-networks",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/originator-networks/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"originator-networks",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "origins",
+					"item": [
+						{
+							"name": "testing origins list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/origins/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"origins",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/origins/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"origins",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "recent-tests",
+					"item": [
+						{
+							"name": "testing recent-tests list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/testing/recent-tests/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"recent-tests",
+										""
+									]
+								},
+								"description": "Get 5 most recent test records"
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/recent-tests/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"recent-tests",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"test_case_description\": \"string\",\n    \"originator_number\": \"st\",\n    \"originator_location\": \"d54cd4d2-6188-ca37-2d61-29450a7821dc\",\n    \"originator_network\": \"str\",\n    \"time_of_call\": \"1982-12-04T13:26:22.695Z\",\n    \"status\": \"string\",\n    \"id\": \"066c2f02-a799-f1cb-05fb-2f10e2342cb2\",\n    \"originator_location_detail\": {\n      \"name\": \"string\",\n      \"state\": \"niger\",\n      \"id\": \"ef33f923-294e-c412-0ed6-3d1aae386248\",\n      \"state_display\": \"string\",\n      \"created_at\": \"1955-03-27T08:43:24.259Z\"\n    },\n    \"recipient_number\": \"string\",\n    \"recipient_location\": \"13f8a8f7-7054-b7ad-c662-7a950015c3b0\",\n    \"recipient_location_detail\": {\n      \"name\": \"string\",\n      \"state\": \"ebonyi\",\n      \"id\": \"01a1586b-75fa-4378-8590-5c5455c88f6a\",\n      \"state_display\": \"string\",\n      \"created_at\": \"1972-03-27T14:50:40.890Z\"\n    },\n    \"recipient_network\": \"string\",\n    \"receipt_number_format\": \"string\",\n    \"service\": \"string\",\n    \"duration\": 1112100888,\n    \"call_setup_time\": 4669.625716004222,\n    \"data_speed\": \"string\",\n    \"url\": \"http://bSB.vgzeBxnuv4tWfUSOAGQiDQGlY3ov,I5LoeN50sF\",\n    \"url_redirect\": \"http://zd.rdbi,be1Zlgven8turUOcNaaCADERv4W236Mk\",\n    \"created_at\": \"1976-06-18T06:19:34.407Z\"\n  },\n  {\n    \"test_case_description\": \"string\",\n    \"originator_number\": \"string\",\n    \"originator_location\": \"07522304-9b0f-4936-e430-44230c13d6f7\",\n    \"originator_network\": \"string\",\n    \"time_of_call\": \"2007-06-10T17:10:49.750Z\",\n    \"status\": \"string\",\n    \"id\": \"5c4538ea-1b4b-cb78-65a1-540fbc493997\",\n    \"originator_location_detail\": {\n      \"name\": \"string\",\n      \"state\": \"bauchi\",\n      \"id\": \"3ca26d64-48fe-dac6-d5ee-c4eb5f9b1dd8\",\n      \"state_display\": \"string\",\n      \"created_at\": \"1951-05-05T19:23:50.929Z\"\n    },\n    \"recipient_number\": \"string\",\n    \"recipient_location\": \"d62e14bf-bab5-dba9-9151-0566d976980a\",\n    \"recipient_location_detail\": {\n      \"name\": \"string\",\n      \"state\": \"kaduna\",\n      \"id\": \"09c20e73-f1e1-d17a-8e72-622c7b19ba00\",\n      \"state_display\": \"string\",\n      \"created_at\": \"2020-07-22T05:12:48.881Z\"\n    },\n    \"recipient_network\": \"string\",\n    \"receipt_number_format\": \"string\",\n    \"service\": \"string\",\n    \"duration\": 142789293,\n    \"call_setup_time\": 4626.681311043908,\n    \"data_speed\": \"string\",\n    \"url\": \"https://vAmXvoSLFJOafDTGOrFizFXvOkoQk.kvfebJqa+E20D7MAC4H4xcFuBfiPaZaFnymEKFcM0zx+v4DEZuIO\",\n    \"url_redirect\": \"http://YGCqaUrpIwqwCqfCycYASlrO.rwatJk7Ee.YP,Yl,WeYTMTPR\",\n    \"created_at\": \"2002-04-19T22:00:23.007Z\"\n  }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "recipient-networks",
+					"item": [
+						{
+							"name": "testing recipient-networks list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/recipient-networks/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"recipient-networks",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/recipient-networks/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"recipient-networks",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "records",
+					"item": [
+						{
+							"name": "stats",
+							"item": [
+								{
+									"name": "testing records stats list",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/stats/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												"stats",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/stats/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														"stats",
+														""
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "upload",
+							"item": [
+								{
+									"name": "csv",
+									"item": [
+										{
+											"name": "testing records upload csv create",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/upload/csv/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														"upload",
+														"csv",
+														""
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Untitled Response",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Basic <credentials>",
+																"description": "Added as a part of security scheme: basic"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/testing/records/upload/csv/",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"testing",
+																"records",
+																"upload",
+																"csv",
+																""
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "json",
+									"item": [
+										{
+											"name": "testing records upload json create",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/upload/json/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														"upload",
+														"json",
+														""
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Untitled Response",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Basic <credentials>",
+																"description": "Added as a part of security scheme: basic"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/testing/records/upload/json/",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"testing",
+																"records",
+																"upload",
+																"json",
+																""
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "testing records read",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this test record."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"d96bba1f-9be9-e9fc-4bee-c2d48dd7d609\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"1995-03-06T09:28:27.223Z\",\n  \"status\": \"string\",\n  \"id\": \"62ea2cc0-803a-df26-4a0c-b6dee086c4f3\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kaduna\",\n    \"id\": \"18b3c0cd-2017-68f5-47a3-0e3986ea7ced\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1971-12-26T13:54:57.724Z\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"6ac4623b-d624-d40e-8200-138e8427a5a1\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"adamawa\",\n    \"id\": \"bee20b78-33fd-2a86-29e1-8c4be309d921\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1958-12-16T05:01:26.059Z\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 1286316445,\n  \"call_setup_time\": 1606.9878186994567,\n  \"data_speed\": \"string\",\n  \"url\": \"https://FrINGqdbnoQLOKUyJjpmzyMRsfGnRiJ.xlvetZhJ2a0bI+,dxzFpdqdosAmMEDir4hlGzNjGszNk9K,q6lENat\",\n  \"url_redirect\": \"https://iosgDtXKDdor.tjwzdrI.a3aNRvKSdgcrfPrmzzPUO3XO\",\n  \"created_at\": \"1952-09-06T14:58:58.425Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing records update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this test record."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"d96bba1f-9be9-e9fc-4bee-c2d48dd7d609\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"1995-03-06T09:28:27.223Z\",\n  \"status\": \"string\",\n  \"id\": \"62ea2cc0-803a-df26-4a0c-b6dee086c4f3\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kaduna\",\n    \"id\": \"18b3c0cd-2017-68f5-47a3-0e3986ea7ced\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1971-12-26T13:54:57.724Z\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"6ac4623b-d624-d40e-8200-138e8427a5a1\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"adamawa\",\n    \"id\": \"bee20b78-33fd-2a86-29e1-8c4be309d921\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1958-12-16T05:01:26.059Z\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 1286316445,\n  \"call_setup_time\": 1606.9878186994567,\n  \"data_speed\": \"string\",\n  \"url\": \"https://FrINGqdbnoQLOKUyJjpmzyMRsfGnRiJ.xlvetZhJ2a0bI+,dxzFpdqdosAmMEDir4hlGzNjGszNk9K,q6lENat\",\n  \"url_redirect\": \"https://iosgDtXKDdor.tjwzdrI.a3aNRvKSdgcrfPrmzzPUO3XO\",\n  \"created_at\": \"1952-09-06T14:58:58.425Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing records partial update",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this test record."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"d96bba1f-9be9-e9fc-4bee-c2d48dd7d609\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"1995-03-06T09:28:27.223Z\",\n  \"status\": \"string\",\n  \"id\": \"62ea2cc0-803a-df26-4a0c-b6dee086c4f3\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kaduna\",\n    \"id\": \"18b3c0cd-2017-68f5-47a3-0e3986ea7ced\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1971-12-26T13:54:57.724Z\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"6ac4623b-d624-d40e-8200-138e8427a5a1\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"adamawa\",\n    \"id\": \"bee20b78-33fd-2a86-29e1-8c4be309d921\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1958-12-16T05:01:26.059Z\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 1286316445,\n  \"call_setup_time\": 1606.9878186994567,\n  \"data_speed\": \"string\",\n  \"url\": \"https://FrINGqdbnoQLOKUyJjpmzyMRsfGnRiJ.xlvetZhJ2a0bI+,dxzFpdqdosAmMEDir4hlGzNjGszNk9K,q6lENat\",\n  \"url_redirect\": \"https://iosgDtXKDdor.tjwzdrI.a3aNRvKSdgcrfPrmzzPUO3XO\",\n  \"created_at\": \"1952-09-06T14:58:58.425Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing records delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this test record."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/testing/records/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"records",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "testing records list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/testing/records/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"records",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/?page=907",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												""
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "907",
+													"description": "A page number within the paginated result set."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"count\": 7962,\n  \"results\": [\n    {\n      \"test_case_description\": \"string\",\n      \"originator_number\": \"string\",\n      \"originator_location\": \"e172fb3e-290f-bbfc-5dfd-7be913a74072\",\n      \"originator_network\": \"string\",\n      \"time_of_call\": \"1950-07-10T03:31:53.186Z\",\n      \"status\": \"string\",\n      \"id\": \"af64f771-0acd-03db-1d71-cc0d9d4c3160\",\n      \"originator_location_detail\": {\n        \"name\": \"string\",\n        \"state\": \"osun\",\n        \"id\": \"2949d480-aecb-749f-8185-9981dfe5767e\",\n        \"state_display\": \"string\",\n        \"created_at\": \"2014-01-27T16:37:42.600Z\"\n      },\n      \"recipient_number\": \"string\",\n      \"recipient_location\": \"87447d4f-ff77-1fae-f1b1-c982d057ea62\",\n      \"recipient_location_detail\": {\n        \"name\": \"string\",\n        \"state\": \"kano\",\n        \"id\": \"96e2b225-2ef7-352c-4db4-bea179f35354\",\n        \"state_display\": \"string\",\n        \"created_at\": \"1984-06-18T05:39:36.048Z\"\n      },\n      \"recipient_network\": \"string\",\n      \"receipt_number_format\": \"string\",\n      \"service\": \"string\",\n      \"duration\": 549561701,\n      \"call_setup_time\": 268.56571318435,\n      \"data_speed\": \"string\",\n      \"url\": \"https://PQluNMcVVsokoyPDdK.bzzWKdfeC8mwSR7ckgS9\",\n      \"url_redirect\": \"http://JqVoZKSzEhQDYTwbvPMUiWzsxNuSRq.xprsDRRU\",\n      \"created_at\": \"1995-01-11T06:06:38.423Z\"\n    },\n    {\n      \"test_case_description\": \"string\",\n      \"originator_number\": \"string\",\n      \"originator_location\": \"541cd7d8-aff9-d15d-c799-3603a382d98e\",\n      \"originator_network\": \"string\",\n      \"time_of_call\": \"2023-05-14T17:30:29.017Z\",\n      \"status\": \"string\",\n      \"id\": \"814b1545-c522-7672-19e7-3b7db01f23c8\",\n      \"originator_location_detail\": {\n        \"name\": \"string\",\n        \"state\": \"benue\",\n        \"id\": \"4b23bb59-2245-d517-4b59-87c4379d7dbb\",\n        \"state_display\": \"string\",\n        \"created_at\": \"1989-08-12T10:04:18.859Z\"\n      },\n      \"recipient_number\": \"string\",\n      \"recipient_location\": \"4952a632-3230-76d7-743d-38908b2b0680\",\n      \"recipient_location_detail\": {\n        \"name\": \"string\",\n        \"state\": \"kano\",\n        \"id\": \"a3030090-b124-e29b-7754-1eaa35420284\",\n        \"state_display\": \"string\",\n        \"created_at\": \"1980-06-17T15:51:50.733Z\"\n      },\n      \"recipient_network\": \"string\",\n      \"receipt_number_format\": \"string\",\n      \"service\": \"string\",\n      \"duration\": 1925977742,\n      \"call_setup_time\": 8925.494632850356,\n      \"data_speed\": \"string\",\n      \"url\": \"http://ckEhfwKXnNlwQyVTTvv.qdWHi97lYMjWOvutLFvA\",\n      \"url_redirect\": \"http://eW.pkiLQUgNFw.gZ6xDHwtPmOLvKlYK6-Uigu-xgbwbFoxk7cQYRu\",\n      \"created_at\": \"2019-01-16T07:37:30.193Z\"\n    }\n  ],\n  \"next\": \"https://eCYTMQEYqcCmwzrhkajwHFsHQ.blatHj0F1\",\n  \"previous\": \"https://GsqAJpPxzLdhyG.wtb+6G9M+2\"\n}"
+								}
+							]
+						},
+						{
+							"name": "testing records create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/testing/records/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"records",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"7a320151-1f8f-fe4b-f309-1046e248578b\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"2018-09-15T11:10:11.224Z\",\n  \"status\": \"string\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kwara\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"882b65d4-314f-f1ea-838a-7a5bea1c4a8c\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"zamfara\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 238294590,\n  \"call_setup_time\": 7954.93115759601,\n  \"data_speed\": \"string\",\n  \"url\": \"http://UdhOdjizFJ.jkeU.XrVFon5b39AI8BfIsF6pTrz7mww,VORO\",\n  \"url_redirect\": \"http://ExgwWx.lifZT9b+xJxvGxAcpxeUC0VxgAN.rtCwkG15c1Ngy,ldwTRvpEYLa2+-7dz\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/records/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"records",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"test_case_description\": \"string\",\n  \"originator_number\": \"string\",\n  \"originator_location\": \"d96bba1f-9be9-e9fc-4bee-c2d48dd7d609\",\n  \"originator_network\": \"string\",\n  \"time_of_call\": \"1995-03-06T09:28:27.223Z\",\n  \"status\": \"string\",\n  \"id\": \"62ea2cc0-803a-df26-4a0c-b6dee086c4f3\",\n  \"originator_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"kaduna\",\n    \"id\": \"18b3c0cd-2017-68f5-47a3-0e3986ea7ced\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1971-12-26T13:54:57.724Z\"\n  },\n  \"recipient_number\": \"string\",\n  \"recipient_location\": \"6ac4623b-d624-d40e-8200-138e8427a5a1\",\n  \"recipient_location_detail\": {\n    \"name\": \"string\",\n    \"state\": \"adamawa\",\n    \"id\": \"bee20b78-33fd-2a86-29e1-8c4be309d921\",\n    \"state_display\": \"string\",\n    \"created_at\": \"1958-12-16T05:01:26.059Z\"\n  },\n  \"recipient_network\": \"string\",\n  \"receipt_number_format\": \"string\",\n  \"service\": \"string\",\n  \"duration\": 1286316445,\n  \"call_setup_time\": 1606.9878186994567,\n  \"data_speed\": \"string\",\n  \"url\": \"https://FrINGqdbnoQLOKUyJjpmzyMRsfGnRiJ.xlvetZhJ2a0bI+,dxzFpdqdosAmMEDir4hlGzNjGszNk9K,q6lENat\",\n  \"url_redirect\": \"https://iosgDtXKDdor.tjwzdrI.a3aNRvKSdgcrfPrmzzPUO3XO\",\n  \"created_at\": \"1952-09-06T14:58:58.425Z\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "report-users",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "testing report-users read",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this report user."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/testing/report-users/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"report-users",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"report_time\": \"string\",\n  \"id\": \"b322343b-b9e5-8e0c-50e7-e731d0fa921b\",\n  \"emails\": {},\n  \"is_active\": false,\n  \"created_at\": \"1999-02-25T20:29:41.963Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing report-users update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this report user."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/testing/report-users/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"report-users",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"report_time\": \"string\",\n  \"id\": \"b322343b-b9e5-8e0c-50e7-e731d0fa921b\",\n  \"emails\": {},\n  \"is_active\": false,\n  \"created_at\": \"1999-02-25T20:29:41.963Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing report-users partial update",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this report user."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/testing/report-users/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"report-users",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"report_time\": \"string\",\n  \"id\": \"b322343b-b9e5-8e0c-50e7-e731d0fa921b\",\n  \"emails\": {},\n  \"is_active\": false,\n  \"created_at\": \"1999-02-25T20:29:41.963Z\"\n}"
+										}
+									]
+								},
+								{
+									"name": "testing report-users delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+													"description": "A UUID string identifying this report user."
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/testing/report-users/:id/",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"testing",
+														"report-users",
+														":id",
+														""
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "testing report-users list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/testing/report-users/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"report-users",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/?page=907",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												""
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "907",
+													"description": "A page number within the paginated result set."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"count\": 8280,\n  \"results\": [\n    {\n      \"report_time\": \"string\",\n      \"id\": \"b6de0065-cb36-7eb7-abb2-64b17457478f\",\n      \"emails\": {},\n      \"is_active\": true,\n      \"created_at\": \"2019-01-19T06:22:01.986Z\"\n    },\n    {\n      \"report_time\": \"string\",\n      \"id\": \"29fedebc-6aca-44e2-e07c-818eab9c0920\",\n      \"emails\": {},\n      \"is_active\": true,\n      \"created_at\": \"1950-12-10T13:16:45.763Z\"\n    }\n  ],\n  \"next\": \"http://MmsQAGv.zfVVm98e1\",\n  \"previous\": \"http://ZRhZHRunYbufFKOPbKI.whO,2,WJJSZfE0.QK8tKE1xtyuRG3Oc,3YnyHoCwOTov\"\n}"
+								}
+							]
+						},
+						{
+							"name": "testing report-users create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/testing/report-users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"report-users",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"report_time\": \"string\",\n  \"emails\": {},\n  \"is_active\": true\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/testing/report-users/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"report-users",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"report_time\": \"string\",\n  \"id\": \"b322343b-b9e5-8e0c-50e7-e731d0fa921b\",\n  \"emails\": {},\n  \"is_active\": false,\n  \"created_at\": \"1999-02-25T20:29:41.963Z\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "service-type-records",
+					"item": [
+						{
+							"name": "testing service-type-records list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/service-type-records/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"service-type-records",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/service-type-records/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"service-type-records",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "statuses",
+					"item": [
+						{
+							"name": "testing statuses list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/testing/statuses/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"testing",
+										"statuses",
+										""
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/testing/statuses/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"testing",
+												"statuses",
+												""
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "users read",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this user."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"email\": \"Ir2@jNqhRKVdmGrWlc.smq\",\n  \"id\": \"a6e92272-c13b-994b-48c9-aaba3872d59b\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"f7c684f8-7f66-1d12-ee08-605e5d4837fd\",\n  \"status\": \"inactive\",\n  \"permissions\": {},\n  \"last_login_time\": \"2008-05-09T20:43:01.164Z\",\n  \"date_joined\": \"1998-08-21T19:06:02.402Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "users update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this user."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"email\": \"Ir2@jNqhRKVdmGrWlc.smq\",\n  \"id\": \"a6e92272-c13b-994b-48c9-aaba3872d59b\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"f7c684f8-7f66-1d12-ee08-605e5d4837fd\",\n  \"status\": \"inactive\",\n  \"permissions\": {},\n  \"last_login_time\": \"2008-05-09T20:43:01.164Z\",\n  \"date_joined\": \"1998-08-21T19:06:02.402Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "users partial update",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this user."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"email\": \"Ir2@jNqhRKVdmGrWlc.smq\",\n  \"id\": \"a6e92272-c13b-994b-48c9-aaba3872d59b\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"f7c684f8-7f66-1d12-ee08-605e5d4837fd\",\n  \"status\": \"inactive\",\n  \"permissions\": {},\n  \"last_login_time\": \"2008-05-09T20:43:01.164Z\",\n  \"date_joined\": \"1998-08-21T19:06:02.402Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "users delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "555f8d54-8df3-26a4-4040-34a45580d238",
+											"description": "A UUID string identifying this user."
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "users list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/?page=907",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "907",
+									"description": "A page number within the paginated result set."
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/?page=907",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "907",
+											"description": "A page number within the paginated result set."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"count\": 2726,\n  \"results\": [\n    {\n      \"email\": \"o4bWrlZd5VfCB-3@E.jur\",\n      \"id\": \"c179646c-e2e7-d149-c7f6-d141f18b4a7b\",\n      \"first_name\": \"string\",\n      \"last_name\": \"string\",\n      \"role\": \"client\",\n      \"company\": \"string\",\n      \"organization\": \"9236a2d9-c2c7-b314-4403-dec87bc540f4\",\n      \"status\": \"inactive\",\n      \"permissions\": {},\n      \"last_login_time\": \"2023-01-20T20:17:40.646Z\",\n      \"date_joined\": \"1982-09-19T20:15:55.277Z\"\n    },\n    {\n      \"email\": \"7vEXArxZm8SbY@UyAifOZGLJPSsNIFKjfmmmqpxNSBC.aym\",\n      \"id\": \"720145fc-293f-2b75-62c9-55e5bfd6584a\",\n      \"first_name\": \"string\",\n      \"last_name\": \"string\",\n      \"role\": \"client\",\n      \"company\": \"string\",\n      \"organization\": \"b5a1a519-c11a-f0cd-a8e5-b4ec1f15223a\",\n      \"status\": \"suspended\",\n      \"permissions\": {},\n      \"last_login_time\": \"2017-09-03T11:46:06.701Z\",\n      \"date_joined\": \"2013-10-28T20:47:42.624Z\"\n    }\n  ],\n  \"next\": \"https://yfNsnXUxNdfTumhyNvwkpjsyi.oceovkyW3X0Q-2GnBBTZAtrQ1Xd.\",\n  \"previous\": \"https://CByFTDtWRRxZeDNgSESyXsl.nqtfXGfAbfywcSZdJryKzSk7TbKO9FiXFqF0nMQF6H-O3VkRzhnV67Am\"\n}"
+						}
+					]
+				},
+				{
+					"name": "users create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"WTMG@axWenMubEkTCEWVaT.pqua\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"cffefaa4-6801-8ae7-ebb6-70f188b041b3\",\n  \"status\": \"active\",\n  \"permissions\": {},\n  \"last_login_time\": \"1989-11-08T06:23:30.419Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"email\": \"Ir2@jNqhRKVdmGrWlc.smq\",\n  \"id\": \"a6e92272-c13b-994b-48c9-aaba3872d59b\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"enterprise\",\n  \"company\": \"string\",\n  \"organization\": \"f7c684f8-7f66-1d12-ee08-605e5d4837fd\",\n  \"status\": \"inactive\",\n  \"permissions\": {},\n  \"last_login_time\": \"2008-05-09T20:43:01.164Z\",\n  \"date_joined\": \"1998-08-21T19:06:02.402Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{basicAuthUsername}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{basicAuthPassword}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api/v1"
+		}
+	]
+}
