@@ -1,0 +1,105 @@
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { store } from '../redux/store';
+
+// Types
+export interface ApiError {
+  message: string;
+  code?: string;
+  status: number;
+}
+
+export interface ErrorResponse {
+  message?: string;
+  code?: string;
+}
+
+// Helper function to format errors consistently
+function formatError(error: AxiosError<ErrorResponse>): ApiError {
+  return {
+    message: error.response?.data?.message || error.message || 'An unexpected error occurred',
+    code: error.response?.data?.code,
+    status: error.response?.status || 500,
+  };
+}
+
+// Create and configure axios instance
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { store } from '../redux/store';
+import type { ErrorResponse, ApiError } from './api.d';
+
+// Helper function to format errors consistently
+function formatError(error: AxiosError<ErrorResponse>): ApiError {
+  return {
+    message: error.response?.data?.message || error.message || 'An unexpected error occurred',
+    code: error.response?.data?.code,
+    status: error.response?.status || 500,
+  };
+}
+
+// Create and configure axios instance
+const instance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 10000, // 10 seconds
+});
+
+// Add request interceptor for auth token
+instance.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const state = store.getState() as RootState;
+    const token = (state.auth as any)?.token;
+    
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    console.error('Request error:', error);
+    return Promise.reject(formatError(error as AxiosError<ErrorResponse>));
+  }
+);
+
+// Add response interceptor for error handling and token refresh
+instance.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await instance.post<{ token: string }>('/auth/refresh');
+        const { token } = response.data;
+        
+        store.dispatch({ type: 'auth/refreshToken', payload: token });
+        
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+        }
+        return instance(originalRequest);
+      } catch (refreshError) {
+        store.dispatch({ type: 'auth/logout' });
+        throw formatError(refreshError as AxiosError<ErrorResponse>);
+      }
+    }
+
+    throw formatError(error as AxiosError<ErrorResponse>);
+  }
+);
+
+export default instance;
+}
+}
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export { api };
