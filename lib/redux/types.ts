@@ -1,5 +1,25 @@
+export type UserType = 'admin' | 'engineer' | 'user';
+
+export interface User {
+  id: string;
+  email: string;
+  userType: UserType;
+  name?: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+  userType: UserType;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
 export interface AuthState {
-  user: any | null;
+  user: User | null;
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;

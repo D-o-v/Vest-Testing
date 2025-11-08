@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../redux/store';
 import { login, logout } from '../redux/slices/authSlice';
-import type { AuthState } from '../redux/types';
+import type { AuthState, LoginCredentials } from '../redux/types';
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,7 +11,7 @@ export const useAuth = () => {
   );
 
   const loginUser = useCallback(
-    async (credentials: { username: string; password: string }) => {
+    async (credentials: LoginCredentials) => {
       await dispatch(login(credentials));
     },
     [dispatch]

@@ -5,11 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Alert } from '@/components/ui/alert';
 import { Spinner } from '@/components/ui/spinner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import type { UserType } from '@/lib/redux/types';
 
 export function LoginPage() {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: '',
+    userType: '' as UserType
   });
 
   const { login, loading, error } = useAuth();
@@ -24,6 +27,13 @@ export function LoginPage() {
     setCredentials(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleUserTypeChange = (value: UserType) => {
+    setCredentials(prev => ({
+      ...prev,
+      userType: value
     }));
   };
 
@@ -45,10 +55,10 @@ export function LoginPage() {
 
             <div className="space-y-2">
               <Input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={credentials.username}
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={credentials.email}
                 onChange={handleChange}
                 disabled={loading}
                 required
@@ -67,6 +77,24 @@ export function LoginPage() {
                 required
                 className="w-full"
               />
+            </div>
+
+            <div className="space-y-2">
+              <Select
+                value={credentials.userType}
+                onValueChange={handleUserTypeChange}
+                disabled={loading}
+                required
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select user type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="engineer">Engineer</SelectItem>
+                  <SelectItem value="user">User</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <Button

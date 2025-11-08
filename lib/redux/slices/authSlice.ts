@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { AxiosInstance } from 'axios';
 import apiInstance from '../../services/api';
-import { AuthState } from '../types';
+import { AuthState, LoginCredentials, AuthResponse } from '../types';
 
 // Type assertion for the imported API instance
 const api = apiInstance as AxiosInstance;
@@ -16,9 +16,9 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials: { username: string; password: string }, { rejectWithValue }) => {
+  async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
-      const response = await api.post('/auth/login/', credentials);
+      const response = await api.post<AuthResponse>('/auth/login/', credentials);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
