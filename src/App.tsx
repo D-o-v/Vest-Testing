@@ -97,15 +97,15 @@ export default function App() {
       )}
 
       {isAuthenticated && (
-        <div className={`fixed top-14 left-0 bottom-0 w-64 border-r bg-background transition-transform duration-200 ease-in-out ${
+        <div className={`fixed top-14 left-0 bottom-0 w-48 border-r bg-background/95 backdrop-blur transition-transform duration-200 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="flex h-full flex-col">
-            <div className="flex-1 overflow-y-auto py-4">
-              <nav className="grid items-start px-4 text-sm font-medium">
+            <div className="flex-1 overflow-y-auto py-3">
+              <nav className="grid items-start px-3 text-sm font-medium gap-1">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start"
+                  className="w-full justify-start h-9 px-3"
                   onClick={() => navigate('/dashboard')}
                 >
                   <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -113,7 +113,7 @@ export default function App() {
                 </Button>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start"
+                  className="w-full justify-start h-9 px-3"
                   onClick={() => navigate('/reports')}
                 >
                   <BarChart3 className="mr-2 h-4 w-4" />
@@ -125,7 +125,8 @@ export default function App() {
         </div>
       )}
 
-      <main className={`pt-14 ${isAuthenticated ? (sidebarOpen ? 'pl-64' : 'pl-0') : ''} transition-[padding] duration-200 ease-in-out`}>
+      <main className={`pt-14 ${isAuthenticated ? (sidebarOpen ? 'pl-48' : 'pl-0') : ''} transition-[padding] duration-200 ease-in-out`}>
+        <div className="p-6">
         <Routes>
           <Route path="/login" element={
             isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />
@@ -142,6 +143,7 @@ export default function App() {
           } />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
+        </div>
       </main>
     </div>
   );
