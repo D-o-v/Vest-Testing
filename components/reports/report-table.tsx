@@ -4,6 +4,7 @@ import { useState } from "react"
 import type { TestRecord } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 interface ReportTableProps {
   records: TestRecord[]
@@ -13,6 +14,7 @@ const ITEMS_PER_PAGE = 10
 
 export default function ReportTable({ records }: ReportTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedRecord, setSelectedRecord] = useState<TestRecord | null>(null)
   const totalPages = Math.ceil(records.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const paginatedRecords = records.slice(startIndex, startIndex + ITEMS_PER_PAGE)
@@ -44,7 +46,11 @@ export default function ReportTable({ records }: ReportTableProps) {
                 </tr>
               ) : (
                 paginatedRecords.map((record, idx) => (
-                  <tr key={idx} className="border-b border-border hover:bg-muted/30 transition-colors">
+                  <tr 
+                    key={idx} 
+                    className="border-b border-border hover:bg-blue-50 transition-colors cursor-pointer"
+                    onClick={() => setSelectedRecord(record)}
+                  >
                     <td className="px-2 py-2 text-xs">{new Date(record.timestamp).toLocaleDateString()} {new Date(record.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</td>
                     <td className="px-2 py-2 text-xs font-medium">{record.originatorNetwork}</td>
                     <td className="px-2 py-2 text-xs">{record.service}</td>
@@ -101,6 +107,33 @@ export default function ReportTable({ records }: ReportTableProps) {
           </div>
         )}
       </div>
+      
+      {/* Test Detail Modal */}
+      <Dialog open={!!selectedRecord} onOpenChange={() => setSelectedRecord(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Test Details</DialogTitle>
+          </DialogHeader>
+          {selectedRecord && (
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><strong>Test Case:</strong> {selectedRecord.testCaseDescription}</div>
+              <div><strong>Service:</strong> {selectedRecord.service}</div>
+              <div><strong>Originator:</strong> {selectedRecord.originatorNumber}</div>
+              <div><strong>Recipient:</strong> {selectedRecord.recipientNumber}</div>
+              <div><strong>Origin Network:</strong> {selectedRecord.originatorNetwork}</div>
+              <div><strong>Recipient Network:</strong> {selectedRecord.recipientNetwork}</div>
+              <div><strong>Origin Location:</strong> {selectedRecord.originatorLocation}</div>
+              <div><strong>Recipient Location:</strong> {selectedRecord.recipientLocation}</div>
+              <div><strong>Status:</strong> {selectedRecord.status}</div>
+              <div><strong>Duration:</strong> {selectedRecord.duration || 'N/A'}</div>
+              <div><strong>Call Setup Time:</strong> {selectedRecord.callSetupTime || 'N/A'}</div>
+              <div><strong>Timestamp:</strong> {new Date(selectedRecord.timestamp).toLocaleString()}</div>
+              {selectedRecord.failureCause && <div className="col-span-2"><strong>Failure Cause:</strong> {selectedRecord.failureCause}</div>}
+              {selectedRecord.dataSpeed && <div><strong>Data Speed:</strong> {selectedRecord.dataSpeed}</div>}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }

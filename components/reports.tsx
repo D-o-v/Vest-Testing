@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { parseCSV, aggregateMetricsByMNO } from "@/lib/csv-parser"
 import type { MNO, ServiceType } from "@/lib/types"
 import ReportFilters from "./reports/report-filters"
@@ -34,14 +34,24 @@ export default function Reports({ csvData }: { csvData: string }) {
 
   // Try to fetch records from backend if available and prefer that structured data
   const [apiRecords, setApiRecords] = useState<TestRecord[] | null>(null)
-  useEffect(() => {
+  const [loading, setLoading] = useState(false)
+  
+  const fetchRecords = useCallback(() => {
+    setLoading(true)
     let mounted = true
-    testingService.getRecords({ page_size: 1000 })
+    
+    const params: any = { page_size: 1000 }
+    if (selectedMNO !== "All") params.originator_network = selectedMNO
+    if (selectedService !== "All") params.service = selectedService
+    if (selectedState !== "All") params.originator_location = selectedState
+    if (dateRange.start) params.start_date = dateRange.start
+    if (dateRange.end) params.end_date = dateRange.end
+    
+    testingService.getRecords(params)
       .then((res: any) => {
         if (!mounted) return
         const arr = Array.isArray(res) ? res : (res?.results ?? [])
         const normalize = (t: any): TestRecord => {
-          const get = (k1: string, k2?: string) => t[k1] ?? (k2 ? t[k2] : undefined)
           const originLoc = t.originator_location_detail?.name ?? t.originator_location ?? t.originatorLocation ?? ''
           const recipLoc = t.recipient_location_detail?.name ?? t.recipient_location ?? t.recipientLocation ?? ''
           return {
@@ -70,8 +80,15 @@ export default function Reports({ csvData }: { csvData: string }) {
         const msg = e && (e as any).message ? (e as any).message : String(e)
         import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to load records from API for reports:', msg)).catch(() => {})
       })
+      .finally(() => {
+        if (mounted) setLoading(false)
+      })
     return () => { mounted = false }
-  }, [])
+  }, [selectedMNO, selectedService, selectedState, dateRange])
+  
+  useEffect(() => {
+    fetchRecords()
+  }, [fetchRecords])
 
   // prefer API records when available, otherwise fall back to CSV-parsed data
   const sourceData = apiRecords && apiRecords.length > 0 ? apiRecords : parsedData
@@ -171,6 +188,7 @@ export default function Reports({ csvData }: { csvData: string }) {
         onDateRangeChange={setDateRange}
       />
 
+      {loading && <div className="text-center py-4 text-muted-foreground">Loading...</div>}
       <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={sourceData.length} />
 
       <ReportTable records={filteredData} />
