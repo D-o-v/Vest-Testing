@@ -66,15 +66,13 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
       return
     }
 
-  // Try backend first (Postman: GET /testing/hits-per-state/?start_date=...&end_date=...)
+    // Try backend with filter parameters
     let mounted = true
-  const params: Record<string, any> = {}
-  if (startDate) params.start_date = startDate
-  if (endDate) params.end_date = endDate
-
-  // If no explicit date filters provided and no records, default to 'today'
-  const callArg = Object.keys(params).length ? params : 'today'
-  testingService.getHitsPerState(callArg as any)
+    const params: Record<string, any> = {}
+    if (startDate) params.start_date = startDate
+    if (endDate) params.end_date = endDate
+    
+    testingService.getHitsPerState(Object.keys(params).length ? params : { filter: 'today' })
       .then((arr: any) => {
         if (!mounted || !Array.isArray(arr)) return
         const grouped = new Map<string, number[]>()
@@ -100,7 +98,7 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
     return () => {
       mounted = false
     }
-  }, [records])
+  }, [records, startDate, endDate])
 
   if (!mapData) {
     return (

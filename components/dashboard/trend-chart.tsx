@@ -1,13 +1,30 @@
 import type { TestRecord } from "@lib/types"
 import { Card } from "@components/ui/card"
-import React, { useMemo, lazy, Suspense } from "react"
-import { useNetworkAnalytics } from "@lib/hooks/use-portal"
+import React, { useMemo, lazy, Suspense, useEffect, useState } from "react"
+import testingService from '@/lib/services/testing-service'
 
 const Chart = lazy(() => import("react-apexcharts"))
 
 export default function TrendChart({ records, startDate, endDate }: { records: TestRecord[], startDate?: string | null, endDate?: string | null }) {
-  // call hook (it safely returns early if dates aren't provided)
-  const { data: networkAnalytics } = useNetworkAnalytics(startDate || '', endDate || '')
+  const [dailySuccessData, setDailySuccessData] = useState<any>(null)
+
+  useEffect(() => {
+    let mounted = true
+    const params: Record<string, any> = {}
+    if (startDate) params.start_date = startDate
+    if (endDate) params.end_date = endDate
+
+    testingService.getDailySuccessRate(Object.keys(params).length ? params : undefined)
+      .then(data => {
+        if (!mounted) return
+        setDailySuccessData(data)
+      })
+      .catch(err => {
+        console.error('Failed to fetch daily success rate:', err)
+      })
+
+    return () => { mounted = false }
+  }, [startDate, endDate])
 
   const { chartData, options } = useMemo(() => {
     const dataByDate = new Map<string, any>()
@@ -37,38 +54,67 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
       if (isSuccess) data[mno].success++
     })
 
-    // If we have network analytics from the API, use it for the trend chart
-    if (networkAnalytics?.successRate?.networks) {
-      const networks = networkAnalytics.successRate.networks
-      const dateLabel = startDate && endDate ? `${startDate} — ${endDate}` : 'Current Period'
+    // Use daily success rate data if available
+    if (dailySuccessData) {
+      // Handle different possible response structures
+      let series: any[] = []
+      let categories: string[] = []
 
-      const series = networks.map((network: any) => ({
-        name: network.network === 'T2' ? '9Mobile' : network.network === 'AIRTEL' ? 'Airtel' : network.network,
-        data: [network.success_rate || 0]
-      }))
-
-      const flattened = series.flatMap(s => s.data)
-      const maxValue = flattened.length ? Math.max(...flattened) : 0
-      const yMax = Math.max(Math.ceil(maxValue * 1.1), 100)
-
-      const options = {
-        chart: { type: 'area' as const, toolbar: { show: false }, animations: { enabled: true, speed: 800 } },
-        colors: ['#fbbf24', '#22c55e', '#ef4444', '#f97316'],
-        stroke: { curve: 'smooth' as const, width: 2 },
-        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] } },
-        xaxis: { categories: [dateLabel], axisBorder: { show: false }, labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' } } },
-        yaxis: {
-          min: 0, max: yMax, decimalsInFloat: 1,
-          labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' }, formatter: (val: number) => `${val.toFixed(1)}%` }
-        },
-        grid: { borderColor: 'var(--border)', strokeDashArray: 4 },
-        tooltip: { theme: 'dark', y: { formatter: (val: number) => `${val.toFixed(1)}%` } },
-        dataLabels: { enabled: false },
-        markers: { size: 4, hover: { size: 6 } },
-        legend: { position: 'bottom' as const, labels: { colors: 'var(--foreground)' } }
+      if (Array.isArray(dailySuccessData)) {
+        // Array of daily data points
+        const dateMap = new Map<string, any>()
+        dailySuccessData.forEach((item: any) => {
+          const date = item.date || item.day
+          if (date) {
+            dateMap.set(date, item)
+          }
+        })
+        
+        categories = Array.from(dateMap.keys()).sort()
+        const networks = ['MTN', 'GLO', 'AIRTEL', 'T2']
+        
+        series = networks.map(network => ({
+          name: network === 'T2' ? '9Mobile' : network === 'AIRTEL' ? 'Airtel' : network,
+          data: categories.map(date => {
+            const dayData = dateMap.get(date)
+            return dayData?.[network] || dayData?.[network.toLowerCase()] || 0
+          })
+        }))
+      } else if (dailySuccessData.networks) {
+        // Single period with networks array
+        const dateLabel = startDate && endDate ? `${startDate} — ${endDate}` : 'Current Period'
+        categories = [dateLabel]
+        
+        series = dailySuccessData.networks.map((network: any) => ({
+          name: network.network === 'T2' ? '9Mobile' : network.network === 'AIRTEL' ? 'Airtel' : network.network,
+          data: [network.success_rate || 0]
+        }))
       }
 
-      return { chartData: series, options }
+      if (series.length > 0) {
+        const flattened = series.flatMap(s => s.data)
+        const maxValue = flattened.length ? Math.max(...flattened) : 0
+        const yMax = Math.max(Math.ceil(maxValue * 1.1), 100)
+
+        const options = {
+          chart: { type: 'area' as const, toolbar: { show: false }, animations: { enabled: true, speed: 800 } },
+          colors: ['#fbbf24', '#22c55e', '#ef4444', '#f97316'],
+          stroke: { curve: 'smooth' as const, width: 2 },
+          fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] } },
+          xaxis: { categories, axisBorder: { show: false }, labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' } } },
+          yaxis: {
+            min: 0, max: yMax, decimalsInFloat: 1,
+            labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' }, formatter: (val: number) => `${val.toFixed(1)}%` }
+          },
+          grid: { borderColor: 'var(--border)', strokeDashArray: 4 },
+          tooltip: { theme: 'dark', y: { formatter: (val: number) => `${val.toFixed(1)}%` } },
+          dataLabels: { enabled: false },
+          markers: { size: 4, hover: { size: 6 } },
+          legend: { position: 'bottom' as const, labels: { colors: 'var(--foreground)' } }
+        }
+
+        return { chartData: series, options }
+      }
     }
 
 
@@ -179,7 +225,7 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
     }
 
     return { chartData: series, options }
-  }, [records, networkAnalytics, startDate, endDate])
+  }, [records, dailySuccessData, startDate, endDate])
 
   // No dummy fallback data: when no records and no networkAnalytics, the chart will render empty
 

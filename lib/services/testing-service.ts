@@ -19,6 +19,14 @@ export const testingService = {
     return response.data
   },
   /**
+   * Get daily success rate (matches Postman: GET {{baseUrl}}/testing/daily-success-rate/)
+   */
+  async getDailySuccessRate(params?: Record<string, any>): Promise<any> {
+    const response = await api.get('/testing/daily-success-rate/', { params })
+    return response.data
+  },
+
+  /**
    * Get testing records list (paginated). Returns array or {results: []}
    */
   async getRecords(params?: Record<string, any>): Promise<any> {
