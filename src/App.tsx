@@ -91,7 +91,7 @@ export default function App() {
               <Menu className="h-5 w-5" />
             </Button>
             <div className="flex flex-1 items-center justify-between">
-              <h2 className="text-lg font-semibold">VeSS Testing Console</h2>
+              <h2 className="text-lg font-semibold">VESS</h2>
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"

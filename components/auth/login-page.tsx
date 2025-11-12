@@ -42,18 +42,18 @@ export function LoginPage() {
   }, [])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-4" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}>
       <div className="w-full max-w-md">
-        <Card className="w-full bg-card border-border shadow-lg">
+        <Card className="w-full bg-white/95 backdrop-blur-sm border-white/20 shadow-2xl">
           <CardHeader className="space-y-1 pt-6">
-            <div className="h-12 w-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+            <div className="h-12 w-12 rounded-lg bg-blue-500/20 text-blue-600 flex items-center justify-center mx-auto mb-2">
               <Shield className="h-6 w-6" />
             </div>
-            <CardTitle className="text-2xl font-bold text-center text-foreground">
+            <CardTitle className="text-2xl font-bold text-center text-gray-800">
               Welcome Back
             </CardTitle>
-            <CardDescription className="text-center text-muted-foreground">
-              Sign in to access your SIRE-K dashboard
+            <CardDescription className="text-center text-gray-600">
+              Sign in to access your VESS dashboard
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-6">
@@ -139,7 +139,7 @@ export function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="w-full transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200"
                   disabled={loading}
                   size="lg"
                 >
@@ -153,12 +153,9 @@ export function LoginPage() {
                   )}
                 </Button>
                 
-                <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
-                  <a href="#" className="hover:underline hover:text-foreground">
-                    Forgot password?
-                  </a>
+                <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
                   <span>
-                    Powered by <span className="font-semibold text-primary">VeSS</span>
+                    Powered by <span className="font-semibold text-blue-600">VeSS</span>
                   </span>
                 </div>
               </div>
