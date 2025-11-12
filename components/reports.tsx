@@ -8,6 +8,9 @@ import ReportTable from "./reports/report-table"
 import ReportStats from "./reports/report-stats"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
+import testingService from '@/lib/services/testing-service'
+import type { TestRecord } from '@/lib/types'
+import { useEffect } from 'react'
 
 export default function Reports({ csvData }: { csvData: string }) {
   const [selectedMNO, setSelectedMNO] = useState<MNO | "All">("All")
@@ -27,8 +30,52 @@ export default function Reports({ csvData }: { csvData: string }) {
     }
   }, [csvData])
 
+  // Try to fetch records from backend if available and prefer that structured data
+  const [apiRecords, setApiRecords] = useState<TestRecord[] | null>(null)
+  useEffect(() => {
+    let mounted = true
+    testingService.getRecords({ page_size: 1000 })
+      .then((res: any) => {
+        if (!mounted) return
+        const arr = Array.isArray(res) ? res : (res?.results ?? [])
+        const normalize = (t: any): TestRecord => {
+          const get = (k1: string, k2?: string) => t[k1] ?? (k2 ? t[k2] : undefined)
+          const originLoc = t.originator_location_detail?.name ?? t.originator_location ?? t.originatorLocation ?? ''
+          const recipLoc = t.recipient_location_detail?.name ?? t.recipient_location ?? t.recipientLocation ?? ''
+          return {
+            testCaseDescription: t.test_case_description ?? t.testCaseDescription ?? '',
+            originatorNumber: t.originator_number ?? t.originatorNumber ?? '',
+            originatorLocation: originLoc,
+            originatorNetwork: (t.originator_network ?? t.originatorNetwork ?? '').toUpperCase(),
+            originatorServiceType: t.originator_service_type ?? t.originatorServiceType ?? '',
+            recipientNumber: t.recipient_number ?? t.recipientNumber ?? '',
+            recipientLocation: recipLoc,
+            recipientNetwork: (t.recipient_network ?? t.recipientNetwork ?? '').toUpperCase(),
+            recipientServiceType: t.recipient_service_type ?? t.recipientServiceType ?? '',
+            service: (t.service ?? t.type ?? '').toUpperCase(),
+            timestamp: t.time_of_call ?? t.timestamp ?? t.created_at ?? '',
+            duration: t.duration ?? '',
+            callSetupTime: t.call_setup_time ?? t.callSetupTime ?? '',
+            status: t.status ?? t.result ?? '',
+            failureCause: t.failure_cause ?? t.failureCause ?? '',
+            dataSpeed: t.data_speed ?? t.dataSpeed ?? '',
+          } as TestRecord
+        }
+
+        setApiRecords(arr.map(normalize))
+      })
+      .catch((e) => {
+        const msg = e && (e as any).message ? (e as any).message : String(e)
+        console.error('Failed to load records from API for reports:', msg)
+      })
+    return () => { mounted = false }
+  }, [])
+
+  // prefer API records when available, otherwise fall back to CSV-parsed data
+  const sourceData = apiRecords && apiRecords.length > 0 ? apiRecords : parsedData
+
   const filteredData = useMemo(() => {
-    return parsedData.filter((record) => {
+    return sourceData.filter((record) => {
       if (selectedMNO !== "All" && record.originatorNetwork !== selectedMNO) return false
       if (selectedService !== "All" && record.service !== selectedService) return false
       if (selectedState !== "All" && record.originatorLocation !== selectedState) return false

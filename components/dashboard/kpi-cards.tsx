@@ -5,8 +5,9 @@ import { MNO_COLORS, MNO_NAMES } from "@/lib/constants"
 import type { AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import analyticsService from '@/lib/services/analytics-service'
+import { portalService } from '@/lib/services/portal-service'
 
-export default function KPICards({ metrics }: { metrics?: Record<string, AggregatedMetrics> }) {
+export default function KPICards({ metrics, startDate, endDate }: { metrics?: Record<string, AggregatedMetrics>, startDate?: string | null, endDate?: string | null }) {
   const [dashboardData, setDashboardData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,19 +20,46 @@ export default function KPICards({ metrics }: { metrics?: Record<string, Aggrega
     // Try backend first (Postman: GET /analytics/dashboard/)
     setLoading(true)
     let mounted = true
-    analyticsService.getDashboard()
-      .then(data => {
+    const params: Record<string, any> = {}
+    if (startDate) params.start_date = startDate
+    if (endDate) params.end_date = endDate
+
+    analyticsService.getDashboard(Object.keys(params).length ? params : undefined)
+      .then(async (data) => {
         if (!mounted) return
+        // if analytics endpoint directly returns networks, use it
+        if (data && Array.isArray((data as any).networks)) {
+          setDashboardData(data)
+          setLoading(false)
+          return
+        }
+
+        // otherwise try network-success-rate endpoint as a fallback source (no dummy data)
+        try {
+          const nr = await portalService.getNetworkSuccessRate(params.start_date, params.end_date)
+          if (!mounted) return
+          if (nr && Array.isArray(nr.networks)) {
+            setDashboardData(nr)
+            setLoading(false)
+            return
+          }
+        } catch (e) {
+          const msg = e && (e as any).message ? (e as any).message : String(e)
+          console.error('portalService.getNetworkSuccessRate failed:', msg)
+        }
+
+        // final fallback to analytics response (may contain other KPI shapes)
         setDashboardData(data)
         setLoading(false)
       })
       .catch(err => {
         // No local fallbacks: log error and stop loading. UI will render empty state.
-        console.error('analyticsService.getDashboard failed', err)
+        const msg = err && (err as any).message ? (err as any).message : String(err)
+        console.error('analyticsService.getDashboard failed:', msg)
         if (mounted) setLoading(false)
       })
     return () => { mounted = false }
-  }, [metrics])
+  }, [metrics, startDate, endDate])
 
   if (loading) {
     return (
@@ -46,35 +74,26 @@ export default function KPICards({ metrics }: { metrics?: Record<string, Aggrega
     )
   }
 
-  const kpiData = dashboardData?.kpis
+  const kpiData = dashboardData
+
+  // prefer metrics prop > API networks array; be resilient to different nesting keys
   if (!metrics && !kpiData) return null
 
-  const mnos: AggregatedMetrics[] = metrics ? Object.values(metrics) : ([
-    {
-      mno: "MTN",
-      successRate: kpiData?.avgSuccessRate?.value || 87.5,
-      totalAttempts: kpiData?.totalTests?.value || 1250,
-      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * ((kpiData?.avgSuccessRate?.value || 87.5) / 100))
-    },
-    {
-      mno: "GLO",
-      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 5,
-      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.8),
-      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.8 * (((kpiData?.avgSuccessRate?.value || 87.5) - 5) / 100))
-    },
-    {
-      mno: "AIRTEL",
-      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 8,
-      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.7),
-      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.7 * (((kpiData?.avgSuccessRate?.value || 87.5) - 8) / 100))
-    },
-    {
-      mno: "T2",
-      successRate: (kpiData?.avgSuccessRate?.value || 87.5) - 3,
-      totalAttempts: Math.round((kpiData?.totalTests?.value || 1250) * 0.6),
-      totalSuccesses: Math.round((kpiData?.totalTests?.value || 1250) * 0.6 * (((kpiData?.avgSuccessRate?.value || 87.5) - 3) / 100))
-    }
-  ] as AggregatedMetrics[])
+  const networksSource: any[] | undefined = kpiData?.networks ?? kpiData?.successRate?.networks ?? kpiData?.success_rate?.networks ?? kpiData?.results?.networks
+
+  // debug keys to help trace API shape in development
+  if (typeof window !== 'undefined' && kpiData) {
+    try { console.debug('KPICards dashboardData keys:', Object.keys(kpiData)) } catch (e) { /* ignore */ }
+  }
+
+  const mnos: AggregatedMetrics[] = metrics
+    ? Object.values(metrics)
+    : ((networksSource ?? []) as any[]).map((n: any) => ({
+      mno: String((n.network ?? n.mno) || '').toUpperCase(),
+      successRate: Number(n.success_rate ?? n.successRate ?? 0) || 0,
+      totalAttempts: Number(n.total_records ?? n.totalAttempts ?? 0) || 0,
+      totalSuccesses: Number(n.success_records ?? n.totalSuccesses ?? 0) || 0,
+    } as AggregatedMetrics))
 
   return (
     <div className="space-y-3">

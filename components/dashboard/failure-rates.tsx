@@ -2,36 +2,66 @@
 
 import type { TestRecord, AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
-import { useMemo } from "react"
+import { useMemo, useEffect, useState } from "react"
+import { portalService } from '@/lib/services/portal-service'
 
 export default function FailureRates({
   records,
   metrics,
-}: { records: TestRecord[]; metrics: Record<string, AggregatedMetrics> }) {
-  const failureData = useMemo(() => {
-    const mmos = ["MTN", "GLO", "AIRTEL", "T2"] as const
-    
-    // Use sample data if no records
-    if (!records || records.length === 0) {
-      return [
-        { mno: "MTN", failureRate: 12, totalTests: 1250 },
-        { mno: "GLO", failureRate: 18, totalTests: 1000 },
-        { mno: "AIRTEL", failureRate: 21, totalTests: 875 },
-        { mno: "T2", failureRate: 15, totalTests: 750 }
-      ]
-    }
-    
-    return mmos.map((mno) => {
-      const mnoRecords = records.filter((r) => r.originatorNetwork === mno)
-      const failures = mnoRecords.filter((r) => r.status === "Failed").length
-      const rate = mnoRecords.length > 0 ? (failures / mnoRecords.length) * 100 : 0
-      return {
-        mno,
-        failureRate: Math.round(rate),
-        totalTests: mnoRecords.length,
+  startDate,
+  endDate,
+}: { records: TestRecord[]; metrics: Record<string, AggregatedMetrics>; startDate?: string | null; endDate?: string | null }) {
+  const [failureData, setFailureData] = useState<{ mno: string; failureRate: number; totalTests: number }[]>([])
+
+  useEffect(() => {
+    let mounted = true
+
+    // Prefer API when date range is provided
+    const fetchFailure = async () => {
+      if (startDate && endDate) {
+        try {
+          const res = await portalService.getNetworkFailureRate(startDate, endDate)
+          if (!mounted) return
+          // expected shape: { date_range: {...}, networks: [{ network, total_records, failure_records, failure_rate }, ...] }
+          if (res && Array.isArray(res.networks)) {
+            const mapped = (res.networks as any[]).map(n => ({
+              mno: String(n.network ?? n.mno ?? '').toUpperCase(),
+              failureRate: Number(n.failure_rate ?? n.failureRate ?? ((n.failure_records && n.total_records) ? (n.failure_records / n.total_records) * 100 : 0)) || 0,
+              totalTests: Number(n.total_records ?? n.totalTests ?? 0) || 0,
+            }))
+            setFailureData(mapped)
+            return
+          }
+        } catch (e) {
+          const msg = e && (e as any).message ? (e as any).message : String(e)
+          console.error('Failed to fetch failure rates from API:', msg)
+        }
       }
-    })
-  }, [records])
+
+      // If API not available or no date range, derive from records if present
+      if (records && records.length > 0) {
+        const mmos = ["MTN", "GLO", "AIRTEL", "T2"] as const
+        const derived = mmos.map((mno) => {
+          const mnoRecords = records.filter((r) => r.originatorNetwork === mno)
+          const failures = mnoRecords.filter((r) => r.status === "Failed").length
+          const rate = mnoRecords.length > 0 ? (failures / mnoRecords.length) * 100 : 0
+          return {
+            mno,
+            failureRate: Math.round(rate),
+            totalTests: mnoRecords.length,
+          }
+        })
+        setFailureData(derived)
+        return
+      }
+
+      // No data available — clear
+      setFailureData([])
+    }
+
+    fetchFailure()
+    return () => { mounted = false }
+  }, [records, startDate, endDate])
 
   const colorMap: Record<string, string> = {
     MTN: "#fbbf24", // MTN Yellow
@@ -41,6 +71,17 @@ export default function FailureRates({
   }
 
   // Calculate circle sizes based on failure rates
+  if (!failureData || failureData.length === 0) {
+    return (
+      <Card className="bg-card border-border">
+        <div className="p-6">
+          <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Failure Rates by Network</h2>
+          <div className="text-sm text-muted-foreground">No failure data available for the selected date range.</div>
+        </div>
+      </Card>
+    )
+  }
+
   const maxFailureRate = Math.max(...failureData.map(d => d.failureRate))
   const minSize = 80
   const maxSize = 160

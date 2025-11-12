@@ -33,7 +33,7 @@ try {
 
 const GEO_URL = "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
 
-export default function NigeriaMapHighcharts({ records }: { records: TestRecord[] }) {
+export default function NigeriaMapHighcharts({ records, startDate, endDate }: { records: TestRecord[], startDate?: string | null, endDate?: string | null }) {
   const [mapData, setMapData] = useState<any | null>(null)
 
   useEffect(() => {
@@ -45,7 +45,8 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
         setMapData(geo)
       })
       .catch((err) => {
-        console.error("Failed to load map data", err)
+        const msg = err && (err as any).message ? (err as any).message : String(err)
+        console.error("Failed to load map data:", msg)
       })
 
     return () => {
@@ -65,9 +66,15 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
       return
     }
 
-    // Try backend first (Postman: GET /testing/hits-per-state/?filter=...)
+  // Try backend first (Postman: GET /testing/hits-per-state/?start_date=...&end_date=...)
     let mounted = true
-    testingService.getHitsPerState('today')
+  const params: Record<string, any> = {}
+  if (startDate) params.start_date = startDate
+  if (endDate) params.end_date = endDate
+
+  // If no explicit date filters provided and no records, default to 'today'
+  const callArg = Object.keys(params).length ? params : 'today'
+  testingService.getHitsPerState(callArg as any)
       .then((arr: any) => {
         if (!mounted || !Array.isArray(arr)) return
         const grouped = new Map<string, number[]>()
@@ -86,7 +93,8 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
       })
       .catch((err) => {
         // No local fallback: log and continue with empty/aggregated records (if any)
-        console.error('testingService.getHitsPerState failed', err)
+        const msg = err && (err as any).message ? (err as any).message : String(err)
+        console.error('testingService.getHitsPerState failed:', msg)
       })
 
     return () => {
@@ -210,7 +218,8 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
             const name = e.point && (e.point.name || e.point.properties && e.point.properties.name)
             const value = e.point && e.point.value
             // For now, just log. You can replace with context/state to show sidebar
-            console.log('State clicked', name, value)
+            // Sanitize before logging
+            try { console.info('State clicked', String(name), Number(value)) } catch { /* ignore */ }
             // You may want to dispatch a custom event so parent components can read it
             window.dispatchEvent(new CustomEvent('vess:state-click', { detail: { name, value } }))
           },

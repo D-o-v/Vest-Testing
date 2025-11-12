@@ -256,6 +256,13 @@ export class PortalService {
     return response.data;
   }
 
+  async getNetworkFailureRate(startDate: string, endDate: string): Promise<any> {
+    const response = await api.get('/testing/network-failure-rate/', {
+      params: { start_date: startDate, end_date: endDate }
+    });
+    return response.data;
+  }
+
   async getHitsPerState(filter: 'today' | 'week' | 'month' = 'today'): Promise<any> {
     const response = await api.get('/testing/hits-per-state/', {
       params: { filter }

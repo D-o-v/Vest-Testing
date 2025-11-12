@@ -171,15 +171,16 @@ export function useNetworkAnalytics(startDate: string, endDate: string) {
 
   const fetchNetworkData = useCallback(async () => {
     if (!startDate || !endDate) return;
-    
+
     setLoading(true);
     setError(null);
     try {
-      const [successRate, hitsPerState] = await Promise.all([
+      const [successRate, failureRate, hitsPerState] = await Promise.all([
         portalService.getNetworkSuccessRate(startDate, endDate),
+        portalService.getNetworkFailureRate(startDate, endDate),
         portalService.getHitsPerState('today')
       ]);
-      setData({ successRate, hitsPerState });
+      setData({ successRate, failureRate, hitsPerState });
     } catch (err: any) {
       setError(err.message || 'Failed to fetch network analytics');
     } finally {

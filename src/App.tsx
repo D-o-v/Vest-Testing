@@ -1,6 +1,6 @@
 import { useAuth } from '@/lib/hooks/use-auth';
 import { useTheme } from '@/components/theme-provider';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { BarChart3, LayoutDashboard, Menu, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Dashboard from '@/components/dashboard';
@@ -15,8 +15,10 @@ export default function App() {
   const { theme, setTheme } = useTheme();
   const { isAuthenticated, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [csvData, setCsvData] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Fetch records from backend and build CSV for export/reporting features
@@ -66,7 +68,8 @@ export default function App() {
         setCsvData([headers, ...rows].map((row) => row.join(',')).join('\n'))
       })
       .catch((err) => {
-        console.error('Failed to fetch records for CSV', err)
+        const msg = err && (err as any).message ? (err as any).message : String(err)
+        console.error('Failed to fetch records for CSV:', msg)
         // leave csvData as empty string
       })
       .finally(() => { /* nothing */ })
@@ -82,7 +85,8 @@ export default function App() {
               variant="ghost"
               className="mr-2"
               size="icon"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              onClick={() => { setSidebarOpen(!sidebarOpen); setMobileOpen(!mobileOpen) }}
+              aria-label="Toggle menu"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -110,15 +114,15 @@ export default function App() {
       )}
 
       {isAuthenticated && (
-        <div className={`fixed top-14 left-0 bottom-0 w-48 border-r bg-background/95 backdrop-blur transition-transform duration-200 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
+  // Hide sidebar on small screens (show only at lg and above). Use translate on lg to honor toggle.
+  <div className={`hidden lg:flex fixed top-14 left-0 bottom-0 w-48 border-r bg-card shadow-sm transition-transform duration-200 ease-in-out ${sidebarOpen ? 'lg:translate-x-0' : 'lg:-translate-x-full'}`}>
           <div className="flex h-full flex-col">
             <div className="flex-1 overflow-y-auto py-3">
               <nav className="grid items-start px-3 text-sm font-medium gap-1">
+                {/** Active item highlighting based on current route */}
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-9 px-3"
+                  className={`w-full justify-start h-9 px-3 ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-accent text-accent-foreground' : 'hover:bg-muted'}`}
                   onClick={() => navigate('/dashboard')}
                 >
                   <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -126,7 +130,7 @@ export default function App() {
                 </Button>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-9 px-3"
+                  className={`w-full justify-start h-9 px-3 ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-accent text-accent-foreground' : 'hover:bg-muted'}`}
                   onClick={() => navigate('/reports')}
                 >
                   <BarChart3 className="mr-2 h-4 w-4" />
@@ -138,7 +142,36 @@ export default function App() {
         </div>
       )}
 
-      <main className={`pt-14 ${isAuthenticated ? (sidebarOpen ? 'pl-48' : 'pl-0') : ''} transition-[padding] duration-200 ease-in-out`}>
+      {/* Mobile drawer: shown when hamburger/menu toggles on small screens */}
+      {isAuthenticated && mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          {/* overlay */}
+          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} aria-hidden="true" />
+          <div className="absolute left-0 top-14 bottom-0 w-64 bg-card border-r p-3 overflow-auto shadow-lg">
+            <nav className="grid items-start px-1 text-sm font-medium gap-1">
+              <Button
+                variant="ghost"
+                className={`w-full justify-start h-9 px-3 ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-accent text-accent-foreground' : 'hover:bg-muted'}`}
+                onClick={() => { navigate('/dashboard'); setMobileOpen(false) }}
+              >
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+              <Button
+                variant="ghost"
+                className={`w-full justify-start h-9 px-3 ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-accent text-accent-foreground' : 'hover:bg-muted'}`}
+                onClick={() => { navigate('/reports'); setMobileOpen(false) }}
+              >
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Reports
+              </Button>
+            </nav>
+          </div>
+        </div>
+      )}
+
+      {/* main padding only applies on lg where sidebar exists */}
+      <main className={`pt-14 ${isAuthenticated ? (sidebarOpen ? 'lg:pl-48' : 'lg:pl-0') : ''} transition-[padding] duration-200 ease-in-out`}>
         <div className="p-6">
         <Routes>
           <Route path="/login" element={

@@ -4,8 +4,8 @@ export const testingService = {
   /**
    * Get recent tests (matches Postman: GET {{baseUrl}}/testing/recent-tests/)
    */
-  async getRecentTests(): Promise<any[]> {
-    const response = await api.get('/testing/recent-tests/')
+  async getRecentTests(params?: Record<string, any>): Promise<any[]> {
+    const response = await api.get('/testing/recent-tests/', { params })
     return response.data
   },
 
@@ -13,10 +13,9 @@ export const testingService = {
    * Get hits-per-state (matches Postman: GET {{baseUrl}}/testing/hits-per-state/)
    * Accepts optional filter param (e.g., 'today')
    */
-  async getHitsPerState(filter?: string): Promise<any> {
-    const response = await api.get('/testing/hits-per-state/', {
-      params: filter ? { filter } : undefined,
-    })
+  async getHitsPerState(opts?: { filter?: string; start_date?: string; end_date?: string } | Record<string, any>): Promise<any> {
+    const params = opts || undefined
+    const response = await api.get('/testing/hits-per-state/', { params })
     return response.data
   },
   /**

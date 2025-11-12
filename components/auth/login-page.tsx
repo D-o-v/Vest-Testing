@@ -47,50 +47,48 @@ export function LoginPage() {
   }, [])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
-      <div className="relative w-full max-w-md">
-        <Card className="w-full min-h-[60vh] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-md">
-          <CardHeader className="space-y-3 pt-8 pb-6">
-            <div className="relative mx-auto mb-3">
-              <div className="h-14 w-14 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 flex items-center justify-center">
-                <Shield className="h-7 w-7" />
-              </div>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md">
+        <Card className="w-full bg-card border-border shadow-lg">
+          <CardHeader className="space-y-1 pt-6">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+              <Shield className="h-6 w-6" />
             </div>
-            <CardTitle className="text-2xl font-semibold text-center text-slate-900 dark:text-slate-100">
+            <CardTitle className="text-2xl font-bold text-center text-foreground">
               Welcome Back
             </CardTitle>
-            <CardDescription className="text-center text-slate-600 dark:text-slate-400 text-sm">
+            <CardDescription className="text-center text-muted-foreground">
               Sign in to access your SIRE-K dashboard
             </CardDescription>
           </CardHeader>
-          <CardContent className="pb-6 px-6">
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <CardContent className="pb-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <Alert variant="destructive" className="animate-in slide-in-from-top-2 text-sm py-3 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50">
+                <Alert variant="destructive" className="animate-in slide-in-from-top-2 text-sm py-2">
                   {error}
                 </Alert>
               )}
 
-              <div className="space-y-4">
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-700 transition-colors">
-                    <MailIcon className="h-5 w-5" />
+              <div className="space-y-3">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground">
+                    <MailIcon className="h-4 w-4" />
                   </div>
                   <Input
                     type="email"
                     name="email"
-                    placeholder="Enter your email address"
+                    placeholder="Enter your email"
                     value={credentials.email}
                     onChange={handleChange}
                     disabled={loading}
                     required
-                    className="pl-12 h-12 text-base bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl transition-all duration-150 focus:ring-2 focus:ring-gray-200 focus:border-slate-300 dark:focus:border-slate-600 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="pl-10 h-10 transition-all duration-200 focus:ring-2 focus:ring-ring/20"
                   />
                 </div>
 
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-700 transition-colors">
-                    <KeyIcon className="h-5 w-5" />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground">
+                    <KeyIcon className="h-4 w-4" />
                   </div>
                   <Input
                     type={showPassword ? 'text' : 'password'}
@@ -100,15 +98,15 @@ export function LoginPage() {
                     onChange={handleChange}
                     disabled={loading}
                     required
-                    className="pl-12 pr-12 h-12 text-base bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl transition-all duration-150 focus:ring-2 focus:ring-gray-200 focus:border-slate-300 dark:focus:border-slate-600 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="pl-10 pr-10 h-10 transition-all duration-200 focus:ring-2 focus:ring-ring/20"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((s) => !s)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
 
@@ -118,26 +116,26 @@ export function LoginPage() {
                   disabled={loading}
                   required
                 >
-                  <SelectTrigger className="w-full h-12 text-base bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl transition-all duration-150 focus:ring-2 focus:ring-gray-200 focus:border-slate-300 dark:focus:border-slate-600 hover:border-slate-300 dark:hover:border-slate-600">
+                  <SelectTrigger className="w-full transition-all duration-200 focus:ring-2 focus:ring-ring/20">
                     <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                    <SelectItem value="admin" className="rounded-lg">
-                      <div className="flex items-center py-1">
-                        <Shield className="h-4 w-4 mr-3 text-slate-500" />
-                        <span className="font-medium">Administrator</span>
+                  <SelectContent>
+                    <SelectItem value="admin">
+                      <div className="flex items-center">
+                        <Shield className="h-4 w-4 mr-2 text-primary" />
+                        Administrator
                       </div>
                     </SelectItem>
-                    <SelectItem value="engineer" className="rounded-lg">
-                      <div className="flex items-center py-1">
-                        <Zap className="h-4 w-4 mr-3 text-slate-500" />
-                        <span className="font-medium">Engineer</span>
+                    <SelectItem value="engineer">
+                      <div className="flex items-center">
+                        <Zap className="h-4 w-4 mr-2 text-primary" />
+                        Engineer
                       </div>
                     </SelectItem>
-                    <SelectItem value="user" className="rounded-lg">
-                      <div className="flex items-center py-1">
-                        <UserIcon className="h-4 w-4 mr-3 text-slate-500" />
-                        <span className="font-medium">Regular User</span>
+                    <SelectItem value="user">
+                      <div className="flex items-center">
+                        <UserIcon className="h-4 w-4 mr-2 text-primary" />
+                        Regular User
                       </div>
                     </SelectItem>
                   </SelectContent>
@@ -145,28 +143,26 @@ export function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 text-base font-semibold bg-slate-800 dark:bg-slate-700 text-white border-0 rounded-xl shadow-sm transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                   disabled={loading}
+                  size="lg"
                 >
                   {loading ? (
                     <div className="flex items-center justify-center">
-                      <Spinner className="mr-3 h-5 w-5" />
-                      <span>Signing in...</span>
+                      <Spinner className="mr-2 h-4 w-4" />
+                      Signing in...
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center">
-                      <Shield className="mr-2 h-5 w-5" />
-                      <span>Sign In</span>
-                    </div>
+                    'Sign In'
                   )}
                 </Button>
                 
-                <div className="flex items-center justify-between pt-2 text-sm">
-                  <a href="#" className="text-slate-600 dark:text-slate-400 hover:underline font-medium transition-colors">
+                <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+                  <a href="#" className="hover:underline hover:text-foreground">
                     Forgot password?
                   </a>
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">
-                    Powered by <span className="font-semibold">VeSS</span>
+                  <span>
+                    Powered by <span className="font-semibold text-primary">VeSS</span>
                   </span>
                 </div>
               </div>
