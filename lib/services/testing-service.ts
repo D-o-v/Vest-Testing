@@ -35,7 +35,7 @@ export const testingService = {
    * Get testing records list (paginated). Returns array or {results: []}
    */
   async getRecords(params?: Record<string, any>): Promise<any> {
-    const response = await api.get('/testing/records/', { params })
+    const response = await api.get('/testing/reports-by-service/', { params })
     // Some endpoints return { count, results } while others may return array
     return response.data?.results ?? response.data
   },

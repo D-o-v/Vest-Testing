@@ -2,6 +2,7 @@ export type MNO = "MTN" | "GLO" | "AIRTEL" | "T2"
 export type ServiceType = "Voice" | "SMS" | "Data"
 
 export interface TestRecord {
+  id?: string
   testCaseDescription: string
   originatorNumber: string
   originatorLocation: string
@@ -15,9 +16,11 @@ export interface TestRecord {
   timestamp: string
   duration: string
   callSetupTime: string
-  status: "Success" | "Failed" | "SUBMITTED" | "SUBMITTED AND DELIVERED"
+  status: string
   failureCause: string
   dataSpeed: string
+  url?: string
+  urlRedirect?: string
 }
 
 export interface AggregatedMetrics {

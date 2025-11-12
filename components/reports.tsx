@@ -32,7 +32,6 @@ export default function Reports({ csvData }: { csvData: string }) {
     }
   }, [csvData])
 
-  // Try to fetch records from backend if available and prefer that structured data
   const [apiRecords, setApiRecords] = useState<TestRecord[] | null>(null)
   const [loading, setLoading] = useState(false)
   
@@ -50,11 +49,25 @@ export default function Reports({ csvData }: { csvData: string }) {
     testingService.getRecords(params)
       .then((res: any) => {
         if (!mounted) return
-        const arr = Array.isArray(res) ? res : (res?.results ?? [])
+        
+        // Handle new API structure with services grouped data
+        let allRecords: any[] = []
+        if (res?.services) {
+          Object.values(res.services).forEach((serviceData: any) => {
+            if (serviceData.examples) {
+              allRecords = allRecords.concat(serviceData.examples)
+            }
+          })
+        } else {
+          // Fallback for old structure
+          allRecords = Array.isArray(res) ? res : (res?.results ?? [])
+        }
+        
         const normalize = (t: any): TestRecord => {
           const originLoc = t.originator_location_detail?.name ?? t.originator_location ?? t.originatorLocation ?? ''
           const recipLoc = t.recipient_location_detail?.name ?? t.recipient_location ?? t.recipientLocation ?? ''
           return {
+            id: t.id,
             testCaseDescription: t.test_case_description ?? t.testCaseDescription ?? '',
             originatorNumber: t.originator_number ?? t.originatorNumber ?? '',
             originatorLocation: originLoc,
@@ -71,10 +84,12 @@ export default function Reports({ csvData }: { csvData: string }) {
             status: t.status ?? t.result ?? '',
             failureCause: t.failure_cause ?? t.failureCause ?? '',
             dataSpeed: t.data_speed ?? t.dataSpeed ?? '',
+            url: t.url ?? '',
+            urlRedirect: t.url_redirect ?? '',
           } as TestRecord
         }
 
-        setApiRecords(arr.map(normalize))
+        setApiRecords(allRecords.map(normalize))
       })
       .catch((e) => {
         const msg = e && (e as any).message ? (e as any).message : String(e)
@@ -114,17 +129,35 @@ export default function Reports({ csvData }: { csvData: string }) {
 
       return true
     })
-  }, [parsedData, selectedMNO, selectedService, selectedState, dateRange])
+  }, [sourceData, selectedMNO, selectedService, selectedState, dateRange])
 
   const metrics = useMemo(() => {
     return aggregateMetricsByMNO(filteredData)
   }, [filteredData])
 
   const exportToCSV = () => {
-    if (sourceData.length === 0) return
-    const headers = ["Test Case", "Originator", "Origin Location", "Origin Network", "Service", "Recipient", "Recipient Location", "Recipient Network", "Status", "Timestamp", "Duration"]
-    const rows = sourceData.map((record) => [record.testCaseDescription, record.originatorNumber, record.originatorLocation, record.originatorNetwork, record.service, record.recipientNumber, record.recipientLocation, record.recipientNetwork, record.status, record.timestamp, record.duration])
-    const csv = [headers, ...rows].map((row) => row.join(",")).join("\n")
+    if (filteredData.length === 0) return
+    const headers = ["ID", "Test Case", "Service", "Originator", "Origin Location", "Origin Network", "Recipient", "Recipient Location", "Recipient Network", "Status", "Duration", "Call Setup Time", "Data Speed", "URL", "URL Redirect", "Timestamp", "Failure Cause"]
+    const rows = filteredData.map((record) => [
+      record.id || '',
+      record.testCaseDescription,
+      record.service,
+      record.originatorNumber,
+      record.originatorLocation,
+      record.originatorNetwork,
+      record.recipientNumber || '',
+      record.recipientLocation || '',
+      record.recipientNetwork || '',
+      record.status,
+      record.duration || '',
+      record.callSetupTime || '',
+      record.dataSpeed || '',
+      record.url || '',
+      record.urlRedirect || '',
+      record.timestamp,
+      record.failureCause || ''
+    ])
+    const csv = [headers, ...rows].map((row) => row.map(cell => `"${cell}"`).join(",")).join("\n")
     const blob = new Blob([csv], { type: "text/csv" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -137,12 +170,12 @@ export default function Reports({ csvData }: { csvData: string }) {
   }
 
   const exportToPDF = () => {
-    if (sourceData.length === 0) return
+    if (filteredData.length === 0) return
     window.print()
   }
 
   const exportToImage = () => {
-    if (sourceData.length === 0) return
+    if (filteredData.length === 0) return
     alert('Image export feature coming soon')
   }
 
@@ -155,7 +188,7 @@ export default function Reports({ csvData }: { csvData: string }) {
         </div>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" disabled={sourceData.length === 0}>
+              <Button size="sm" disabled={filteredData.length === 0}>
                 <Download className="w-3 h-3 mr-1" />
                 Export
               </Button>

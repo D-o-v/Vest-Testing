@@ -4,7 +4,7 @@ import { useState } from "react"
 import type { TestRecord } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import RecordDetailModal from "./record-detail-modal"
 
 interface ReportTableProps {
   records: TestRecord[]
@@ -59,9 +59,11 @@ export default function ReportTable({ records }: ReportTableProps) {
                     <td className="px-2 py-2">
                       <span
                         className={`px-1.5 py-0.5 rounded text-xs font-medium ${
-                          record.status === "Success" || record.status?.includes("DELIVERED") || record.status?.includes("delivered")
+                          record.status?.toLowerCase().includes("success") || record.status?.toLowerCase().includes("delivered")
                             ? "bg-green-100 text-green-700 border border-green-200"
-                            : "bg-red-100 text-red-700 border border-red-200"
+                            : record.status?.toLowerCase().includes("failed") || record.status?.toLowerCase().includes("error")
+                            ? "bg-red-100 text-red-700 border border-red-200"
+                            : "bg-blue-100 text-blue-700 border border-blue-200"
                         }`}
                       >
                         {record.status}
@@ -109,31 +111,11 @@ export default function ReportTable({ records }: ReportTableProps) {
       </div>
       
       {/* Test Detail Modal */}
-      <Dialog open={!!selectedRecord} onOpenChange={() => setSelectedRecord(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Test Details</DialogTitle>
-          </DialogHeader>
-          {selectedRecord && (
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><strong>Test Case:</strong> {selectedRecord.testCaseDescription}</div>
-              <div><strong>Service:</strong> {selectedRecord.service}</div>
-              <div><strong>Originator:</strong> {selectedRecord.originatorNumber}</div>
-              <div><strong>Recipient:</strong> {selectedRecord.recipientNumber}</div>
-              <div><strong>Origin Network:</strong> {selectedRecord.originatorNetwork}</div>
-              <div><strong>Recipient Network:</strong> {selectedRecord.recipientNetwork}</div>
-              <div><strong>Origin Location:</strong> {selectedRecord.originatorLocation}</div>
-              <div><strong>Recipient Location:</strong> {selectedRecord.recipientLocation}</div>
-              <div><strong>Status:</strong> {selectedRecord.status}</div>
-              <div><strong>Duration:</strong> {selectedRecord.duration || 'N/A'}</div>
-              <div><strong>Call Setup Time:</strong> {selectedRecord.callSetupTime || 'N/A'}</div>
-              <div><strong>Timestamp:</strong> {new Date(selectedRecord.timestamp).toLocaleString()}</div>
-              {selectedRecord.failureCause && <div className="col-span-2"><strong>Failure Cause:</strong> {selectedRecord.failureCause}</div>}
-              {selectedRecord.dataSpeed && <div><strong>Data Speed:</strong> {selectedRecord.dataSpeed}</div>}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <RecordDetailModal 
+        record={selectedRecord} 
+        open={!!selectedRecord} 
+        onOpenChange={() => setSelectedRecord(null)} 
+      />
     </Card>
   )
 }
