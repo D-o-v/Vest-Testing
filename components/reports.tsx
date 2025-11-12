@@ -121,9 +121,9 @@ export default function Reports({ csvData }: { csvData: string }) {
   }, [filteredData])
 
   const exportToCSV = () => {
-    if (filteredData.length === 0) return
+    if (sourceData.length === 0) return
     const headers = ["Test Case", "Originator", "Origin Location", "Origin Network", "Service", "Recipient", "Recipient Location", "Recipient Network", "Status", "Timestamp", "Duration"]
-    const rows = filteredData.map((record) => [record.testCaseDescription, record.originatorNumber, record.originatorLocation, record.originatorNetwork, record.service, record.recipientNumber, record.recipientLocation, record.recipientNetwork, record.status, record.timestamp, record.duration])
+    const rows = sourceData.map((record) => [record.testCaseDescription, record.originatorNumber, record.originatorLocation, record.originatorNetwork, record.service, record.recipientNumber, record.recipientLocation, record.recipientNetwork, record.status, record.timestamp, record.duration])
     const csv = [headers, ...rows].map((row) => row.join(",")).join("\n")
     const blob = new Blob([csv], { type: "text/csv" })
     const url = URL.createObjectURL(blob)
@@ -137,12 +137,12 @@ export default function Reports({ csvData }: { csvData: string }) {
   }
 
   const exportToPDF = () => {
-    if (filteredData.length === 0) return
+    if (sourceData.length === 0) return
     window.print()
   }
 
   const exportToImage = () => {
-    if (filteredData.length === 0) return
+    if (sourceData.length === 0) return
     alert('Image export feature coming soon')
   }
 
@@ -155,7 +155,7 @@ export default function Reports({ csvData }: { csvData: string }) {
         </div>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" disabled={filteredData.length === 0}>
+              <Button size="sm" disabled={sourceData.length === 0}>
                 <Download className="w-3 h-3 mr-1" />
                 Export
               </Button>
