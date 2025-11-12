@@ -293,6 +293,30 @@ export default function TestResults({ data }: TestResultsProps) {
         </div>
       </Card>
 
+      {/* Summary Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Card className="p-3">
+          <div className="text-xs text-muted-foreground">Total Tests</div>
+          <div className="text-lg font-bold">{filteredResults.length}</div>
+        </Card>
+        <Card className="p-3">
+          <div className="text-xs text-muted-foreground">Success Rate</div>
+          <div className="text-lg font-bold text-green-600">
+            {filteredResults.length > 0 
+              ? Math.round((filteredResults.filter(r => r.status.toLowerCase().includes('success') || r.status.toLowerCase().includes('delivered')).length / filteredResults.length) * 100)
+              : 0}%
+          </div>
+        </Card>
+        <Card className="p-3">
+          <div className="text-xs text-muted-foreground">Networks</div>
+          <div className="text-lg font-bold">{uniqueNetworks.length}</div>
+        </Card>
+        <Card className="p-3">
+          <div className="text-xs text-muted-foreground">Locations</div>
+          <div className="text-lg font-bold">{uniqueLocations.length}</div>
+        </Card>
+      </div>
+
       {/* Results Table */}
       <Card>
         <div className="overflow-x-auto">
@@ -317,64 +341,70 @@ export default function TestResults({ data }: TestResultsProps) {
                 </tr>
               ) : (
                 paginatedResults.map((result) => (
-                  <tr key={result.id} className="border-b hover:bg-muted/30">
-                    <td className="p-3">
-                      <div className="font-medium">{result.test_case_description}</div>
-                      <div className="text-xs text-muted-foreground">
+                  <tr key={result.id} className="border-b hover:bg-muted/20 transition-colors">
+                    <td className="p-2">
+                      <div className="font-medium text-sm">{result.test_case_description}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
                         {result.originator_number} → {result.recipient_number || "N/A"}
                       </div>
                     </td>
-                    <td className="p-3">
-                      <div className="flex gap-1">
+                    <td className="p-2">
+                      <div className="flex flex-wrap gap-1">
                         <Badge 
                           variant="outline" 
-                          className="text-xs"
-                          style={{ borderColor: getNetworkColor(result.originator_network) }}
+                          className="text-xs px-1.5 py-0.5"
+                          style={{ borderColor: getNetworkColor(result.originator_network), color: getNetworkColor(result.originator_network) }}
                         >
                           {result.originator_network}
                         </Badge>
                         {result.recipient_network && (
                           <Badge 
                             variant="outline" 
-                            className="text-xs"
-                            style={{ borderColor: getNetworkColor(result.recipient_network) }}
+                            className="text-xs px-1.5 py-0.5"
+                            style={{ borderColor: getNetworkColor(result.recipient_network), color: getNetworkColor(result.recipient_network) }}
                           >
                             {result.recipient_network}
                           </Badge>
                         )}
                       </div>
                     </td>
-                    <td className="p-3">
-                      <Badge variant="secondary" className="text-xs">
-                        {result.service || "N/A"}
-                      </Badge>
+                    <td className="p-2">
+                      {result.service ? (
+                        <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                          {result.service}
+                        </Badge>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">-</span>
+                      )}
                     </td>
-                    <td className="p-3">
+                    <td className="p-2">
                       <div className="text-xs">
-                        <div>{result.originator_location_detail?.name}</div>
+                        <div className="font-medium">{result.originator_location_detail?.name || "-"}</div>
                         {result.recipient_location_detail?.name && (
                           <div className="text-muted-foreground">
-                            → {result.recipient_location_detail.name}
+                            ↓ {result.recipient_location_detail.name}
                           </div>
                         )}
                       </div>
                     </td>
-                    <td className="p-3">
-                      <Badge className={`text-xs ${getStatusColor(result.status)}`}>
+                    <td className="p-2">
+                      <Badge className={`text-xs px-1.5 py-0.5 ${getStatusColor(result.status)}`}>
                         {result.status}
                       </Badge>
                     </td>
-                    <td className="p-3">
-                      <div className="text-xs">
-                        {result.duration && <div>Duration: {result.duration}s</div>}
-                        {result.call_setup_time && <div>Setup: {result.call_setup_time}s</div>}
-                        {result.data_speed && <div>Speed: {result.data_speed}</div>}
+                    <td className="p-2">
+                      <div className="text-xs space-y-0.5">
+                        {result.duration && <div className="text-blue-600">⏱ {result.duration}s</div>}
+                        {result.call_setup_time && <div className="text-orange-600">🔗 {result.call_setup_time}s</div>}
+                        {result.data_speed && <div className="text-green-600">📶 {result.data_speed}</div>}
+                        {!result.duration && !result.call_setup_time && !result.data_speed && (
+                          <span className="text-muted-foreground">-</span>
+                        )}
                       </div>
                     </td>
-                    <td className="p-3 text-xs text-muted-foreground">
-                      {new Date(result.time_of_call).toLocaleDateString()}
-                      <br />
-                      {new Date(result.time_of_call).toLocaleTimeString()}
+                    <td className="p-2 text-xs text-muted-foreground">
+                      <div>{new Date(result.time_of_call).toLocaleDateString()}</div>
+                      <div className="text-xs opacity-75">{new Date(result.time_of_call).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </td>
                   </tr>
                 ))
@@ -385,24 +415,29 @@ export default function TestResults({ data }: TestResultsProps) {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between p-4 border-t">
+          <div className="flex items-center justify-between p-3 border-t bg-muted/20">
             <div className="text-sm text-muted-foreground">
-              Page {currentPage} of {totalPages}
+              Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, filteredResults.length)} of {filteredResults.length}
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
+                className="h-8 px-3"
               >
                 Previous
               </Button>
+              <span className="text-sm text-muted-foreground px-2">
+                {currentPage} / {totalPages}
+              </span>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
+                className="h-8 px-3"
               >
                 Next
               </Button>
