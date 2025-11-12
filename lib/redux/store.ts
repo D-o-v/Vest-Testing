@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { setTokenGetter, setLogoutDispatcher } from '../services/api';
 
 // Import reducers with type annotations
-import { authReducer, logoutAction, testReducer } from './slices';
+import { authReducer, logoutSync, testReducer } from './slices';
 
 // Import types
 import type { AuthState, TestState } from './types';
@@ -39,7 +39,7 @@ setTokenGetter(() => {
 });
 
 setLogoutDispatcher(() => {
-  store.dispatch(logoutAction());
+  store.dispatch(logoutSync());
 });
 
 export const persistor = persistStore(store);

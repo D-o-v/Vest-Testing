@@ -72,7 +72,7 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    logout: (state) => {
+    logoutSync: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -103,7 +103,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, logout: logoutAction } = authSlice.actions;
+export const { clearError, logoutSync } = authSlice.actions;
 
 // Export the reducer with explicit type
 const authReducer = authSlice.reducer;

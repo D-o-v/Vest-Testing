@@ -7,7 +7,8 @@ import ReportFilters from "./reports/report-filters"
 import ReportTable from "./reports/report-table"
 import ReportStats from "./reports/report-stats"
 import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Download, FileText, Image, FileSpreadsheet } from "lucide-react"
 import testingService from '@/lib/services/testing-service'
 import type { TestRecord } from '@/lib/types'
 import { useEffect } from 'react'
@@ -103,69 +104,60 @@ export default function Reports({ csvData }: { csvData: string }) {
   }, [filteredData])
 
   const exportToCSV = () => {
-    if (filteredData.length === 0) {
-      alert("No data to export")
-      return
-    }
-
-    const headers = [
-      "Test Case",
-      "Originator",
-      "Originator Location",
-      "Originator Network",
-      "Service Type",
-      "Recipient",
-      "Recipient Location",
-      "Recipient Network",
-      "Status",
-      "Timestamp",
-      "Duration",
-      "Call Setup Time",
-      "Failure Cause",
-      "Data Speed",
-    ]
-
-    const rows = filteredData.map((record) => [
-      record.testCaseDescription,
-      record.originatorNumber,
-      record.originatorLocation,
-      record.originatorNetwork,
-      record.service,
-      record.recipientNumber,
-      record.recipientLocation,
-      record.recipientNetwork,
-      record.status,
-      record.timestamp,
-      record.duration,
-      record.callSetupTime,
-      record.failureCause,
-      record.dataSpeed,
-    ])
-
+    if (filteredData.length === 0) return
+    const headers = ["Test Case", "Originator", "Origin Location", "Origin Network", "Service", "Recipient", "Recipient Location", "Recipient Network", "Status", "Timestamp", "Duration"]
+    const rows = filteredData.map((record) => [record.testCaseDescription, record.originatorNumber, record.originatorLocation, record.originatorNetwork, record.service, record.recipientNumber, record.recipientLocation, record.recipientNetwork, record.status, record.timestamp, record.duration])
     const csv = [headers, ...rows].map((row) => row.join(",")).join("\n")
-
     const blob = new Blob([csv], { type: "text/csv" })
-    const url = window.URL.createObjectURL(blob)
+    const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
     a.download = `network-report-${new Date().toISOString().split("T")[0]}.csv`
     document.body.appendChild(a)
     a.click()
-    window.URL.revokeObjectURL(url)
+    URL.revokeObjectURL(url)
     document.body.removeChild(a)
   }
 
+  const exportToPDF = () => {
+    if (filteredData.length === 0) return
+    window.print()
+  }
+
+  const exportToImage = () => {
+    if (filteredData.length === 0) return
+    alert('Image export feature coming soon')
+  }
+
   return (
-    <div className="space-y-8">
-      <div className="flex items-start justify-between">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Network Reports</h1>
-          <p className="text-muted-foreground">Generate and export detailed performance reports</p>
+          <h1 className="text-2xl font-bold text-foreground">Network Reports</h1>
+          <p className="text-sm text-muted-foreground">Generate and export detailed performance reports</p>
         </div>
-        <Button onClick={exportToCSV} className="gap-2" disabled={filteredData.length === 0}>
-          <Download className="w-4 h-4" />
-          Export CSV
-        </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" disabled={filteredData.length === 0}>
+                <Download className="w-3 h-3 mr-1" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={exportToCSV}>
+                <FileSpreadsheet className="w-4 h-4 mr-2" />
+                Export as CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={exportToPDF}>
+                <FileText className="w-4 h-4 mr-2" />
+                Export as PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={exportToImage}>
+                <Image className="w-4 h-4 mr-2" />
+                Export as Image
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       </div>
 
       <ReportFilters
@@ -179,7 +171,7 @@ export default function Reports({ csvData }: { csvData: string }) {
         onDateRangeChange={setDateRange}
       />
 
-      <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={parsedData.length} />
+      <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={sourceData.length} />
 
       <ReportTable records={filteredData} />
     </div>

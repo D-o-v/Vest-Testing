@@ -54,7 +54,7 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
 
         // Accept multiple shapes: an array, or { states: [...] }
         const arr = Array.isArray(res) ? res : (res?.states ?? res?.data?.states ?? [])
-        const overallTotal = Number(res?.overall_total_hits ?? res?.overallTotalHits ?? 0) || arr.reduce((s: number, r: any) => s + (Number(r.total_hits ?? r.totalHits ?? 0) || 0), 0)
+        const overallTotal = Number(res?.overall_total_hits ?? res?.overallTotalHits ?? 0) || (arr.reduce((s: number, r: any) => s + (Number(r.total_hits ?? r.totalHits ?? 0) || 0), 0) || 0)
 
         const map = new Map<string, StateEntry>()
         for (const item of arr) {

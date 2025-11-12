@@ -68,17 +68,17 @@ export default function ReportFilters({
 }: ReportFiltersProps) {
   return (
     <Card className="bg-card border-border">
-      <div className="p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Filters</h3>
+      <div className="p-3">
+        <h3 className="text-sm font-semibold text-foreground mb-2">Filters</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
           {/* MNO Filter */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Network</label>
+            <label className="block text-xs font-medium text-foreground mb-1">Network</label>
             <select
               value={selectedMNO}
               onChange={(e) => onMNOChange(e.target.value as MNO | "All")}
-              className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground text-sm"
+              className="w-full px-2 py-1 bg-muted border border-border rounded text-foreground text-xs"
             >
               <option value="All">All Networks</option>
               <option value="MTN">MTN</option>
@@ -90,11 +90,11 @@ export default function ReportFilters({
 
           {/* Service Filter */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Service Type</label>
+            <label className="block text-xs font-medium text-foreground mb-1">Service</label>
             <select
               value={selectedService}
               onChange={(e) => onServiceChange(e.target.value as ServiceType | "All")}
-              className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground text-sm"
+              className="w-full px-2 py-1 bg-muted border border-border rounded text-foreground text-xs"
             >
               <option value="All">All Services</option>
               <option value="Voice">Voice</option>
@@ -103,13 +103,13 @@ export default function ReportFilters({
             </select>
           </div>
 
-          {/* State Filter */}
+          {/* Origin Filter */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">State</label>
+            <label className="block text-xs font-medium text-foreground mb-1">Origin</label>
             <select
               value={selectedState}
               onChange={(e) => onStateChange(e.target.value)}
-              className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground text-sm"
+              className="w-full px-2 py-1 bg-muted border border-border rounded text-foreground text-xs"
             >
               {STATES.map((state) => (
                 <option key={state} value={state}>
@@ -119,23 +119,42 @@ export default function ReportFilters({
             </select>
           </div>
 
-          {/* Date Range */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-1 space-y-2">
-            <label className="block text-sm font-medium text-foreground mb-2">Date Range</label>
-            <div className="flex gap-2">
-              <Input
-                type="date"
-                value={dateRange.start}
-                onChange={(e) => onDateRangeChange({ ...dateRange, start: e.target.value })}
-                className="flex-1 text-sm"
-              />
-              <Input
-                type="date"
-                value={dateRange.end}
-                onChange={(e) => onDateRangeChange({ ...dateRange, end: e.target.value })}
-                className="flex-1 text-sm"
-              />
-            </div>
+          {/* Destination Filter */}
+          <div>
+            <label className="block text-xs font-medium text-foreground mb-1">Destination</label>
+            <select
+              value={selectedState}
+              onChange={(e) => onStateChange(e.target.value)}
+              className="w-full px-2 py-1 bg-muted border border-border rounded text-foreground text-xs"
+            >
+              {STATES.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Date From */}
+          <div>
+            <label className="block text-xs font-medium text-foreground mb-1">From</label>
+            <Input
+              type="date"
+              value={dateRange.start}
+              onChange={(e) => onDateRangeChange({ ...dateRange, start: e.target.value })}
+              className="text-xs h-7"
+            />
+          </div>
+
+          {/* Date To */}
+          <div>
+            <label className="block text-xs font-medium text-foreground mb-1">To</label>
+            <Input
+              type="date"
+              value={dateRange.end}
+              onChange={(e) => onDateRangeChange({ ...dateRange, end: e.target.value })}
+              className="text-xs h-7"
+            />
           </div>
         </div>
       </div>

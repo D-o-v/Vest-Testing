@@ -20,13 +20,11 @@ export default function DashboardFilters({ onChange }: Props) {
   }, [start, end])
 
   return (
-    <div className="flex items-center gap-4 bg-muted/10 p-2 rounded-lg">
-      {/* Date inputs only — presets removed per request */}
-
-      <div className="flex items-center gap-2 bg-background border border-border rounded-md px-2 py-1">
-        <input value={start ?? ''} onChange={(e) => setStart(e.target.value || null)} type="date" className="text-sm p-1 bg-transparent outline-none" />
-        <span className="text-sm text-muted-foreground">—</span>
-        <input value={end ?? ''} onChange={(e) => setEnd(e.target.value || null)} type="date" className="text-sm p-1 bg-transparent outline-none" />
+    <div className="flex items-center gap-1 bg-muted/10 p-1 rounded">
+      <div className="flex items-center gap-1 bg-background border border-border rounded px-1 py-0.5">
+        <input value={start ?? ''} onChange={(e) => setStart(e.target.value || null)} type="date" className="text-xs p-0.5 bg-transparent outline-none w-24" />
+        <span className="text-xs text-muted-foreground">—</span>
+        <input value={end ?? ''} onChange={(e) => setEnd(e.target.value || null)} type="date" className="text-xs p-0.5 bg-transparent outline-none w-24" />
       </div>
     </div>
   )
