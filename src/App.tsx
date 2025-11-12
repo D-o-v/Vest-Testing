@@ -122,7 +122,7 @@ export default function App() {
                 {/** Active item highlighting based on current route */}
                 <Button
                   variant="ghost"
-                  className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-red-500 text-white hover:bg-red-600' : 'hover:bg-muted'}`}
+                  className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-muted'}`}
                   onClick={() => navigate('/dashboard')}
                 >
                   <LayoutDashboard className="mr-1 h-3 w-3" />
@@ -130,7 +130,7 @@ export default function App() {
                 </Button>
                 <Button
                   variant="ghost"
-                  className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-red-500 text-white hover:bg-red-600' : 'hover:bg-muted'}`}
+                  className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-muted'}`}
                   onClick={() => navigate('/reports')}
                 >
                   <BarChart3 className="mr-1 h-3 w-3" />
@@ -151,7 +151,7 @@ export default function App() {
             <nav className="grid items-start px-1 text-xs font-medium gap-1">
               <Button
                 variant="ghost"
-                className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-red-500 text-white hover:bg-red-600' : 'hover:bg-muted'}`}
+                className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/dashboard' || location.pathname.startsWith('/dashboard/') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-muted'}`}
                 onClick={() => { navigate('/dashboard'); setMobileOpen(false) }}
               >
                 <LayoutDashboard className="mr-1 h-3 w-3" />
@@ -159,7 +159,7 @@ export default function App() {
               </Button>
               <Button
                 variant="ghost"
-                className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-red-500 text-white hover:bg-red-600' : 'hover:bg-muted'}`}
+                className={`w-full justify-start h-7 px-1 text-xs ${location.pathname === '/reports' || location.pathname.startsWith('/reports/') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-muted'}`}
                 onClick={() => { navigate('/reports'); setMobileOpen(false) }}
               >
                 <BarChart3 className="mr-1 h-3 w-3" />
