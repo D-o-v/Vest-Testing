@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { MNO_COLORS, MNO_NAMES } from "@/lib/constants"
 import type { AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
+import analyticsService from '@/lib/services/analytics-service'
 
 export default function KPICards({ metrics }: { metrics?: Record<string, AggregatedMetrics> }) {
   const [dashboardData, setDashboardData] = useState<any>(null)
@@ -15,18 +16,21 @@ export default function KPICards({ metrics }: { metrics?: Record<string, Aggrega
       return // Use provided metrics
     }
 
-    // Fallback: fetch dummy data
+    // Try backend first (Postman: GET /analytics/dashboard/)
     setLoading(true)
-    fetch('/data/dashboard-metrics.json')
-      .then(r => r.json())
+    let mounted = true
+    analyticsService.getDashboard()
       .then(data => {
+        if (!mounted) return
         setDashboardData(data)
         setLoading(false)
       })
-      .catch(error => {
-        console.error(error)
-        setLoading(false)
+      .catch(err => {
+        // No local fallbacks: log error and stop loading. UI will render empty state.
+        console.error('analyticsService.getDashboard failed', err)
+        if (mounted) setLoading(false)
       })
+    return () => { mounted = false }
   }, [metrics])
 
   if (loading) {

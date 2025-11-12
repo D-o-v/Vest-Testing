@@ -18,8 +18,15 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
-      const response = await api.post<AuthResponse>('/auth/login/', credentials);
-      return response.data;
+      // API returns a wrapper: { success: true, data: { user, tokens: { accessToken } } }
+      const response = await api.post<any>('/auth/login/', credentials);
+      const payload = response.data || {}
+      const user = payload.data?.user || payload.user || null
+      const token = payload.data?.tokens?.accessToken || payload.token || null
+      if (!token) {
+        return rejectWithValue('No token returned from login')
+      }
+      return { user, token }
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
@@ -61,8 +68,8 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = (action.payload as any)?.user || null;
+        state.token = (action.payload as any)?.token || null;
       })
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;

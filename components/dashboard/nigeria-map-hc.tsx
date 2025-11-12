@@ -7,6 +7,7 @@ import HC_map from "highcharts/modules/map"
 import type { TestRecord } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { aggregateMetricsByState } from "@/lib/csv-parser"
+import testingService from '@/lib/services/testing-service'
 
 // Initialize the map module for Highcharts (module may be a namespace with a default export)
 try {
@@ -64,15 +65,14 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
       return
     }
 
-    // Fallback: fetch the local dummy data file if present
+    // Try backend first (Postman: GET /testing/hits-per-state/?filter=...)
     let mounted = true
-    fetch('/data/state-metrics.json')
-      .then((r) => r.json())
-      .then((arr: any[]) => {
+    testingService.getHitsPerState('today')
+      .then((arr: any) => {
         if (!mounted || !Array.isArray(arr)) return
         const grouped = new Map<string, number[]>()
         for (const item of arr) {
-          const s = item.state
+          const s = item.state || item.name || item.state_display
           const v = typeof item.successRate === 'number' ? item.successRate : Number(item.successRate)
           if (!grouped.has(s)) grouped.set(s, [])
           grouped.get(s)!.push(v)
@@ -84,8 +84,9 @@ export default function NigeriaMapHighcharts({ records }: { records: TestRecord[
         }
         setStateMetrics(map)
       })
-      .catch(() => {
-        // ignore - we'll just show empty values
+      .catch((err) => {
+        // No local fallback: log and continue with empty/aggregated records (if any)
+        console.error('testingService.getHitsPerState failed', err)
       })
 
     return () => {

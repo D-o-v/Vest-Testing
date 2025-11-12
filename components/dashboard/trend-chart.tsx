@@ -35,7 +35,7 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
 
     const sortedDates = Array.from(dataByDate.keys()).sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
 
-    const series = [
+  const series = [
       {
         name: "MTN",
         data: sortedDates.map((date) => {
@@ -66,7 +66,13 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
       },
     ]
 
-    const options = {
+  // compute y-axis bounds from data rather than relying on hardcoded constants
+  const flattened = series.flatMap((s) => s.data as number[])
+  const maxValue = flattened.length ? Math.max(...flattened) : 0
+  const suggestedMax = Math.ceil((maxValue || 100) * 1.05) // small padding
+  const yMax = Math.max(suggestedMax, 100) // ensure percent chart caps at least 100
+
+  const options = {
       chart: {
         type: "area" as const,
         toolbar: { show: false },
@@ -95,8 +101,17 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
       },
       yaxis: {
         min: 0,
-        max: 100,
-        labels: { style: { colors: "var(--muted-foreground)", fontSize: "12px" } },
+        max: yMax,
+        // choose ticks dynamically from data range
+        tickAmount: Math.min(6, Math.max(3, Math.ceil(yMax / 20))),
+        decimalsInFloat: 2,
+        labels: {
+          style: { colors: "var(--muted-foreground)", fontSize: "12px" },
+          formatter: function (val: number) {
+            // show two decimal places and a percent sign
+            try { return `${Number(val).toFixed(2)}%` } catch { return String(val) }
+          }
+        },
       },
       grid: {
         borderColor: "var(--border)",
@@ -105,7 +120,16 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
       tooltip: {
         theme: "dark",
         style: { fontSize: "12px" },
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: function (val: number) {
+            try { return `${Number(val).toFixed(2)}%` } catch { return String(val) }
+          }
+        }
       },
+      dataLabels: { enabled: false },
+      markers: { size: 3, hover: { size: 5 } },
       legend: {
         position: "bottom" as const,
         labels: { colors: "var(--foreground)" },
@@ -115,24 +139,27 @@ export default function TrendChart({ records }: { records: TestRecord[] }) {
     return { chartData: series, options }
   }, [records])
 
-  // Generate fallback data for demonstration
+  // Generate fallback data for demonstration (dates are relative to today to avoid hardcoded years)
   function generateFallbackData() {
-    const dates = ['Dec 15', 'Dec 16', 'Dec 17', 'Dec 18', 'Dec 19', 'Dec 20', 'Dec 21']
+    const days = 7
     const fallbackRecords: TestRecord[] = []
-    
-    dates.forEach((date, i) => {
-      const mnos = ['MTN', 'GLO', 'AIRTEL', 'T2'] as const
-      mnos.forEach(mno => {
+    const mnos = ['MTN', 'GLO', 'AIRTEL', 'T2'] as const
+    const base = new Date()
+
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(base.getTime() - i * 24 * 60 * 60 * 1000)
+      for (const mno of mnos) {
+        // push a small set per day
         for (let j = 0; j < 20; j++) {
           fallbackRecords.push({
-            timestamp: new Date(2024, 11, 15 + i).toISOString(),
+            timestamp: d.toISOString(),
             originatorNetwork: mno,
             status: Math.random() > 0.2 ? 'Success' : 'Failed'
           } as TestRecord)
         }
-      })
-    })
-    
+      }
+    }
+
     return fallbackRecords
   }
 

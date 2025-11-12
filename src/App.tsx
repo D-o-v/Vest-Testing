@@ -7,7 +7,8 @@ import Dashboard from '@/components/dashboard';
 import Reports from '@/components/reports';
 import { LoginPage } from '@/components/auth/login-page';
 import { AuthGuard } from '@/components/auth/auth-guard';
-import { generateDummyData } from '@/lib/dummy-data';
+import testingService from '@/lib/services/testing-service';
+import type { TestRecord } from '@/lib/types';
 import { useState, useEffect } from 'react';
 
 export default function App() {
@@ -18,8 +19,13 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const records = generateDummyData();
-    const headers = [
+    // Fetch records from backend and build CSV for export/reporting features
+    let mounted = true
+    testingService.getRecords({ page_size: 1000 })
+      .then((res: any) => {
+        if (!mounted) return
+        const records = (Array.isArray(res) ? res : (res?.results ?? [])) as TestRecord[]
+        const headers = [
       'testCaseDescription',
       'Originator Number',
       'Originator Location',
@@ -38,7 +44,7 @@ export default function App() {
       'Data Speed',
     ];
 
-    const rows = records.map((r) => [
+        const rows = records.map((r) => [
       r.testCaseDescription,
       r.originatorNumber,
       r.originatorLocation,
@@ -57,7 +63,14 @@ export default function App() {
       r.dataSpeed,
     ]);
 
-    setCsvData([headers, ...rows].map((row) => row.join(',')).join('\n'));
+        setCsvData([headers, ...rows].map((row) => row.join(',')).join('\n'))
+      })
+      .catch((err) => {
+        console.error('Failed to fetch records for CSV', err)
+        // leave csvData as empty string
+      })
+      .finally(() => { /* nothing */ })
+    return () => { mounted = false }
   }, []);
 
   return (
