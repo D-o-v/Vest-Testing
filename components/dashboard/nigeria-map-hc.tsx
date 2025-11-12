@@ -8,98 +8,85 @@ import type { TestRecord } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { aggregateMetricsByState } from "@/lib/csv-parser"
 import testingService from '@/lib/services/testing-service'
+import logger from '@/lib/utils/logger'
 
-// Initialize the map module for Highcharts (module may be a namespace with a default export)
+// Initialize the Highcharts map module
 try {
   const mapModule: any = (HC_map as any)?.default ?? HC_map
-  if (typeof mapModule === "function") {
-    mapModule(Highcharts)
-  } else {
-    // fallback: try dynamic import (shouldn't normally be needed)
-    import("highcharts/modules/map").then((m) => {
-      const fn = (m as any)?.default ?? m
-      if (typeof fn === "function") fn(Highcharts)
-    }).catch(() => {
-        // ignore dynamic import failure; initialization will be skipped
-    })
-  }
-} catch (err) {
-  // Safe fallback to dynamic import
-        import("highcharts/modules/map").then((m) => {
-          const fn = (m as any)?.default ?? m
-          if (typeof fn === "function") fn(Highcharts)
-        }).catch((e) => {
-          const msg = e instanceof Error ? e.message : String(e)
-          import('@/lib/utils/logger').then(({ default: logger }) => logger.warn('Failed to initialize Highcharts map module:', msg)).catch(() => {})
-        })
+  if (typeof mapModule === "function") mapModule(Highcharts)
+} catch (e) {
+  // best-effort initialization; log sanitized message
+  const msg = e instanceof Error ? e.message : String(e)
+  logger.warn('Failed to initialize Highcharts map module:', msg)
 }
 
 const GEO_URL = "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
 
+type StateEntry = { percent: number; totalHits: number; topNetworks: string[] }
+
 export default function NigeriaMapHighcharts({ records, startDate, endDate }: { records: TestRecord[], startDate?: string | null, endDate?: string | null }) {
   const [mapData, setMapData] = useState<any | null>(null)
+  const [stateDetails, setStateDetails] = useState<Map<string, StateEntry>>(() => new Map())
 
   useEffect(() => {
     let mounted = true
     fetch(GEO_URL)
-      .then((r) => r.json())
-      .then((geo) => {
-        if (!mounted) return
-        setMapData(geo)
+      .then(r => r.json())
+      .then(geo => { if (!mounted) return; setMapData(geo) })
+      .catch((e) => {
+        const msg = e instanceof Error ? e.message : String(e)
+        logger.error('Failed to load map geojson:', msg)
       })
-      .catch((err) => {
-        const sanitizedMsg = err instanceof Error ? err.message : 'Failed to load map data'
-        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to load map data:', sanitizedMsg)).catch(() => {})
-      })
-
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [])
 
-  const [stateMetrics, setStateMetrics] = useState<Map<string, number>>(() => new Map())
-
   useEffect(() => {
-    // First try to use aggregated records passed in
-    const metrics = aggregateMetricsByState(records)
-    if (metrics && metrics.length > 0) {
-      const map = new Map<string, number>()
-      for (const m of metrics) map.set(m.state, Math.round(m.successRate))
-      setStateMetrics(map)
-      return
-    }
-
-    // Try backend with filter parameters
+    // Query the hits-per-state endpoint (preferred). If it fails, fall back to aggregating provided records.
     let mounted = true
     const params: Record<string, any> = {}
     if (startDate) params.start_date = startDate
     if (endDate) params.end_date = endDate
-    
-    testingService.getHitsPerState(Object.keys(params).length ? params : { filter: 'today' })
-      .then((arr: any) => {
-        if (!mounted || !Array.isArray(arr)) return
-        const grouped = new Map<string, number[]>()
+    const hitsParams = Object.keys(params).length ? params : { filter: 'today' }
+
+    testingService.getHitsPerState(hitsParams as any)
+      .then((res: any) => {
+        if (!mounted) return
+
+        // Accept multiple shapes: an array, or { states: [...] }
+        const arr = Array.isArray(res) ? res : (res?.states ?? res?.data?.states ?? [])
+        const overallTotal = Number(res?.overall_total_hits ?? res?.overallTotalHits ?? 0) || arr.reduce((s: number, r: any) => s + (Number(r.total_hits ?? r.totalHits ?? 0) || 0), 0)
+
+        const map = new Map<string, StateEntry>()
         for (const item of arr) {
-          const s = item.state || item.name || item.state_display
-          const v = typeof item.successRate === 'number' ? item.successRate : Number(item.successRate)
-          if (!grouped.has(s)) grouped.set(s, [])
-          grouped.get(s)!.push(v)
+          const name = String(item.state ?? item.state_display ?? item.name ?? '').trim()
+          if (!name) continue
+          const totalHits = Number(item.total_hits ?? item.totalHits ?? item.originator_hits ?? item.recipient_hits ?? 0) || 0
+          const percent = Number(item.percent_of_overall ?? item.percentOfOverall ?? item.percent ?? (overallTotal ? (totalHits / overallTotal) * 100 : 0)) || 0
+          const topNetworks = (item.top_networks ?? item.topNetworks ?? []).map((n: any) => String(n.network ?? n.name ?? n).toUpperCase())
+          map.set(name, { percent: Math.round(percent * 10) / 10, totalHits, topNetworks })
         }
-        const map = new Map<string, number>()
-        for (const [state, vals] of grouped.entries()) {
-          const avg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)
-          map.set(state, avg)
-        }
-        setStateMetrics(map)
+
+        setStateDetails(map)
+        if (process.env.NODE_ENV !== 'production') (window as any).__vess_state_hits = { params: hitsParams, overallTotal, states: Array.from(map.entries()) }
       })
-      .catch((err) => {
-        const sanitizedMsg = err instanceof Error ? err.message : 'API request failed'
-        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('testingService.getHitsPerState failed:', sanitizedMsg)).catch(() => {})
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err)
+        logger.error('Failed to fetch hits-per-state:', msg)
+
+        // fallback: aggregate provided `records` into state metrics
+        const metrics = aggregateMetricsByState(records)
+        if (metrics && metrics.length > 0) {
+          const map = new Map<string, StateEntry>()
+          const total = metrics.reduce((s, m) => s + (m.attempts ?? 0), 0) || 0
+          for (const m of metrics) {
+            const percent = total ? (m.successRate || 0) : 0
+            map.set(m.state, { percent: Math.round(percent * 10) / 10, totalHits: m.attempts || 0, topNetworks: [] })
+          }
+          setStateDetails(map)
+        }
       })
 
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [records, startDate, endDate])
 
   if (!mapData) {
@@ -110,120 +97,80 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
     )
   }
 
-  // State name mapping to handle variations
+  // Mapping helpers: try exact match, fallback to common name variations
   const stateNameMap: Record<string, string> = {
-    'Federal Capital Territory': 'FCT',
+    'Federal Capital Territory': 'Federal Capital Territory',
     'FCT': 'Federal Capital Territory',
     'Abuja': 'Federal Capital Territory',
     'Cross River': 'Cross River',
     'Akwa Ibom': 'Akwa Ibom'
   }
 
-  // Helper function to get state value with name variations
-  const getStateValue = (name: string): number | null => {
-    // Try exact match first
-    let val = stateMetrics.get(name)
-    if (val !== undefined) return val
-    
-    // Try mapped name
-    const mappedName = stateNameMap[name]
-    if (mappedName) {
-      val = stateMetrics.get(mappedName)
-      if (val !== undefined) return val
-    }
-    
-    // Try reverse mapping
-    const reverseKey = Object.keys(stateNameMap).find(key => stateNameMap[key] === name)
-    if (reverseKey) {
-      val = stateMetrics.get(reverseKey)
-      if (val !== undefined) return val
-    }
-    
-    // Fallback: generate reasonable value based on state name
-    const fallbackValues: Record<string, number> = {
-      'FCT': 89,
-      'Abuja': 89,
-      'Federal Capital Territory': 89,
-      'Lagos': 91,
-      'Rivers': 88,
-      'Kano': 85,
-      'Oyo': 87,
-      'Delta': 86
-    }
-    
-    return fallbackValues[name] ?? Math.floor(Math.random() * 30) + 65
+  const findStateEntry = (name: string) : StateEntry | undefined => {
+    if (!name) return undefined
+    // exact
+    if (stateDetails.has(name)) return stateDetails.get(name)
+    // mapped
+    const mapped = stateNameMap[name]
+    if (mapped && stateDetails.has(mapped)) return stateDetails.get(mapped)
+    // reverse lookup
+    const reverse = Object.keys(stateNameMap).find(k => stateNameMap[k] === name)
+    if (reverse && stateDetails.has(reverse)) return stateDetails.get(reverse)
+    // try case-insensitive match
+    const key = Array.from(stateDetails.keys()).find(k => k.toLowerCase() === name.toLowerCase())
+    return key ? stateDetails.get(key) : undefined
   }
 
-  // Prepare data array for Highcharts: match by 'name' property in geo json
+  // Build series data for Highcharts, attaching extra metadata for tooltip
   const data = mapData.features.map((f: any) => {
     const props = f.properties || {}
     const name = props.name || props.NAME || props['hc-a2'] || props.postal || props['hc-key'] || 'Unknown'
-    const val = getStateValue(name)
+    const entry = findStateEntry(name)
+    const value = entry ? entry.percent : 0
+    const totalHits = entry ? entry.totalHits : 0
+    const topNetworks = entry ? entry.topNetworks.join(', ') : ''
     return {
       'hc-key': props['hc-key'],
       name,
-      value: val,
+      value,
+      totalHits,
+      topNetworks,
     }
   })
 
   const options: Highcharts.Options = {
-    chart: {
-      map: mapData as any,
-      backgroundColor: undefined,
-    },
-    title: { 
-      text: "Network Performance by State",
-      align: 'left',
-      margin: 24,
-      style: {
-        fontWeight: '600',
-        fontSize: '16px',
-        color: '#111827'
-      }
-    },
+    chart: { map: mapData as any, backgroundColor: undefined },
+    title: { text: "Network Hits by State", align: 'left', margin: 24, style: { fontWeight: '600', fontSize: '16px', color: '#111827' } },
     mapNavigation: { enabled: true },
-    colorAxis: {
-      min: 0,
-      max: 100,
-      stops: [
-        [0, '#ef4444'],
-        [0.6, '#f59e0b'],
-        [0.75, '#84cc16'],
-        [0.9, '#10b981'],
-      ],
-    },
+    colorAxis: { min: 0, max: 100, stops: [[0, '#ef4444'], [0.6, '#f59e0b'], [0.75, '#84cc16'], [0.9, '#10b981']] },
     series: [
       {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore - highcharts typing for map series
+        // @ts-ignore - map series
         type: 'map',
         data,
         mapData: mapData,
         joinBy: ['hc-key', 'hc-key'],
-        name: 'Success Rate',
-        states: {
-          hover: {
-            color: '#2b6cb0',
-          },
-        },
+        name: 'Hits Share (%)',
+        states: { hover: { color: '#2b6cb0' } },
         tooltip: {
+          useHTML: true,
           pointFormatter: function (this: any) {
-            // 'this' refers to point
-            return `<b>${this.name || 'Unknown'}</b><br/>Success Rate: ${this.value ?? 'N/A'}%`
-          },
+            const val = (this.value != null) ? `${Number(this.value).toFixed(1)}%` : 'N/A'
+            const hits = this.totalHits != null ? String(this.totalHits) : 'N/A'
+            const top = this.topNetworks || '—'
+            return `<div style="font-size:13px"><strong>${this.name}</strong><br/>Share: ${val}<br/>Hits: ${hits}<br/>Top: ${top}</div>`
+          }
         },
         events: {
-            click: function (e: any) {
-              // Highcharts sends point as e.point
-              const name = e.point && (e.point.name || e.point.properties && e.point.properties.name)
-              const value = e.point && e.point.value
-              // Dispatch an event for parent components. Avoid logging raw values here.
-              window.dispatchEvent(new CustomEvent('vess:state-click', { detail: { name, value } }))
-            },
-        },
-      } as any,
+          click: function (e: any) {
+            const name = e.point && (e.point.name || e.point.properties && e.point.properties.name)
+            const detail = { name, value: e.point && e.point.value, hits: e.point && e.point.totalHits }
+            window.dispatchEvent(new CustomEvent('vess:state-click', { detail }))
+          }
+        }
+      } as any
     ],
-    credits: { enabled: false },
+    credits: { enabled: false }
   }
 
   return (
