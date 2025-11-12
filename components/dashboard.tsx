@@ -43,7 +43,7 @@ export default function Dashboard({ csvData }: { csvData: string }) {
       {/* First Row: KPI Cards + Trend Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
         <div className="lg:col-span-2">
-          <KPICards metrics={metrics} startDate={startDate} endDate={endDate} />
+          <KPICards startDate={startDate} endDate={endDate} />
         </div>
         <div className="lg:col-span-3">
           <TrendChart records={parsedData} startDate={startDate} endDate={endDate} />
