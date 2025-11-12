@@ -11,6 +11,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 export default function RecentTests({ records, startDate, endDate }: { records?: TestRecord[], startDate?: string | null, endDate?: string | null }) {
   const [dashboardData, setDashboardData] = useState<any>(null)
 
+  // Small helper moved outside map to avoid recreating per-item (performance)
+  const fmtDuration = (d: any) => {
+    if (d == null || d === '') return null
+    const n = Number(d)
+    if (Number.isNaN(n)) return String(d)
+    if (n >= 60) return `${Math.floor(n / 60)}m ${n % 60}s`
+    return `${n}s`
+  }
+
   useEffect(() => {
     if (records && records.length > 0) {
       return // Use provided records
@@ -36,14 +45,6 @@ export default function RecentTests({ records, startDate, endDate }: { records?:
           const durationRaw = t.duration ?? t.duration_seconds ?? null
           const callSetupRaw = t.call_setup_time ?? t.callSetupTime ?? null
 
-          const fmtDuration = (d: any) => {
-            if (d == null || d === '') return null
-            const n = Number(d)
-            if (Number.isNaN(n)) return String(d)
-            if (n >= 60) return `${Math.floor(n / 60)}m ${n % 60}s`
-            return `${n}s`
-          }
-
           return {
             id: t.id,
             mno,
@@ -60,14 +61,12 @@ export default function RecentTests({ records, startDate, endDate }: { records?:
 
         setDashboardData({ recentTests: Array.isArray(data) ? data.map(normalize) : [] })
       })
-      .catch((err) => {
-        // Sanitize error logging to avoid potential log injection
-        const msg = err && (err as any).message ? (err as any).message : String(err)
-        console.error('Failed to load recent tests from API:', msg)
-        // Leave dashboardData null so component shows empty state rather than local data
+      .catch((err: unknown) => {
+        const sanitizedMsg = err instanceof Error ? err.message : String(err || 'API request failed')
+        console.error('Failed to load recent tests from API:', sanitizedMsg)
       })
     return () => { mounted = false }
-  }, [records])
+  }, [records, startDate, endDate])
 
     const [open, setOpen] = useState(false)
     const [selectedTest, setSelectedTest] = useState<any | null>(null)
@@ -226,7 +225,16 @@ export default function RecentTests({ records, startDate, endDate }: { records?:
 
                   <div className="pt-2">
                     <div className="text-xs text-muted-foreground">Raw payload</div>
-                    <pre className="max-h-48 overflow-auto p-2 bg-muted rounded text-xs">{JSON.stringify(selectedTest.__raw || selectedTest, null, 2)}</pre>
+                    <pre className="max-h-48 overflow-auto p-2 bg-muted rounded text-xs">{(() => {
+                      const raw = selectedTest?.__raw || selectedTest || {}
+                      try {
+                        const s = JSON.stringify(raw, null, 2)
+                        // Truncate long payloads for performance
+                        return s.length > 2000 ? s.slice(0, 2000) + '\n…(truncated)' : s
+                      } catch {
+                        return String(raw)
+                      }
+                    })()}</pre>
                   </div>
                 </div>
               ) : (

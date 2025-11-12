@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +8,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { UserType } from '@/lib/redux/types';
 import { MailIcon, KeyIcon, UserIcon, Eye, EyeOff, Shield, Zap } from 'lucide-react';
-import { useEffect } from 'react';
 
 export function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -16,7 +15,7 @@ export function LoginPage() {
     password: '',
     userType: '' as UserType
   });
-  const [showPassword, setShowPassword] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const { login, loading, error } = useAuth();
 
@@ -40,10 +39,11 @@ export function LoginPage() {
     }));
   };
 
-  // user feedback: focus email on mount for quick keyboard login
+  const emailRef = useRef<HTMLInputElement | null>(null)
+
   useEffect(() => {
-    const el = document.querySelector('input[name="email"]') as HTMLInputElement | null
-    if (el) el.focus()
+    // prefer ref focus for readability and testability
+    emailRef.current?.focus()
   }, [])
 
   return (
@@ -80,6 +80,7 @@ export function LoginPage() {
                     placeholder="Enter your email"
                     value={credentials.email}
                     onChange={handleChange}
+                    ref={emailRef}
                     disabled={loading}
                     required
                     className="pl-10 h-10 transition-all duration-200 focus:ring-2 focus:ring-ring/20"
@@ -91,7 +92,7 @@ export function LoginPage() {
                     <KeyIcon className="h-4 w-4" />
                   </div>
                   <Input
-                    type={showPassword ? 'text' : 'password'}
+                    type={isPasswordVisible ? 'text' : 'password'}
                     name="password"
                     placeholder="Enter your password"
                     value={credentials.password}
@@ -102,11 +103,11 @@ export function LoginPage() {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword((s) => !s)}
+                    onClick={() => setIsPasswordVisible(prev => !prev)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {isPasswordVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
 

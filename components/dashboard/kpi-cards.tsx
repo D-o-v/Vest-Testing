@@ -26,7 +26,8 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
         setLoading(false)
       })
       .catch(err => {
-        console.error('Failed to fetch network success rate:', err)
+        const sanitizedMsg = err instanceof Error ? err.message : 'Unknown error'
+        console.error('Failed to fetch network success rate:', sanitizedMsg)
         if (mounted) setLoading(false)
       })
     
@@ -46,23 +47,27 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
     )
   }
 
-  if (!dashboardData?.networks) return null
-
-  const mnos: AggregatedMetrics[] = (dashboardData.networks || []).map((network: any) => {
-    let mno = network.network
-    // Normalize network names to match MNO_COLORS keys
-    if (mno === 'Airtel') mno = 'AIRTEL'
-    if (mno === '9mobile' || mno === '9Mobile') mno = 'T2'
-    
-    return {
-      mno,
-      successRate: network.success_rate || 0,
-      totalAttempts: network.total_records || 0,
-      totalSuccesses: network.success_records || 0
-    }
-  })
-
-  if (mnos.length === 0) return null
+  // Always show KPI cards, even with zero values
+  const mnos: AggregatedMetrics[] = dashboardData?.networks 
+    ? (dashboardData.networks || []).map((network: any) => {
+        let mno = network.network
+        // Normalize network names to match MNO_COLORS keys
+        if (mno === 'Airtel') mno = 'AIRTEL'
+        if (mno === '9mobile' || mno === '9Mobile') mno = 'T2'
+        
+        return {
+          mno,
+          successRate: network.success_rate || 0,
+          totalAttempts: network.total_records || 0,
+          totalSuccesses: network.success_records || 0
+        }
+      })
+    : [
+        { mno: 'MTN', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
+        { mno: 'GLO', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
+        { mno: 'AIRTEL', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
+        { mno: 'T2', successRate: 0, totalAttempts: 0, totalSuccesses: 0 }
+      ]
 
   return (
     <div className="space-y-3">

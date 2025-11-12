@@ -35,7 +35,9 @@ instance.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    console.error('Request error:', error);
+    // Sanitize error logging to avoid possible log injection
+    const msg = error && (error as any).message ? (error as any).message : String(error)
+    console.error('Request error:', msg);
     return Promise.reject(error);
   }
 );

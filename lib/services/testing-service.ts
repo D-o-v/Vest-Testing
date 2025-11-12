@@ -1,11 +1,16 @@
 import api from './api'
 
+/**
+ * Thin client wrapper for testing endpoints. Keep functions small and
+ * typed so callers know what to expect.
+ */
+
 export const testingService = {
   /**
    * Get recent tests (matches Postman: GET {{baseUrl}}/testing/recent-tests/)
    */
-  async getRecentTests(params?: Record<string, any>): Promise<any[]> {
-    const response = await api.get('/testing/recent-tests/', { params })
+  async getRecentTests(queryParams?: Record<string, any>): Promise<any[]> {
+    const response = await api.get('/testing/recent-tests/', { params: queryParams })
     return response.data
   },
 
@@ -13,9 +18,9 @@ export const testingService = {
    * Get hits-per-state (matches Postman: GET {{baseUrl}}/testing/hits-per-state/)
    * Accepts optional filter param (e.g., 'today')
    */
-  async getHitsPerState(opts?: { filter?: string; start_date?: string; end_date?: string } | Record<string, any>): Promise<any> {
-    const params = opts || undefined
-    const response = await api.get('/testing/hits-per-state/', { params })
+  async getHitsPerState(options?: { filter?: string; start_date?: string; end_date?: string } | Record<string, any>): Promise<any> {
+    const queryParams = options || undefined
+    const response = await api.get('/testing/hits-per-state/', { params: queryParams })
     return response.data
   },
   /**

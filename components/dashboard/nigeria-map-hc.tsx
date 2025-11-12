@@ -20,15 +20,18 @@ try {
       const fn = (m as any)?.default ?? m
       if (typeof fn === "function") fn(Highcharts)
     }).catch(() => {
-      // ignore
+        // ignore dynamic import failure; initialization will be skipped
     })
   }
 } catch (err) {
   // Safe fallback to dynamic import
-  import("highcharts/modules/map").then((m) => {
-    const fn = (m as any)?.default ?? m
-    if (typeof fn === "function") fn(Highcharts)
-  }).catch((e) => console.warn("Failed to initialize Highcharts map module", e))
+    import("highcharts/modules/map").then((m) => {
+      const fn = (m as any)?.default ?? m
+      if (typeof fn === "function") fn(Highcharts)
+    }).catch((e) => {
+      const msg = e instanceof Error ? e.message : String(e)
+      console.warn('Failed to initialize Highcharts map module:', msg)
+    })
 }
 
 const GEO_URL = "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
@@ -45,8 +48,8 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
         setMapData(geo)
       })
       .catch((err) => {
-        const msg = err && (err as any).message ? (err as any).message : String(err)
-        console.error("Failed to load map data:", msg)
+        const sanitizedMsg = err instanceof Error ? err.message : 'Failed to load map data'
+        console.error("Failed to load map data:", sanitizedMsg)
       })
 
     return () => {
@@ -90,9 +93,8 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
         setStateMetrics(map)
       })
       .catch((err) => {
-        // No local fallback: log and continue with empty/aggregated records (if any)
-        const msg = err && (err as any).message ? (err as any).message : String(err)
-        console.error('testingService.getHitsPerState failed:', msg)
+        const sanitizedMsg = err instanceof Error ? err.message : 'API request failed'
+        console.error('testingService.getHitsPerState failed:', sanitizedMsg)
       })
 
     return () => {
@@ -211,16 +213,13 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
           },
         },
         events: {
-          click: function (e: any) {
-            // Highcharts sends point as e.point
-            const name = e.point && (e.point.name || e.point.properties && e.point.properties.name)
-            const value = e.point && e.point.value
-            // For now, just log. You can replace with context/state to show sidebar
-            // Sanitize before logging
-            try { console.info('State clicked', String(name), Number(value)) } catch { /* ignore */ }
-            // You may want to dispatch a custom event so parent components can read it
-            window.dispatchEvent(new CustomEvent('vess:state-click', { detail: { name, value } }))
-          },
+            click: function (e: any) {
+              // Highcharts sends point as e.point
+              const name = e.point && (e.point.name || e.point.properties && e.point.properties.name)
+              const value = e.point && e.point.value
+              // Dispatch an event for parent components. Avoid logging raw values here.
+              window.dispatchEvent(new CustomEvent('vess:state-click', { detail: { name, value } }))
+            },
         },
       } as any,
     ],

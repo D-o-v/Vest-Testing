@@ -129,9 +129,17 @@ export function useLiveCalls() {
   }, []);
 
   useEffect(() => {
+    // Run once immediately
     fetchLiveCalls();
-    // Set up polling for live data
-    const interval = setInterval(fetchLiveCalls, 5000); // Poll every 5 seconds
+    // Set up polling for live data. Wrap the async call so any thrown
+    // promise rejections are caught and logged (avoids unhandled rejections).
+    const runner = () => {
+      fetchLiveCalls().catch((e) => {
+        const msg = e instanceof Error ? e.message : String(e)
+        console.error('Polling live calls failed:', msg)
+      })
+    }
+    const interval = setInterval(runner, 5000); // Poll every 5 seconds
     return () => clearInterval(interval);
   }, [fetchLiveCalls]);
 
@@ -175,14 +183,22 @@ export function useNetworkAnalytics(startDate: string, endDate: string) {
     setLoading(true);
     setError(null);
     try {
+      const hitsParams = (startDate && endDate)
+        ? { start_date: startDate, end_date: endDate }
+        : { filter: 'today' };
+
       const [successRate, failureRate, hitsPerState] = await Promise.all([
         portalService.getNetworkSuccessRate(startDate, endDate),
         portalService.getNetworkFailureRate(startDate, endDate),
-        portalService.getHitsPerState('today')
+        // pass an options object — portalService.getHitsPerState accepts filter or date range
+        portalService.getHitsPerState(hitsParams as any)
       ]);
       setData({ successRate, failureRate, hitsPerState });
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch network analytics');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err || 'Failed to fetch network analytics');
+      setError(errorMessage);
+      // Avoid logging raw objects to reduce risk of log injection
+      console.error('Network analytics fetch failed:', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -216,8 +232,14 @@ export function useSystemHealth() {
 
   useEffect(() => {
     fetchSystemHealth();
+    const runner = () => {
+      fetchSystemHealth().catch((e) => {
+        const msg = e instanceof Error ? e.message : String(e)
+        console.error('Polling system health failed:', msg)
+      })
+    }
     // Poll system health every 30 seconds
-    const interval = setInterval(fetchSystemHealth, 30000);
+    const interval = setInterval(runner, 30000);
     return () => clearInterval(interval);
   }, [fetchSystemHealth]);
 

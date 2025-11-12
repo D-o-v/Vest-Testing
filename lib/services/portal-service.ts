@@ -250,8 +250,9 @@ export class PortalService {
 
   // Network data endpoints
   async getNetworkSuccessRate(startDate: string, endDate: string): Promise<any> {
+    const queryParams = { start_date: startDate, end_date: endDate };
     const response = await api.get('/testing/network-success-rate/', {
-      params: { start_date: startDate, end_date: endDate }
+      params: queryParams
     });
     return response.data;
   }
@@ -263,11 +264,16 @@ export class PortalService {
     return response.data;
   }
 
-  async getHitsPerState(filter: 'today' | 'week' | 'month' = 'today'): Promise<any> {
-    const response = await api.get('/testing/hits-per-state/', {
-      params: { filter }
-    });
-    return response.data;
+  /**
+   * Get hits per state.
+   * Accepts either a short filter ({ filter: 'today'|'week'|'month' }) or a
+   * date range object ({ start_date, end_date }). This makes the API easier
+   * to call from components using dashboard filters.
+   */
+  async getHitsPerState(options?: { filter?: string; start_date?: string; end_date?: string } | Record<string, any>): Promise<any> {
+    const queryParams = options && Object.keys(options).length ? options : undefined
+    const response = await api.get('/testing/hits-per-state/', { params: queryParams })
+    return response.data
   }
 
   async getOriginatorNetworks(): Promise<string[]> {

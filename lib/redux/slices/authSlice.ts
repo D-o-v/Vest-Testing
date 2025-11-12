@@ -14,21 +14,35 @@ const initialState: AuthState = {
   error: null,
 };
 
+// Helper to extract a safe error message from unknown error values
+function getErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message
+  try {
+    // attempt to read a common axios error shape
+    const anyErr = err as any
+    return anyErr?.response?.data?.message || anyErr?.message || String(err)
+  } catch {
+    return String(err)
+  }
+}
+
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       // API returns a wrapper: { success: true, data: { user, tokens: { accessToken } } }
-      const response = await api.post<any>('/auth/login/', credentials);
-      const payload = response.data || {}
-      const user = payload.data?.user || payload.user || null
-      const token = payload.data?.tokens?.accessToken || payload.token || null
+      const response = await api.post<AuthResponse>('/auth/login/', credentials);
+      const payload = response.data || {};
+      const user = payload.data?.user || payload.user || null;
+      const token = payload.data?.tokens?.accessToken || payload.token || null;
+      
       if (!token) {
-        return rejectWithValue('No token returned from login')
+        return rejectWithValue('Authentication failed: No token received');
       }
-      return { user, token }
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
+      
+      return { user, token };
+    } catch (error: unknown) {
+      return rejectWithValue(getErrorMessage(error) || 'Login failed')
     }
   }
 );
@@ -39,8 +53,8 @@ export const logout = createAsyncThunk(
     try {
       await api.post('/auth/logout/');
       return;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Logout failed');
+    } catch (error: unknown) {
+      return rejectWithValue(getErrorMessage(error) || 'Logout failed')
     }
   }
 );
@@ -68,8 +82,8 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.user = (action.payload as any)?.user || null;
-        state.token = (action.payload as any)?.token || null;
+        state.user = action.payload?.user || null;
+        state.token = action.payload?.token || null;
       })
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;

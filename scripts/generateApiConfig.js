@@ -30,22 +30,34 @@ function walkItems(items, parent = []) {
 }
 
 function main() {
-  const raw = fs.readFileSync(collectionPath, 'utf8')
-  const json = JSON.parse(raw)
-  const items = json.item || []
-  const routes = walkItems(items)
+  try {
+    if (!fs.existsSync(collectionPath)) {
+      throw new Error(`Collection file not found: ${collectionPath}`);
+    }
 
-  const lines = []
-  lines.push('// GENERATED from vess-testin-postmacollection.json — run scripts/generateApiConfig.js to refresh')
-  lines.push('export const API_CONFIG = {')
-  for (const r of routes) {
-    const p = sanitizePath(r.raw)
-    lines.push(`  "${r.key}": { method: "${r.method}", path: "${p}", headers: ${JSON.stringify(r.headers)} },`)
+    const raw = fs.readFileSync(collectionPath, 'utf8');
+    const json = JSON.parse(raw);
+    const items = json.item || [];
+    const routes = walkItems(items);
+
+    const lines = [];
+    lines.push('// GENERATED from vess-testin-postmacollection.json — run scripts/generateApiConfig.js to refresh');
+    lines.push('export const API_CONFIG = {');
+    
+    for (const route of routes) {
+      const sanitizedPath = sanitizePath(route.raw);
+      lines.push(`  "${route.key}": { method: "${route.method}", path: "${sanitizedPath}", headers: ${JSON.stringify(route.headers)} },`);
+    }
+    
+    lines.push('} as const');
+
+    fs.writeFileSync(outPath, lines.join('\n') + '\n');
+    console.log(`Successfully wrote ${outPath} with ${routes.length} routes`);
+  } catch (error) {
+    const msg = error && error.message ? error.message : String(error)
+    console.error('Error generating API config:', msg)
+    process.exit(1)
   }
-  lines.push('} as const')
-
-  fs.writeFileSync(outPath, lines.join('\n') + '\n')
-  console.log('Wrote', outPath, 'with', routes.length, 'routes')
 }
 
 if (require.main === module) main()
