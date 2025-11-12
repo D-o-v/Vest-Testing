@@ -20,7 +20,8 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
         setDailySuccessData(data)
       })
       .catch(err => {
-        console.error('Failed to fetch daily success rate:', err)
+        const msg = err instanceof Error ? err.message : String(err)
+        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to fetch daily success rate:', msg)).catch(() => {})
       })
 
     return () => { mounted = false }

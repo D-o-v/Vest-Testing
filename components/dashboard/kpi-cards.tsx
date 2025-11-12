@@ -6,6 +6,7 @@ import type { AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import analyticsService from '@/lib/services/analytics-service'
 import { portalService } from '@/lib/services/portal-service'
+import logger from '@/lib/utils/logger'
 
 export default function KPICards({ startDate, endDate }: { startDate?: string | null, endDate?: string | null }) {
   const [dashboardData, setDashboardData] = useState<any>(null)
@@ -27,7 +28,7 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
       })
       .catch(err => {
         const sanitizedMsg = err instanceof Error ? err.message : 'Unknown error'
-        console.error('Failed to fetch network success rate:', sanitizedMsg)
+        logger.error('Failed to fetch network success rate:', sanitizedMsg)
         if (mounted) setLoading(false)
       })
     

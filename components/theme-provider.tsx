@@ -47,7 +47,8 @@ export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 
     try {
       localStorage.setItem(storageKey, theme)
     } catch (e) {
-      console.warn('Failed to save theme to localStorage:', e)
+      const msg = e && (e as any).message ? (e as any).message : String(e)
+      import('@/lib/utils/logger').then(({ default: logger }) => logger.warn('Failed to save theme to localStorage:', msg)).catch(() => {})
     }
   }, [theme, storageKey])
 

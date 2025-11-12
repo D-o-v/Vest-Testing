@@ -11,3 +11,7 @@ export function createTestData(): any[] {
     'Dummy data removed: please use testingService.getRecords() or other API endpoints for live data.'
   )
 }
+
+// Backwards-compatible alias kept for callers that referenced the old name.
+/** @deprecated Use testingService.getRecords() instead of local dummy generation. */
+export const createDummyData = createTestData

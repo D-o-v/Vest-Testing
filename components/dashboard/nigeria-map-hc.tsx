@@ -25,13 +25,13 @@ try {
   }
 } catch (err) {
   // Safe fallback to dynamic import
-    import("highcharts/modules/map").then((m) => {
-      const fn = (m as any)?.default ?? m
-      if (typeof fn === "function") fn(Highcharts)
-    }).catch((e) => {
-      const msg = e instanceof Error ? e.message : String(e)
-      console.warn('Failed to initialize Highcharts map module:', msg)
-    })
+        import("highcharts/modules/map").then((m) => {
+          const fn = (m as any)?.default ?? m
+          if (typeof fn === "function") fn(Highcharts)
+        }).catch((e) => {
+          const msg = e instanceof Error ? e.message : String(e)
+          import('@/lib/utils/logger').then(({ default: logger }) => logger.warn('Failed to initialize Highcharts map module:', msg)).catch(() => {})
+        })
 }
 
 const GEO_URL = "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
@@ -49,7 +49,7 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
       })
       .catch((err) => {
         const sanitizedMsg = err instanceof Error ? err.message : 'Failed to load map data'
-        console.error("Failed to load map data:", sanitizedMsg)
+        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to load map data:', sanitizedMsg)).catch(() => {})
       })
 
     return () => {
@@ -94,7 +94,7 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
       })
       .catch((err) => {
         const sanitizedMsg = err instanceof Error ? err.message : 'API request failed'
-        console.error('testingService.getHitsPerState failed:', sanitizedMsg)
+        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('testingService.getHitsPerState failed:', sanitizedMsg)).catch(() => {})
       })
 
     return () => {

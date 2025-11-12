@@ -37,7 +37,7 @@ instance.interceptors.request.use(
   (error: AxiosError) => {
     // Sanitize error logging to avoid possible log injection
     const msg = error && (error as any).message ? (error as any).message : String(error)
-    console.error('Request error:', msg);
+    import('../utils/logger').then(({ default: logger }) => logger.error('Request error:', msg)).catch(() => {})
     return Promise.reject(error);
   }
 );

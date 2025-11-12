@@ -34,7 +34,7 @@ export default function FailureRates({
           }
         } catch (e) {
           const msg = e && (e as any).message ? (e as any).message : String(e)
-          console.error('Failed to fetch failure rates from API:', msg)
+          import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to fetch failure rates from API:', msg)).catch(() => {})
         }
       }
 

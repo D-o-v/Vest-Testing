@@ -26,6 +26,12 @@ function getErrorMessage(err: unknown): string {
   }
 }
 
+/**
+ * Login thunk: posts credentials to the API and returns {user, token} on success.
+ * Keeps error handling simple and deterministic by returning a sanitized message
+ * via `rejectWithValue` when the request fails.
+ */
+
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {

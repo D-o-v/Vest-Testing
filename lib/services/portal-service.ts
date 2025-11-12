@@ -98,6 +98,10 @@ export interface DashboardMetrics {
 // Portal Service Class
 export class PortalService {
   // Analytics endpoints
+  /**
+   * PortalService is a thin client around the backend. Keep methods small and
+   * documented to aid readability and maintainability.
+   */
   async getDashboard(): Promise<DashboardMetrics> {
     const response = await api.get<DashboardMetrics>('/analytics/dashboard/');
     return response.data;

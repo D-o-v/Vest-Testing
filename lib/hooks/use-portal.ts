@@ -195,10 +195,10 @@ export function useNetworkAnalytics(startDate: string, endDate: string) {
       ]);
       setData({ successRate, failureRate, hitsPerState });
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err || 'Failed to fetch network analytics');
-      setError(errorMessage);
-      // Avoid logging raw objects to reduce risk of log injection
-      console.error('Network analytics fetch failed:', errorMessage);
+  const errorMessage = err instanceof Error ? err.message : String(err || 'Failed to fetch network analytics');
+  setError(errorMessage);
+  // Avoid logging raw objects to reduce risk of log injection
+  import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Network analytics fetch failed:', errorMessage)).catch(() => {})
     } finally {
       setLoading(false);
     }

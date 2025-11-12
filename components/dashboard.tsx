@@ -16,7 +16,8 @@ export default function Dashboard({ csvData }: { csvData: string }) {
       const records = parseCSV(csvData)
       return records
     } catch (e) {
-      console.error("Failed to parse CSV:", e)
+      const msg = e && (e as any).message ? (e as any).message : String(e)
+      import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to parse CSV:', msg)).catch(() => {})
       return []
     }
   }, [csvData])

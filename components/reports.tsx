@@ -25,7 +25,8 @@ export default function Reports({ csvData }: { csvData: string }) {
     try {
       return parseCSV(csvData)
     } catch (e) {
-      console.error("Failed to parse CSV:", e)
+      const msg = e && (e as any).message ? (e as any).message : String(e)
+      import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to parse CSV:', msg)).catch(() => {})
       return []
     }
   }, [csvData])
@@ -66,7 +67,7 @@ export default function Reports({ csvData }: { csvData: string }) {
       })
       .catch((e) => {
         const msg = e && (e as any).message ? (e as any).message : String(e)
-        console.error('Failed to load records from API for reports:', msg)
+        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to load records from API for reports:', msg)).catch(() => {})
       })
     return () => { mounted = false }
   }, [])

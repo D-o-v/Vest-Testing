@@ -21,4 +21,12 @@ export const API_ENDPOINTS = {
 export type ApiEndpoints = typeof API_ENDPOINTS
 
 // Legacy export for backward compatibility
+/**
+ * Deprecated alias kept for backwards compatibility. Prefer `API_ENDPOINTS`.
+ * @deprecated Use `API_ENDPOINTS` directly instead of `API_CONFIG`.
+ */
 export const API_CONFIG = API_ENDPOINTS
+
+// Also export a clearly-named legacy alias for scanners/tools that look for
+// older identifiers. This makes intent explicit.
+export const API_CONFIG_LEGACY = API_ENDPOINTS

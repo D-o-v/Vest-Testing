@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '@/lib/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,25 +19,20 @@ export function LoginPage() {
 
   const { login, loading, error } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Keep handlers stable across renders to improve readability and testability
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     await login(credentials);
-  };
+  }, [login, credentials]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    setCredentials(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleUserTypeChange = (value: UserType) => {
-    setCredentials(prev => ({
-      ...prev,
-      userType: value
-    }));
-  };
+  const handleUserTypeChange = useCallback((value: UserType) => {
+    setCredentials(prev => ({ ...prev, userType: value }));
+  }, []);
 
   const emailRef = useRef<HTMLInputElement | null>(null)
 

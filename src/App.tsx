@@ -69,7 +69,7 @@ export default function App() {
       })
       .catch((err) => {
         const msg = err && (err as any).message ? (err as any).message : String(err)
-        console.error('Failed to fetch records for CSV:', msg)
+        import('@/lib/utils/logger').then(({ default: logger }) => logger.error('Failed to fetch records for CSV:', msg)).catch(() => {})
         // leave csvData as empty string
       })
       .finally(() => { /* nothing */ })

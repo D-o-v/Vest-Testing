@@ -5,6 +5,7 @@ import type { TestRecord } from "@/lib/types"
 import { MNO_COLORS } from "@/lib/constants"
 import { Card } from "@/components/ui/card"
 import testingService from '@/lib/services/testing-service'
+import logger from '@/lib/utils/logger'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog'
 
@@ -63,7 +64,7 @@ export default function RecentTests({ records, startDate, endDate }: { records?:
       })
       .catch((err: unknown) => {
         const sanitizedMsg = err instanceof Error ? err.message : String(err || 'API request failed')
-        console.error('Failed to load recent tests from API:', sanitizedMsg)
+        logger.error('Failed to load recent tests from API:', sanitizedMsg)
       })
     return () => { mounted = false }
   }, [records, startDate, endDate])
