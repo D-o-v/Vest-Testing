@@ -37,7 +37,6 @@ export default function TestResults({ data }: TestResultsProps) {
   const [filters, setFilters] = useState({
     search: "",
     network: "all",
-    service: "all",
     status: "all",
     location: "all",
     numberFormat: "all",
@@ -80,7 +79,7 @@ export default function TestResults({ data }: TestResultsProps) {
         result.recipient_number?.toLowerCase().includes(filters.search.toLowerCase())
 
       const matchesNetwork = filters.network === "all" || result.originator_network === filters.network
-      const matchesService = filters.service === "all" || result.service === filters.service
+  const matchesService = true // service filter removed; always match
       const matchesStatus = filters.status === "all" || result.status === filters.status
       const matchesLocation = filters.location === "all" || result.originator_location_detail?.name === filters.location
       const matchesNumberFormat = filters.numberFormat === "all" || result.receipt_number_format === filters.numberFormat
@@ -104,7 +103,7 @@ export default function TestResults({ data }: TestResultsProps) {
     setFilters({
       search: "",
       network: "all",
-      service: "all", 
+      
       status: "all",
       location: "all",
       numberFormat: "all",
@@ -217,18 +216,7 @@ export default function TestResults({ data }: TestResultsProps) {
             </SelectContent>
           </Select>
 
-          {/* Service */}
-          <Select value={filters.service} onValueChange={(value) => setFilters(prev => ({ ...prev, service: value }))}>
-            <SelectTrigger className="h-9">
-              <SelectValue placeholder="Service" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Services</SelectItem>
-              {uniqueServices.map(service => (
-                <SelectItem key={service} value={service}>{service}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {/* Service filter removed - click groups to view details */}
 
           {/* Status */}
           <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
@@ -251,7 +239,7 @@ export default function TestResults({ data }: TestResultsProps) {
             <SelectContent>
               <SelectItem value="all">All Locations</SelectItem>
               {uniqueLocations.map(location => (
-                <SelectItem key={location} value={location}>{location}</SelectItem>
+                <SelectItem key={String(location)} value={String(location)}>{String(location)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -264,7 +252,7 @@ export default function TestResults({ data }: TestResultsProps) {
             <SelectContent>
               <SelectItem value="all">All Formats</SelectItem>
               {uniqueNumberFormats.map(format => (
-                <SelectItem key={format} value={format}>{format}</SelectItem>
+                <SelectItem key={String(format)} value={String(format)}>{String(format)}</SelectItem>
               ))}
             </SelectContent>
           </Select>

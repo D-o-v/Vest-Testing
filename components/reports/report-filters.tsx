@@ -88,20 +88,7 @@ export default function ReportFilters({
             </select>
           </div>
 
-          {/* Service Filter */}
-          <div>
-            <label className="block text-xs font-medium text-foreground mb-1">Service</label>
-            <select
-              value={selectedService}
-              onChange={(e) => onServiceChange(e.target.value as ServiceType | "All")}
-              className="w-full px-2 py-1 bg-muted border border-border rounded text-foreground text-xs"
-            >
-              <option value="All">All Services</option>
-              <option value="Voice">Voice</option>
-              <option value="SMS">SMS</option>
-              <option value="Data">Data</option>
-            </select>
-          </div>
+          {/* Service filter removed - grouping handled on the Service Reports page */}
 
           {/* Origin Filter */}
           <div>

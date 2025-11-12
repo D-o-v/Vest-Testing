@@ -5,6 +5,7 @@ import { BarChart3, LayoutDashboard, Menu, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Dashboard from '@/components/dashboard';
 import Reports from '@/components/reports';
+import ServiceDetail from '@/components/reports/service-detail';
 import { LoginPage } from '@/components/auth/login-page';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import testingService from '@/lib/services/testing-service';
@@ -185,6 +186,11 @@ export default function App() {
           <Route path="/reports" element={
             <AuthGuard>
               <Reports csvData={csvData} />
+            </AuthGuard>
+          } />
+          <Route path="/reports/service/:service" element={
+            <AuthGuard>
+              <ServiceDetail />
             </AuthGuard>
           } />
           <Route path="/" element={<Navigate to="/dashboard" />} />
