@@ -84,7 +84,7 @@ export default function ReportFilters({
               <option value="MTN">MTN</option>
               <option value="GLO">Glo</option>
               <option value="AIRTEL">Airtel</option>
-              <option value="T2">9Mobile</option>
+              <option value="T2">T2</option>
             </select>
           </div>
 

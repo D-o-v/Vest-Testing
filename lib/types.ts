@@ -52,12 +52,12 @@ export const MNO_COLORS: Record<MNO, string> = {
   MTN: "#fcd116", // MTN Yellow
   GLO: "#50b848", // Glo Green
   AIRTEL: "#ff0000", // Airtel Red
-  T2: "#ff6b01", // 9mobile/T2 Orange
+  T2: "#ff6b01", // T2/T2 Orange
 }
 
 export const MNO_NAMES: Record<MNO, string> = {
   MTN: "MTN",
   GLO: "Glo",
   AIRTEL: "Airtel",
-  T2: "9Mobile",
+  T2: "T2",
 }

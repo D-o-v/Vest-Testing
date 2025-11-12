@@ -48,27 +48,40 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
     )
   }
 
-  // Always show KPI cards, even with zero values
-  const mnos: AggregatedMetrics[] = dashboardData?.networks 
-    ? (dashboardData.networks || []).map((network: any) => {
-        let mno = network.network
-        // Normalize network names to match MNO_COLORS keys
-        if (mno === 'Airtel') mno = 'AIRTEL'
-        if (mno === '9mobile' || mno === '9Mobile') mno = 'T2'
-        
-        return {
-          mno,
-          successRate: network.success_rate || 0,
-          totalAttempts: network.total_records || 0,
-          totalSuccesses: network.success_records || 0
-        }
-      })
-    : [
-        { mno: 'MTN', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
-        { mno: 'GLO', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
-        { mno: 'AIRTEL', successRate: 0, totalAttempts: 0, totalSuccesses: 0 },
-        { mno: 'T2', successRate: 0, totalAttempts: 0, totalSuccesses: 0 }
-      ]
+  // Guarantee: always render KPI cards for the canonical MNO list.
+  // If API data is present, merge it; otherwise show zeros.
+  const canonicalMnos = ['MTN', 'GLO', 'AIRTEL', 'T2']
+
+  const apiNetworks: Record<string, any> = {}
+  if (dashboardData?.networks && Array.isArray(dashboardData.networks)) {
+    for (const net of dashboardData.networks) {
+      let key = String(net.network ?? net.mno ?? '').toUpperCase()
+      if (key === 'AIRTEL') key = 'AIRTEL'
+      if (key === 'T2' || key === 'T2' || key === 'T2') key = 'T2'
+      if (key === 'T2' || key === 'T2') key = 'T2'
+      apiNetworks[key] = net
+    }
+  }
+
+  const mnos: AggregatedMetrics[] = canonicalMnos.map((mnoKey) => {
+    const net = apiNetworks[mnoKey]
+    const successRate = Number(net?.success_rate ?? net?.successRate ?? 0) || 0
+    const totalAttempts = Number(net?.total_records ?? net?.totalRecords ?? 0) || 0
+    const totalSuccesses = Number(net?.success_records ?? net?.successRecords ?? 0) || 0
+    const totalFailures = Math.max(0, totalAttempts - totalSuccesses)
+    const failureRate = totalAttempts > 0 ? (totalFailures / totalAttempts) * 100 : 0
+    // fill remaining AggregatedMetrics fields with sensible defaults
+    return {
+      mno: mnoKey as any,
+      successRate,
+      totalAttempts,
+      totalSuccesses,
+      totalFailures,
+      failureRate,
+      avgDuration: 0,
+      avgCallSetupTime: 0,
+    }
+  })
 
   return (
     <div className="space-y-3">

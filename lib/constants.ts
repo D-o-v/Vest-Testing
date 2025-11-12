@@ -4,7 +4,7 @@ export const MNO_NAMES: Record<MNO, string> = {
   MTN: "MTN Nigeria",
   GLO: "Globacom",
   AIRTEL: "Airtel Nigeria",
-  T2: "9mobile"
+  T2: "T2"
 }
 
 export const MNO_COLORS: Record<MNO, string> = {

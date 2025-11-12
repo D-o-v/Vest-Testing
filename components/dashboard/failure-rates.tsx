@@ -67,7 +67,7 @@ export default function FailureRates({
     MTN: "#fbbf24", // MTN Yellow
     GLO: "#22c55e", // Glo Green
     AIRTEL: "#ef4444", // Airtel Red
-    T2: "#f97316", // 9mobile/T2 Orange
+    T2: "#f97316", // T2/T2 Orange
   }
 
   // Calculate circle sizes based on failure rates

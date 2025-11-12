@@ -140,7 +140,7 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
         }),
       },
       {
-        name: "9Mobile",
+        name: "T2",
         data: sortedDates.map((date) => {
           const entry = dataByDate.get(date)
           return entry.T2.total > 0 ? (entry.T2.success / entry.T2.total) * 100 : 0
