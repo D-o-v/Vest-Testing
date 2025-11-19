@@ -22,7 +22,7 @@ try {
 
 const GEO_URL = "https://code.highcharts.com/mapdata/countries/ng/ng-all.geo.json"
 
-type StateEntry = { percent: number; totalHits: number; topNetworks: string[] }
+type StateEntry = { percent: number; totalHits: number; topNetworks: string[]; topNetworksHtml?: string }
 
 export default function NigeriaMapHighcharts({ records, startDate, endDate }: { records: TestRecord[], startDate?: string | null, endDate?: string | null }) {
   const [mapData, setMapData] = useState<any | null>(null)
@@ -62,8 +62,10 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
           if (!name) continue
           const totalHits = Number(item.total_hits ?? item.totalHits ?? item.originator_hits ?? item.recipient_hits ?? 0) || 0
           const percent = Number(item.percent_of_overall ?? item.percentOfOverall ?? item.percent ?? (overallTotal ? (totalHits / overallTotal) * 100 : 0)) || 0
-          const topNetworks = (item.top_networks ?? item.topNetworks ?? []).map((n: any) => String(n.network ?? n.name ?? n).toUpperCase())
-          map.set(name, { percent: Math.round(percent * 10) / 10, totalHits, topNetworks })
+          const topNetworksRaw = (item.top_networks ?? item.topNetworks ?? [])
+          const topNetworks = topNetworksRaw.map((n: any) => String(n.network ?? n.name ?? n).toUpperCase())
+          const topNetworksHtml = topNetworksRaw.map((n: any) => `${String(n.network ?? n.name ?? n)}: ${Number(n.count ?? n.value ?? 0)}`).join('<br/>')
+          map.set(name, { percent: Math.round(percent * 10) / 10, totalHits, topNetworks, topNetworksHtml })
         }
 
         setStateDetails(map)
@@ -129,12 +131,14 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
     const value = entry ? entry.percent : 0
     const totalHits = entry ? entry.totalHits : 0
     const topNetworks = entry ? entry.topNetworks.join(', ') : ''
+    const topNetworksHtml = entry ? entry.topNetworksHtml : ''
     return {
       'hc-key': props['hc-key'],
       name,
       value,
       totalHits,
       topNetworks,
+      topNetworksHtml,
     }
   })
 
@@ -157,8 +161,8 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
           pointFormatter: function (this: any) {
             const val = (this.value != null) ? `${Number(this.value).toFixed(1)}%` : 'N/A'
             const hits = this.totalHits != null ? String(this.totalHits) : 'N/A'
-            const top = this.topNetworks || '—'
-            return `<div style="font-size:13px"><strong>${this.name}</strong><br/>Share: ${val}<br/>Hits: ${hits}<br/>Top: ${top}</div>`
+            const topHtml = this.topNetworksHtml || this.topNetworks || '—'
+            return `<div style="font-size:13px"><strong>${this.name}</strong><br/>Share: ${val}<br/>Hits: ${hits}<br/><div style="margin-top:6px"><strong>Top networks</strong><br/>${topHtml}</div></div>`
           }
         },
         events: {

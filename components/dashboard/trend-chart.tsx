@@ -2,11 +2,13 @@ import type { TestRecord } from "@lib/types"
 import { Card } from "@components/ui/card"
 import React, { useMemo, lazy, Suspense, useEffect, useState } from "react"
 import testingService from '@/lib/services/testing-service'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 
 const Chart = lazy(() => import("react-apexcharts"))
 
 export default function TrendChart({ records, startDate, endDate }: { records: TestRecord[], startDate?: string | null, endDate?: string | null }) {
   const [dailySuccessData, setDailySuccessData] = useState<any>(null)
+  const [selectedService, setSelectedService] = useState<'Overall'|'SMS'|'Voice'|'Data'>('Overall')
 
   useEffect(() => {
     let mounted = true
@@ -35,6 +37,8 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
 
     recordsToUse.forEach((record) => {
       if (!record.timestamp) return
+      // apply service filter when not 'Overall'
+      if (selectedService !== 'Overall' && String(record.service ?? '').toLowerCase() !== selectedService.toLowerCase()) return
 
       const date = new Date(record.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" })
       if (!dataByDate.has(date)) {
@@ -51,12 +55,17 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
       const mno = record.originatorNetwork
       const isSuccess = record.status === "Success" || record.status?.includes("DELIVERED")
 
-      data[mno].total++
-      if (isSuccess) data[mno].success++
+      // guard: if mno missing, skip
+      if (!mno) return
+      const key = String(mno).toUpperCase()
+      if (!data[key]) return
+
+      data[key].total++
+      if (isSuccess) data[key].success++
     })
 
-    // Use daily success rate data if available
-    if (dailySuccessData?.daily) {
+    // Use daily success rate data from API only for Overall view
+    if (dailySuccessData?.daily && selectedService === 'Overall') {
       const dailyData = dailySuccessData.daily
       
       // Extract all unique dates and sort them
@@ -219,14 +228,36 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
     }
 
     return { chartData: series, options }
-  }, [records, dailySuccessData, startDate, endDate])
+  }, [records, dailySuccessData, startDate, endDate, selectedService])
 
   // No dummy fallback data: when no records and no networkAnalytics, the chart will render empty
 
   return (
     <Card className="bg-card border-border h-full">
       <div className="p-6">
-        <h2 className="text-lg font-bold tracking-tight text-foreground mb-6">Success Rate Trend</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold tracking-tight text-foreground">Success Rate Trend</h2>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="inline-flex items-center gap-2 text-xs px-2 py-1 rounded bg-muted text-muted-foreground">
+                {/* simple inline funnel svg */}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+                  <path d="M3 5h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M6 12h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10 19h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>{selectedService}</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                {['Overall','SMS','Voice','Data'].map((s) => (
+                  <DropdownMenuItem key={s} onSelect={() => setSelectedService(s as any)}>
+                    {s}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
         <Suspense fallback={<div>Loading chart...</div>}>
           {/* @ts-ignore - react-apexcharts dynamic import */}
           <Chart type="area" series={chartData} options={options} height={280} />

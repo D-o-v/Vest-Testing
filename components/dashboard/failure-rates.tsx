@@ -12,6 +12,7 @@ export default function FailureRates({
   endDate,
 }: { records: TestRecord[]; metrics: Record<string, AggregatedMetrics>; startDate?: string | null; endDate?: string | null }) {
   const [failureData, setFailureData] = useState<{ mno: string; failureRate: number; totalTests: number }[]>([])
+  const [failureBreakdowns, setFailureBreakdowns] = useState<Record<string, any>>({})
 
   useEffect(() => {
     let mounted = true
@@ -29,7 +30,13 @@ export default function FailureRates({
               failureRate: Number(n.failure_rate ?? n.failureRate ?? ((n.failure_records && n.total_records) ? (n.failure_records / n.total_records) * 100 : 0)) || 0,
               totalTests: Number(n.total_records ?? n.totalTests ?? 0) || 0,
             }))
+            const breakdowns: Record<string, any> = {}
+            for (const n of res.networks) {
+              const key = String(n.network ?? n.mno ?? '').toUpperCase()
+              breakdowns[key] = n.service_breakdown ?? n.serviceBreakdown ?? {}
+            }
             setFailureData(mapped)
+            setFailureBreakdowns(breakdowns)
             return
           }
         } catch (e) {
@@ -51,7 +58,22 @@ export default function FailureRates({
             totalTests: mnoRecords.length,
           }
         })
+        // derive per-service breakdown from records when API not available
+        const breakdowns: Record<string, any> = {}
+        for (const mno of mmos) {
+          const mnoRecords = records.filter((r) => r.originatorNetwork === mno)
+          const srv: Record<string, any> = {}
+          for (const r of mnoRecords) {
+            const s = String(r.service ?? 'Unknown')
+            if (!srv[s]) srv[s] = { total: 0, failed: 0, success: 0 }
+            srv[s].total++
+            if (r.status === 'Failed') srv[s].failed++
+            else srv[s].success++
+          }
+          breakdowns[mno] = srv
+        }
         setFailureData(derived)
+        setFailureBreakdowns(breakdowns)
         return
       }
 
@@ -97,6 +119,28 @@ export default function FailureRates({
     return minSize + ((failureRate / maxFailureRate) * (maxSize - minSize))
   }
 
+  const formatBreakdown = (obj: any) => {
+    if (!obj || Object.keys(obj).length === 0) return 'No breakdown available'
+    try {
+      return Object.entries(obj).map(([k, v]) => {
+        if (v && typeof v === 'object') {
+          const total = (v as any).total ?? (v as any).count ?? 0
+          const failed = (v as any).failed ?? (v as any).failed_count ?? 0
+          const success = (v as any).success ?? (v as any).success_count ?? 0
+          const rate = (v as any).failure_rate ?? (v as any).failureRate ?? (total ? Math.round((failed / total) * 100) : undefined)
+          const parts = [`${k}: total=${total}`]
+          if (typeof failed === 'number') parts.push(`failed=${failed}`)
+          if (typeof success === 'number') parts.push(`success=${success}`)
+          if (rate !== undefined) parts.push(`failure_rate=${rate}%`)
+          return parts.join(' ')
+        }
+        return `${k}: ${String(v)}`
+      }).join('\n')
+    } catch {
+      return 'Breakdown unavailable'
+    }
+  }
+
   return (
     <Card className="bg-card border-border">
       <div className="p-6">
@@ -115,6 +159,7 @@ export default function FailureRates({
                   top: pos.y,
                   transform: "translate(-50%, -50%)",
                 }}
+                title={formatBreakdown((failureBreakdowns || {})[data.mno])}
               >
                 {/* Progress ring */}
                 <svg

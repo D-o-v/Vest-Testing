@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { MNO_COLORS, MNO_NAMES } from "@/lib/constants"
+import { MessageSquare, Phone, Wifi, HelpCircle } from 'lucide-react'
 import type { AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import analyticsService from '@/lib/services/analytics-service'
@@ -80,6 +81,8 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
       failureRate,
       avgDuration: 0,
       avgCallSetupTime: 0,
+        // expose raw service breakdown from API if present for rendering small values
+        serviceBreakdown: net?.service_breakdown ?? net?.serviceBreakdown ?? {},
     }
   })
 
@@ -95,37 +98,81 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
             }}
           >
             <div className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ backgroundColor: MNO_COLORS[metric.mno] }}
-                />
-                <p className="text-xs font-semibold text-muted-foreground">{MNO_NAMES[metric.mno] || metric.mno}</p>
-              </div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between">
+                <div className="sm:flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div
+                      className="w-3 h-3 rounded-full shrink-0"
+                      style={{ backgroundColor: MNO_COLORS[metric.mno] }}
+                    />
+                    <p className="text-sm font-semibold text-foreground truncate">{MNO_NAMES[metric.mno] || metric.mno}</p>
+                  </div>
 
-              <div className="mb-3">
-                <span className="text-2xl font-bold text-foreground">{metric.successRate.toFixed(1)}%</span>
-                <p className="text-xs text-muted-foreground">Success Rate</p>
-              </div>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-foreground">{metric.successRate.toFixed(1)}%</span>
+                    <p className="text-xs text-muted-foreground">Success Rate</p>
+                  </div>
 
-              <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
-                <div
-                  className="h-full transition-all rounded-full"
-                  style={{
-                    width: `${metric.successRate}%`,
-                    backgroundColor: MNO_COLORS[metric.mno],
-                  }}
-                />
-              </div>
+                  {/* Progress bar full width */}
+                  <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className="h-full transition-all rounded-full"
+                      style={{
+                        width: `100%`,
+                        backgroundColor: MNO_COLORS[metric.mno],
+                      }}
+                    />
+                    {/* overlay to show actual percent visually */}
+                    <div className="relative -mt-1.5 pointer-events-none">
+                      <div style={{ width: `${metric.successRate}%` }} className="h-1.5 rounded-full" />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                <div>
-                  <span className="text-muted-foreground block">Tests</span>
-                  <span className="font-bold text-foreground">{metric.totalAttempts}</span>
+                  <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
+                    <div>
+                      <span className="text-muted-foreground block">Tests</span>
+                      <span className="font-bold text-foreground">{metric.totalAttempts}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground block">Pass</span>
+                      <span className="font-bold text-green-500">{metric.totalSuccesses}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-muted-foreground block">Pass</span>
-                  <span className="font-bold text-green-500">{metric.totalSuccesses}</span>
+
+                {/* Right-side compact service breakdown - icons + numbers only */}
+                <div className="mt-3 sm:mt-0 sm:ml-4 w-full sm:w-20 shrink-0">
+                  <div className="text-xs font-medium text-muted-foreground mb-2 sr-only">By service</div>
+                  <div className="grid gap-2 text-xs">
+                    {Object.entries((metric as any).serviceBreakdown || {}).length > 0 ? (
+                      Object.entries((metric as any).serviceBreakdown || {}).map(([svc, info]: any) => {
+                        const svcKey = String(svc || 'Unknown')
+                        const total = Number(info?.total ?? info?.count ?? ((info?.success ?? 0) + (info?.failed ?? 0)) ?? 0) || 0
+                        const success = Number(info?.success ?? info?.success_count ?? info?.successRecords ?? 0) || 0
+                        const pct = Number(info?.success_rate ?? info?.successRate ?? (total ? Math.round((success / total) * 100) : 0)) || 0
+                        const ServiceIcon = svcKey.toLowerCase().includes('sms') || svcKey.toLowerCase().includes('text') ? MessageSquare
+                          : svcKey.toLowerCase().includes('voice') ? Phone
+                          : svcKey.toLowerCase().includes('data') ? Wifi
+                          : HelpCircle
+
+                        return (
+                          <div key={svc} className="flex items-center justify-end gap-2">
+                            <ServiceIcon className="size-3 text-muted-foreground" />
+                            <div className="flex flex-col items-end leading-tight">
+                              <span className="font-semibold text-sm">{total}</span>
+                            </div>
+                          </div>
+                        )
+                      })
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-end gap-2"><Phone className="size-3 text-muted-foreground"/><div className="flex flex-col items-end leading-tight"><span className="font-semibold">0</span></div></div>
+                        <div className="flex items-center justify-end gap-2"><MessageSquare className="size-3 text-muted-foreground"/><div className="flex flex-col items-end leading-tight"><span className="font-semibold">0</span></div></div>
+                        <div className="flex items-center justify-end gap-2"><Wifi className="size-3 text-muted-foreground"/><div className="flex flex-col items-end leading-tight"><span className="font-semibold">0</span></div></div>
+                        <div className="flex items-center justify-end gap-2"><HelpCircle className="size-3 text-muted-foreground"/><div className="flex flex-col items-end leading-tight"><span className="font-semibold">0</span></div></div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
