@@ -3,6 +3,7 @@
 import type { TestRecord, AggregatedMetrics } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { useMemo, useEffect, useState } from "react"
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { portalService } from '@/lib/services/portal-service'
 
 export default function FailureRates({
@@ -151,60 +152,67 @@ export default function FailureRates({
           {failureData.map((data) => {
             const pos = positions[data.mno]
             return (
-              <div
-                key={data.mno}
-                className="absolute transition-all hover:scale-105 hover:z-50"
-                style={{
-                  left: pos.x,
-                  top: pos.y,
-                  transform: "translate(-50%, -50%)",
-                }}
-                title={formatBreakdown((failureBreakdowns || {})[data.mno])}
-              >
-                {/* Progress ring */}
-                <svg
-                  width={getCircleSize(data.failureRate) + 16}
-                  height={getCircleSize(data.failureRate) + 16}
-                  className="absolute"
-                  style={{ transform: 'rotate(-90deg)' }}
-                >
-                  <circle
-                    cx={(getCircleSize(data.failureRate) + 16) / 2}
-                    cy={(getCircleSize(data.failureRate) + 16) / 2}
-                    r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.2)"
-                    strokeWidth="4"
-                  />
-                  <circle
-                    cx={(getCircleSize(data.failureRate) + 16) / 2}
-                    cy={(getCircleSize(data.failureRate) + 16) / 2}
-                    r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
-                    fill="none"
-                    stroke={colorMap[data.mno]}
-                    strokeWidth="4"
-                    strokeDasharray={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4)}`}
-                    strokeDashoffset={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4) * (1 - data.failureRate / 100)}`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                
-                {/* Inner circle */}
-                <div
-                  className="rounded-full flex flex-col items-center justify-center shadow-lg"
-                  style={{
-                    width: `${getCircleSize(data.failureRate)}px`,
-                    height: `${getCircleSize(data.failureRate)}px`,
-                    backgroundColor: colorMap[data.mno],
-                    margin: '8px',
-                  }}
-                >
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
-                    <div className="text-xs text-white/80 font-medium">{data.mno}</div>
+              <Tooltip key={data.mno}>
+                <TooltipTrigger asChild>
+                  <div
+                    className="absolute transition-all hover:scale-105 hover:z-50"
+                    style={{
+                      left: pos.x,
+                      top: pos.y,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    {/* Progress ring */}
+                    <svg
+                      width={getCircleSize(data.failureRate) + 16}
+                      height={getCircleSize(data.failureRate) + 16}
+                      className="absolute"
+                      style={{ transform: 'rotate(-90deg)' }}
+                    >
+                      <circle
+                        cx={(getCircleSize(data.failureRate) + 16) / 2}
+                        cy={(getCircleSize(data.failureRate) + 16) / 2}
+                        r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
+                        fill="none"
+                        stroke="rgba(255,255,255,0.2)"
+                        strokeWidth="4"
+                      />
+                      <circle
+                        cx={(getCircleSize(data.failureRate) + 16) / 2}
+                        cy={(getCircleSize(data.failureRate) + 16) / 2}
+                        r={(getCircleSize(data.failureRate) + 16) / 2 - 4}
+                        fill="none"
+                        stroke={colorMap[data.mno]}
+                        strokeWidth="4"
+                        strokeDasharray={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4)}`}
+                        strokeDashoffset={`${2 * Math.PI * ((getCircleSize(data.failureRate) + 16) / 2 - 4) * (1 - data.failureRate / 100)}`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  
+                    {/* Inner circle */}
+                    <div
+                      className="rounded-full flex flex-col items-center justify-center shadow-lg"
+                      style={{
+                        width: `${getCircleSize(data.failureRate)}px`,
+                        height: `${getCircleSize(data.failureRate)}px`,
+                        backgroundColor: colorMap[data.mno],
+                        margin: '8px',
+                      }}
+                    >
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-white">{data.failureRate}%</div>
+                        <div className="text-xs text-white/80 font-medium">{data.mno}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </TooltipTrigger>
+                <TooltipContent sideOffset={8} className="max-w-xs">
+                  <div className="whitespace-pre-wrap text-sm">
+                    {formatBreakdown((failureBreakdowns || {})[data.mno])}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             )
           })}
         </div>

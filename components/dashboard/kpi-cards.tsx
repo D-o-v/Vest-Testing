@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { MNO_COLORS, MNO_NAMES } from "@/lib/constants"
 import { MessageSquare, Phone, Wifi, HelpCircle } from 'lucide-react'
 import type { AggregatedMetrics } from "@/lib/types"
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { Card } from "@/components/ui/card"
 import analyticsService from '@/lib/services/analytics-service'
 import { portalService } from '@/lib/services/portal-service'
@@ -113,19 +114,39 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
                     <p className="text-xs text-muted-foreground">Success Rate</p>
                   </div>
 
-                  {/* Progress bar full width */}
-                  <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
-                    <div
-                      className="h-full transition-all rounded-full"
-                      style={{
-                        width: `100%`,
-                        backgroundColor: MNO_COLORS[metric.mno],
-                      }}
-                    />
-                    {/* overlay to show actual percent visually */}
-                    <div className="relative -mt-1.5 pointer-events-none">
-                      <div style={{ width: `${metric.successRate}%` }} className="h-1.5 rounded-full" />
-                    </div>
+                  {/* Progress bar full width with tooltip showing service breakdown on hover */}
+                  <div className="w-full">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="relative w-full bg-muted rounded-full h-2 overflow-hidden cursor-help">
+                          <div
+                            className="absolute left-0 top-0 h-full rounded-full transition-all"
+                            style={{ width: `${metric.successRate}%`, backgroundColor: MNO_COLORS[metric.mno] }}
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent sideOffset={8} className="max-w-xs">
+                        <div className="font-semibold mb-1">{MNO_NAMES[metric.mno] || metric.mno} — Breakdown</div>
+                        <div className="text-xs space-y-1">
+                          {Object.entries((metric as any).serviceBreakdown || {}).length > 0 ? (
+                            Object.entries((metric as any).serviceBreakdown || {}).map(([svc, info]: any) => {
+                              const svcKey = String(svc || 'Unknown')
+                              const total = Number(info?.total ?? info?.count ?? ((info?.success ?? 0) + (info?.failed ?? 0))) || 0
+                              const success = Number(info?.success ?? info?.success_count ?? info?.successRecords ?? 0) || 0
+                              const pct = total ? Math.round((success / total) * 100) : 0
+                              return (
+                                <div key={svc} className="flex items-center justify-between">
+                                  <span className="text-muted-foreground">{svcKey}</span>
+                                  <span className="font-semibold">{total} ({pct}%)</span>
+                                </div>
+                              )
+                            })
+                          ) : (
+                            <div className="text-muted-foreground">No service breakdown available</div>
+                          )}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
@@ -147,7 +168,7 @@ export default function KPICards({ startDate, endDate }: { startDate?: string | 
                     {Object.entries((metric as any).serviceBreakdown || {}).length > 0 ? (
                       Object.entries((metric as any).serviceBreakdown || {}).map(([svc, info]: any) => {
                         const svcKey = String(svc || 'Unknown')
-                        const total = Number(info?.total ?? info?.count ?? ((info?.success ?? 0) + (info?.failed ?? 0)) ?? 0) || 0
+                        const total = Number(info?.total ?? info?.count ?? ((info?.success ?? 0) + (info?.failed ?? 0))) || 0
                         const success = Number(info?.success ?? info?.success_count ?? info?.successRecords ?? 0) || 0
                         const pct = Number(info?.success_rate ?? info?.successRate ?? (total ? Math.round((success / total) * 100) : 0)) || 0
                         const ServiceIcon = svcKey.toLowerCase().includes('sms') || svcKey.toLowerCase().includes('text') ? MessageSquare

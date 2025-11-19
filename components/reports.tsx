@@ -34,9 +34,11 @@ export default function Reports({ csvData }: { csvData: string }) {
 
   const [apiRecords, setApiRecords] = useState<TestRecord[] | null>(null)
   const [loading, setLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
   
   const fetchRecords = useCallback(() => {
     setLoading(true)
+    setHasFetched(true)
     let mounted = true
     
     const params: any = { page_size: 1000 }
@@ -89,7 +91,7 @@ export default function Reports({ csvData }: { csvData: string }) {
           } as TestRecord
         }
 
-        setApiRecords(allRecords.map(normalize))
+          setApiRecords(allRecords.map(normalize))
       })
       .catch((e) => {
         const msg = e && (e as any).message ? (e as any).message : String(e)
@@ -101,9 +103,6 @@ export default function Reports({ csvData }: { csvData: string }) {
     return () => { mounted = false }
   }, [selectedMNO, selectedService, selectedState, dateRange])
   
-  useEffect(() => {
-    fetchRecords()
-  }, [fetchRecords])
 
   // prefer API records when available, otherwise fall back to CSV-parsed data
   const sourceData = apiRecords && apiRecords.length > 0 ? apiRecords : parsedData
@@ -186,28 +185,35 @@ export default function Reports({ csvData }: { csvData: string }) {
           <h1 className="text-2xl font-bold text-foreground">Network Reports</h1>
           <p className="text-sm text-muted-foreground">Generate and export detailed performance reports</p>
         </div>
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" disabled={filteredData.length === 0}>
-                <Download className="w-3 h-3 mr-1" />
-                Export
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={exportToCSV}>
-                <FileSpreadsheet className="w-4 h-4 mr-2" />
-                Export as CSV
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={exportToPDF}>
-                <FileText className="w-4 h-4 mr-2" />
-                Export as PDF
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={exportToImage}>
-                <Image className="w-4 h-4 mr-2" />
-                Export as Image
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="secondary" onClick={fetchRecords} disabled={loading}>
+            {loading ? 'Fetching...' : 'Fetch Reports'}
+          </Button>
+          {hasFetched && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" disabled={filteredData.length === 0}>
+                  <Download className="w-3 h-3 mr-1" />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={exportToCSV}>
+                  <FileSpreadsheet className="w-4 h-4 mr-2" />
+                  Export as CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={exportToPDF}>
+                  <FileText className="w-4 h-4 mr-2" />
+                  Export as PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={exportToImage}>
+                  <Image className="w-4 h-4 mr-2" />
+                  Export as Image
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
 
       <ReportFilters
@@ -220,11 +226,14 @@ export default function Reports({ csvData }: { csvData: string }) {
         dateRange={dateRange}
         onDateRangeChange={setDateRange}
       />
-
       {loading && <div className="text-center py-4 text-muted-foreground">Loading...</div>}
-      <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={sourceData.length} />
 
-      <ReportTable records={filteredData} />
+      {hasFetched && (
+        <>
+          <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={sourceData.length} />
+          <ReportTable records={filteredData} />
+        </>
+      )}
     </div>
   )
 }

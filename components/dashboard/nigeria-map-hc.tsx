@@ -146,13 +146,26 @@ export default function NigeriaMapHighcharts({ records, startDate, endDate }: { 
     chart: { map: mapData as any, backgroundColor: undefined },
     title: { text: "Network Hits by State", align: 'left', margin: 24, style: { fontWeight: '600', fontSize: '16px', color: '#111827' } },
     mapNavigation: { enabled: true },
-    colorAxis: { min: 0, max: 100, stops: [[0, '#ef4444'], [0.6, '#f59e0b'], [0.75, '#84cc16'], [0.9, '#10b981']] },
+    // Treat zero/null states as neutral color and map actual values to the color ramp
+    colorAxis: {
+      min: 0,
+      max: 100,
+      // map 0 to a neutral gray, then ramp to red/orange/green for non-zero values
+      stops: [
+        [0, '#f3f4f6'],      // 0% -> neutral (light gray)
+        [0.01, '#ef4444'],   // just above 0 -> red
+        [0.6, '#f59e0b'],
+        [0.75, '#84cc16'],
+        [0.9, '#10b981']
+      ]
+    },
     series: [
       {
         // @ts-ignore - map series
         type: 'map',
         data,
         mapData: mapData,
+        nullColor: '#f3f4f6',
         joinBy: ['hc-key', 'hc-key'],
         name: 'Hits Share (%)',
         states: { hover: { color: '#2b6cb0' } },
