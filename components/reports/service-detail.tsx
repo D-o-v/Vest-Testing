@@ -152,10 +152,13 @@ export default function ServiceDetail() {
           <ArrowLeft className="h-4 w-4" />
           Back to Reports
         </Button>
-        <div className="flex items-center justify-center py-12">
+        <div className="flex items-center justify-center py-20">
           <div className="text-center">
-            <Spinner className="h-8 w-8 mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading records...</p>
+            <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 mb-4">
+              <div className="h-8 w-8 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+            </div>
+            <p className="text-foreground font-medium mb-1">Loading service records...</p>
+            <p className="text-sm text-muted-foreground">Please wait while we fetch the data</p>
           </div>
         </div>
       </div>

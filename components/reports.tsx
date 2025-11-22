@@ -214,6 +214,17 @@ export default function Reports({ csvData }: { csvData: string }) {
       />
       {hasFetched && (
         <>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 mb-4">
+                  <div className="h-8 w-8 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+                </div>
+                <p className="text-muted-foreground">Loading report data...</p>
+              </div>
+            </div>
+          ) : (
+            <>
           
           <div className="flex items-center justify-end mb-4">
             {hasFetched && (
@@ -251,6 +262,8 @@ export default function Reports({ csvData }: { csvData: string }) {
               dateRange
             }}
           />
+            </>
+          )}
         </>
       )}
     </div>
