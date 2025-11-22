@@ -1,11 +1,23 @@
 "use client"
 
+/**
+ * Reports Page Component
+ * 
+ * API Endpoints Used:
+ * 1. reports-by-service/ (GET) - Fetches all reports grouped by service
+ *    - Called when "Fetch Reports" button is clicked
+ *    - Filters: network, service, state, date range
+ * 
+ * 2. records-by-service/ (GET) - Fetches individual records for a specific service
+ *    - Called when user clicks on a service row in the report table
+ *    - Used to display detailed records for that service
+ */
+
 import { useState, useMemo, useCallback } from "react"
 import { parseCSV, aggregateMetricsByMNO } from "@/lib/csv-parser"
 import type { MNO, ServiceType } from "@/lib/types"
 import ReportFilters from "./reports/report-filters"
 import ReportTable from "./reports/report-table"
-import ReportStats from "./reports/report-stats"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Download, FileText, Image, FileSpreadsheet } from "lucide-react"
@@ -48,7 +60,7 @@ export default function Reports({ csvData }: { csvData: string }) {
     if (dateRange.start) params.start_date = dateRange.start
     if (dateRange.end) params.end_date = dateRange.end
     
-    testingService.getRecords(params)
+    testingService.getReportsByService(params)
       .then((res: any) => {
         if (!mounted) return
         
@@ -60,9 +72,12 @@ export default function Reports({ csvData }: { csvData: string }) {
               allRecords = allRecords.concat(serviceData.examples)
             }
           })
+        } else if (Array.isArray(res)) {
+          // If response is directly an array
+          allRecords = res
         } else {
-          // Fallback for old structure
-          allRecords = Array.isArray(res) ? res : (res?.results ?? [])
+          // Fallback for other structures
+          allRecords = res?.results ?? []
         }
         
         const normalize = (t: any): TestRecord => {
@@ -180,40 +195,9 @@ export default function Reports({ csvData }: { csvData: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Network Reports</h1>
-          <p className="text-sm text-muted-foreground">Generate and export detailed performance reports</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="secondary" onClick={fetchRecords} disabled={loading}>
-            {loading ? 'Fetching...' : 'Fetch Reports'}
-          </Button>
-          {hasFetched && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" disabled={filteredData.length === 0}>
-                  <Download className="w-3 h-3 mr-1" />
-                  Export
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={exportToCSV}>
-                  <FileSpreadsheet className="w-4 h-4 mr-2" />
-                  Export as CSV
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={exportToPDF}>
-                  <FileText className="w-4 h-4 mr-2" />
-                  Export as PDF
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={exportToImage}>
-                  <Image className="w-4 h-4 mr-2" />
-                  Export as Image
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Network Reports</h1>
+        <p className="text-sm text-muted-foreground">Generate and export detailed performance reports</p>
       </div>
 
       <ReportFilters
@@ -225,13 +209,48 @@ export default function Reports({ csvData }: { csvData: string }) {
         onStateChange={setSelectedState}
         dateRange={dateRange}
         onDateRangeChange={setDateRange}
+        onFetchReports={fetchRecords}
+        loading={loading}
       />
-      {loading && <div className="text-center py-4 text-muted-foreground">Loading...</div>}
-
       {hasFetched && (
         <>
-          <ReportStats metrics={metrics} filteredCount={filteredData.length} totalCount={sourceData.length} />
-          <ReportTable records={filteredData} />
+          
+          <div className="flex items-center justify-end mb-4">
+            {hasFetched && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" disabled={filteredData.length === 0}>
+                    <Download className="w-3 h-3 mr-1" />
+                    Export
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={exportToCSV}>
+                    <FileSpreadsheet className="w-4 h-4 mr-2" />
+                    Export as CSV
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportToPDF}>
+                    <FileText className="w-4 h-4 mr-2" />
+                    Export as PDF
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportToImage}>
+                    <Image className="w-4 h-4 mr-2" />
+                    Export as Image
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+
+          <ReportTable 
+            records={filteredData} 
+            queryParams={{
+              selectedMNO,
+              selectedService,
+              selectedState,
+              dateRange
+            }}
+          />
         </>
       )}
     </div>

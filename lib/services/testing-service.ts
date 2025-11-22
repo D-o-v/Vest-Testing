@@ -39,6 +39,24 @@ export const testingService = {
     // Some endpoints return { count, results } while others may return array
     return response.data?.results ?? response.data
   },
+
+  /**
+   * Get all reports grouped by service
+   * GET {{baseUrl}}/testing/reports-by-service/
+   */
+  async getReportsByService(params?: Record<string, any>): Promise<any> {
+    const response = await api.get('/testing/reports-by-service/', { params })
+    return response.data
+  },
+
+  /**
+   * Get individual records for a specific service
+   * GET {{baseUrl}}/testing/records-by-service/
+   */
+  async getRecordsByService(params?: Record<string, any>): Promise<any> {
+    const response = await api.get('/testing/records-by-service/', { params })
+    return response.data
+  },
 }
 
 export default testingService
