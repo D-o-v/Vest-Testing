@@ -1,6 +1,6 @@
 "use client"
 
-import type { MNO, ServiceType } from "@/lib/types"
+import type { MNO } from "@/lib/types"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -51,46 +51,28 @@ const SERVICES = ["All", "VOICE", "SMS", "DATA", "USSD"]
 interface ReportFiltersProps {
   selectedMNO: MNO | "All"
   onMNOChange: (mno: MNO | "All") => void
-  selectedService: ServiceType | "All"
-  onServiceChange: (service: ServiceType | "All") => void
   selectedState: string | "All"
   onStateChange: (state: string | "All") => void
   dateRange: { start: string; end: string }
   onDateRangeChange: (range: { start: string; end: string }) => void
-  onFetchReports?: () => void
-  loading?: boolean
 }
 
 export default function ReportFilters({
   selectedMNO,
   onMNOChange,
-  selectedService,
-  onServiceChange,
   selectedState,
   onStateChange,
   dateRange,
   onDateRangeChange,
-  onFetchReports,
-  loading,
 }: ReportFiltersProps) {
   return (
     <Card className="bg-card border-border">
       <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4">
           <h3 className="text-sm font-semibold text-foreground">Filters</h3>
-          {onFetchReports && (
-            <Button
-              size="sm"
-              onClick={onFetchReports}
-              disabled={loading}
-              className="text-xs font-semibold h-8 px-4 bg-blue-500 text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              {loading ? 'Fetching...' : 'Fetch Reports'}
-            </Button>
-          )}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {/* Network Filter */}
           <div>
             <label className="block text-xs font-medium text-foreground mb-1.5">Network</label>
@@ -107,21 +89,7 @@ export default function ReportFilters({
             </select>
           </div>
 
-          {/* Service Filter */}
-          <div>
-            <label className="block text-xs font-medium text-foreground mb-1.5">Service</label>
-            <select
-              value={selectedService}
-              onChange={(e) => onServiceChange(e.target.value as ServiceType | "All")}
-              className="w-full px-2.5 py-1.5 bg-muted border border-border rounded text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {SERVICES.map((service) => (
-                <option key={service} value={service}>
-                  {service === "All" ? "All Services" : service}
-                </option>
-              ))}
-            </select>
-          </div>
+
 
           {/* Origin Filter */}
           <div>
