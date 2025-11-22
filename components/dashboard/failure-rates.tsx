@@ -123,20 +123,19 @@ export default function FailureRates({
   const formatBreakdown = (obj: any) => {
     if (!obj || Object.keys(obj).length === 0) return 'No breakdown available'
     try {
-      return Object.entries(obj).map(([k, v]) => {
-        if (v && typeof v === 'object') {
-          const total = (v as any).total ?? (v as any).count ?? 0
-          const failed = (v as any).failed ?? (v as any).failed_count ?? 0
-          const success = (v as any).success ?? (v as any).success_count ?? 0
-          const rate = (v as any).failure_rate ?? (v as any).failureRate ?? (total ? Math.round((failed / total) * 100) : undefined)
-          const parts = [`${k}: total=${total}`]
-          if (typeof failed === 'number') parts.push(`failed=${failed}`)
-          if (typeof success === 'number') parts.push(`success=${success}`)
-          if (rate !== undefined) parts.push(`failure_rate=${rate}%`)
-          return parts.join(' ')
+      const lines = Object.entries(obj).map(([service, data]) => {
+        if (data && typeof data === 'object') {
+          const total = (data as any).total ?? (data as any).count ?? 0
+          const failed = (data as any).failed ?? (data as any).failed_count ?? 0
+          const success = (data as any).success ?? (data as any).success_count ?? 0
+          const rate = (data as any).failure_rate ?? (data as any).failureRate ?? (total > 0 ? Math.round((failed / total) * 100) : 0)
+          
+          // Format: "SMS: 12% failed (5 of 42 tests)"
+          return `${service}: ${rate}% failed (${failed} of ${total})`
         }
-        return `${k}: ${String(v)}`
-      }).join('\n')
+        return `${service}: ${String(data)}`
+      })
+      return lines.join('\n')
     } catch {
       return 'Breakdown unavailable'
     }

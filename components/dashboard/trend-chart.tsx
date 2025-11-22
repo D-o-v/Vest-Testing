@@ -16,6 +16,7 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
     if (startDate) params.start_date = startDate
     if (endDate) params.end_date = endDate
 
+    // Fetch the daily success rate with the filters
     testingService.getDailySuccessRate(Object.keys(params).length ? params : undefined)
       .then(data => {
         if (!mounted) return
@@ -87,7 +88,7 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
         const data = dates.map((date: string) => {
           const dayData = dailyData.find((day: any) => day.date === date)
           const networkData = dayData?.networks?.find((net: any) => net.network === networkName)
-          return networkData?.success_rate || 0
+          return networkData?.success_rate ?? 0
         })
         
         return {
@@ -120,9 +121,66 @@ export default function TrendChart({ records, startDate, endDate }: { records: T
       return { chartData: series, options }
     }
 
-
-
-
+    // Handle service-specific filtering from API data
+    if (dailySuccessData?.daily && selectedService !== 'Overall') {
+      const dailyData = dailySuccessData.daily
+      
+      // Extract all unique dates and sort them
+      const dates = dailyData.map((day: any) => day.date).sort()
+      const categories = dates.map((date: string) => {
+        try {
+          return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        } catch {
+          return date
+        }
+      })
+      
+      const allNetworks = ['MTN', 'GLO', 'Airtel', 'T2']
+      
+      // Create series for each network, filtering by service breakdown
+      const series = allNetworks.map(networkName => {
+        const data = dates.map((date: string) => {
+          const dayData = dailyData.find((day: any) => day.date === date)
+          const networkData = dayData?.networks?.find((net: any) => net.network === networkName)
+          
+          if (!networkData) return 0
+          
+          // Get service breakdown for the selected service
+          const serviceBreakdown = networkData.service_breakdown
+          const serviceData = serviceBreakdown?.[selectedService] || serviceBreakdown?.[selectedService.toUpperCase()]
+          
+          return serviceData?.success_rate ?? 0
+        })
+        
+        return {
+          name: networkName,
+          data
+        }
+      })
+      
+      const flattened = series.flatMap(s => s.data)
+      const maxValue = flattened.length ? Math.max(...flattened) : 0
+      const yMax = Math.max(Math.ceil(maxValue * 1.1), 100)
+      
+      const options = {
+        chart: { type: 'area' as const, toolbar: { show: false }, animations: { enabled: true, speed: 800 } },
+        colors: ['#fbbf24', '#22c55e', '#ef4444', '#f97316'],
+        stroke: { curve: 'smooth' as const, width: 2 },
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] } },
+        xaxis: { categories, axisBorder: { show: false }, labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' } } },
+        yaxis: {
+          min: 0, max: yMax, decimalsInFloat: 1,
+          labels: { style: { colors: 'var(--muted-foreground)', fontSize: '12px' }, formatter: (val: number) => `${val.toFixed(1)}%` }
+        },
+        grid: { borderColor: 'var(--border)', strokeDashArray: 4 },
+        tooltip: { theme: 'dark', shared: true, intersect: false, y: { formatter: (val: number) => `${val.toFixed(1)}%` } },
+        dataLabels: { enabled: false },
+        markers: { size: 3, hover: { size: 5 } },
+        legend: { position: 'bottom' as const, labels: { colors: 'var(--foreground)' } }
+      }
+      
+      return { chartData: series, options }
+    }
 
     const sortedDates = Array.from(dataByDate.keys()).sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
 
